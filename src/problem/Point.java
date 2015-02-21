@@ -1,4 +1,6 @@
+package problem;
 
+import main.GA;
 
 
 public class Point{

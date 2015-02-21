@@ -1,9 +1,14 @@
+package chromosome;
+
 import java.util.List;  
 import java.util.Collections;  
 import java.util.ArrayList;  
 import java.util.Random;
 
-  
+import main.GA;
+import problem.*;
+
+
 public class Chromosome {
 	
 	private List<Integer> chromosome;
