@@ -19,25 +19,24 @@ public class GA {
   
     void initializePopulation(List<Chromosome> population) {
     	int i;
+    	ChromosomeFactory chromosomeFactory = new ChromosomeFactory();
     	for (i = 0; i<POPULATION_SIZE * INIT_RAND_RATE; i++) {
-    		Chromosome chr = new Chromosome();
-    		chr.generateRandomChromosome();
-    		
-    		population.add(chr);
-    		
-    		//System.out.println(i+":  "+ chr);
+    		population.add(chromosomeFactory.generateRandomChromosome());
     	}
-    	//System.out.println("------");
-    	while (i < POPULATION_SIZE){
-    		Chromosome chr = new Chromosome();
-    		chr.generateGreedyChromosome();
-    		
-    		population.add(chr);
-    		
-    		//System.out.println(i+":  "+ chr);
+    	System.out.println("------");
+    	while (i < POPULATION_SIZE){		
+    		population.add(chromosomeFactory.generateGreedyChromosome());
     		i++;
     	}
-  
+    }
+    
+    void showPopulation(List<Chromosome> population) {
+    	for (int i = 0; i<POPULATION_SIZE; i++) {
+    		System.out.println(i+": "+population.get(i));
+    		if (i == 89) {
+    			System.out.println("-----------------");
+    		}
+    	}
     }
     
     public void go() {
@@ -59,6 +58,7 @@ public class GA {
     	
     	List<Chromosome> population = new ArrayList<Chromosome>(POPULATION_SIZE); 
     	initializePopulation(population);
+    	//showPopulation(population);
     	
     	System.out.println(population.get(99));
     	population.get(99).evaluateRoutes();
