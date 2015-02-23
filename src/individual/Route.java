@@ -2,6 +2,7 @@ package individual;
 
 import java.util.ArrayList;
 
+import problem.Point;
 import problem.Problem;
 
 public class Route extends ArrayList<Integer> {
@@ -34,8 +35,33 @@ public class Route extends ArrayList<Integer> {
 			return false;
 		}
 		// Check time windows
-		double time = Problem.getDepot().getReadyTime();
+		double time = Problem.getDepot().distanceTo(Problem.getCustomer(this.get(0)))
+				+ Problem.getDepot().getReadyTime();
+		for (int i = 0; i < this.size(); i++) {			
+			Point customer = Problem.getCustomer(this.get(i));
+			
+			if (i != 0) {
+				time += Problem.getCustomer(this.get(i-1)).distanceTo(customer);
+			}
+			
+			if (time > customer.getDueDate()) {
+				return false;
+			} else if (time < customer.getReadyTime()) {
+				time = customer.getReadyTime();
+			}
+			
+			time += customer.getServiceTime();
+		}
+		
+		if (time + Problem.getCustomer(this.getLastGene()).distanceTo(Problem.getDepot()) > Problem.getDepot().getDueDate()) {
+			return false;
+		}
+		
 		return true; // TODO 
+	}
+	
+	public int getLastGene() {
+		return this.get(this.size()-1);
 	}
 
 }
