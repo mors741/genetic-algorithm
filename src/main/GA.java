@@ -62,13 +62,14 @@ public class GA {
     	
     	System.out.println(population.get(99));
     	population.get(99).evaluateRoutes();
-    	System.out.println(population.get(99).toRouteString());   	
+    	//System.out.println(population.get(99).toRouteString());   
+    	
     	
     	//for (Chromosome chr : population){
     	//	System.out.println(chr.toString());
     	//}
     	//Point p = Problem.getCustomer(8);
-    	//System.out.println("Neares: "+ p.getNearestCustomerId());
+    	//System.out.println("Nearest: "+ p.getNearestCustomerId());
     	
     	//Chromosome chr = new Chromosome();
     	//chr.generateGreedyChromosome();

@@ -9,8 +9,8 @@ public class Chromosome {
 	
 	private List<Integer> chromosome;
 	private List<List<Integer>> routes;
-	private int routesNumber;
-	private int totalCost;
+	private int routesNumber = 1;
+	private double totalCost = 0;
 	
 	
 	public Chromosome() {
@@ -23,22 +23,52 @@ public class Chromosome {
     }
 	
 	public void evaluateRoutes() {
-		int currentRouteIndex = 0;
 		int currentCapacity = Problem.vehicleCapacity;
+		double currentTime = Problem.getDepot().distanceTo(Problem.getCustomer(chromosome.get(0)));
+		totalCost = currentTime;
 		routes.add(new ArrayList<Integer>(Problem.customersNumber));
-		// TODO Exception if first gene is incorrect
-		if (chromosome.get(0) % 2 == 0) {
-			System.out.println("Kosyak");
-		}
+		Point customer = null;
+		int prevGene = -1;
+		System.out.print("["); // TODO debug only
 		for (int gene : chromosome) {
-			if (gene % 2 == 0) { // TODO New route condition
-				routes.add(new ArrayList<Integer>(Problem.customersNumber));
-				currentRouteIndex++;
+			customer = Problem.getCustomer(gene);
+			
+			if (gene != chromosome.get(0)) {
+				currentTime += Problem.getCustomer(prevGene).distanceTo(customer);
+				totalCost += Problem.getCustomer(prevGene).distanceTo(customer);
 			}
-			routes.get(currentRouteIndex).add(gene);
+
+			if (currentTime > customer.getDueDate() /*  or capacity limit */) { // TODO New route condition // To late
+				if (routes.get(routesNumber-1).isEmpty()) {
+					System.out.println("Kosyak"); // TODO Exception 
+				}
+				
+				currentTime = Problem.getDepot().distanceTo(customer) + customer.getReadyTime(); // Можно обощить
+				totalCost += Problem.getCustomer(prevGene).distanceTo(Problem.getDepot()) + Problem.getDepot().distanceTo(customer)
+						- Problem.getCustomer(prevGene).distanceTo(customer);
+				
+				routes.add(new ArrayList<Integer>(Problem.customersNumber));
+				routesNumber++;
+				
+				System.out.print("] ["); // TODO debug only
+			} else if (currentTime < customer.getReadyTime()) { // To early
+				currentTime=customer.getReadyTime();
+			}
+				
+			currentTime += customer.getServiceTime();
+			
+			routes.get(routesNumber-1).add(gene);
+			prevGene = gene;
+			System.out.print(gene+ " "); // TODO debug only
 		}
+		
+		totalCost += customer.distanceTo(Problem.getDepot());
+		
+		System.out.println("]"); // TODO debug only
+		System.out.println("Routes: " + routesNumber); // TODO debug only
+		System.out.println("Total Cost: " + totalCost); // TODO debug only
 	}
-    
+	
     public boolean contains(int gene) {
     	for (int i : chromosome) {
     		if (i == gene) {
@@ -62,7 +92,7 @@ public class Chromosome {
         return routesNumber;
     }
     
-    public int getTotalCost() {
+    public double getTotalCost() {
 
         return totalCost;
     }
