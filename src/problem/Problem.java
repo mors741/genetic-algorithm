@@ -7,7 +7,7 @@ import java.util.List;
 public class Problem {
 	
 	public static int customersNumber;
-	public static int vehicleCapacity;
+	public static double vehicleCapacity;
 	public static Point depot;
 	public static List<Point> customers; // нумерация с 0, а не с 1!
 	

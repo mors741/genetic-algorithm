@@ -23,7 +23,7 @@ public class Chromosome {
     }
 	
 	public void evaluateRoutes() {
-		int currentCapacity = Problem.vehicleCapacity;
+		double currentCapacity = Problem.vehicleCapacity;
 		double currentTime = Problem.getDepot().distanceTo(Problem.getCustomer(chromosome.get(0)));
 		totalCost = currentTime;
 		routes.add(new ArrayList<Integer>(Problem.customersNumber));
@@ -37,13 +37,16 @@ public class Chromosome {
 				currentTime += Problem.getCustomer(prevGene).distanceTo(customer);
 				totalCost += Problem.getCustomer(prevGene).distanceTo(customer);
 			}
+			
+			currentCapacity -= customer.getDemand();
 
-			if (currentTime > customer.getDueDate() /*  or capacity limit */) { // TODO New route condition // To late
+			if (currentCapacity < 0 || currentTime > customer.getDueDate()) { // To late (creat new route)
 				if (routes.get(routesNumber-1).isEmpty()) {
 					System.out.println("Kosyak"); // TODO Exception 
 				}
 				
-				currentTime = Problem.getDepot().distanceTo(customer) + customer.getReadyTime(); // Можно обощить
+				currentCapacity = Problem.vehicleCapacity - customer.getDemand();
+				currentTime = Problem.getDepot().distanceTo(customer) + customer.getReadyTime();
 				totalCost += Problem.getCustomer(prevGene).distanceTo(Problem.getDepot()) + Problem.getDepot().distanceTo(customer)
 						- Problem.getCustomer(prevGene).distanceTo(customer);
 				
@@ -51,7 +54,7 @@ public class Chromosome {
 				routesNumber++;
 				
 				System.out.print("] ["); // TODO debug only
-			} else if (currentTime < customer.getReadyTime()) { // To early
+			} else if (currentTime < customer.getReadyTime()) { // To early (wait to ReadyTime)
 				currentTime=customer.getReadyTime();
 			}
 				
