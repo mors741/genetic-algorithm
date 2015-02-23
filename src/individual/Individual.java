@@ -23,14 +23,12 @@ public class Individual {
     }
 	
 	public void evaluateRoutes() {
-		System.out.println("----------\nPhase 1:"); // TODO debug only
 		double currentCapacity = Problem.vehicleCapacity;
 		double currentTime = Problem.getDepot().distanceTo(Problem.getCustomer(chromosome.get(0)))
 				+ Problem.getDepot().getReadyTime();
 		routes.add(new Route(Problem.customersNumber));
 		Point customer = null;
 		int prevGene = -1;
-		System.out.print("["); // TODO debug only
 		for (int gene : chromosome) {
 			customer = Problem.getCustomer(gene);
 			
@@ -51,7 +49,6 @@ public class Individual {
 				routes.add(new Route(Problem.customersNumber));
 				routesNumber++;
 				
-				System.out.print("] ["); // TODO debug only
 			} else if (currentTime < customer.getReadyTime()) { // To early (wait to ReadyTime)
 				currentTime=customer.getReadyTime();
 			}
@@ -60,21 +57,21 @@ public class Individual {
 			
 			routes.get(routesNumber-1).add(gene);
 			prevGene = gene;
-			System.out.print(gene+ " "); // TODO debug only
 		}
 		
-		System.out.println("]"); // TODO debug only
-		System.out.println("Routes: " + routesNumber); // TODO debug only
-		System.out.println("Total Cost: " + evaluateTotalCost()); // TODO debug only
-		
-		System.out.println("----------\nPhase 2:"); // TODO debug only
 		for (int i = 1; i < routesNumber; i++) {
 			int prevRouteLastIndex = routes.get(i-1).size()-1;
-			if (true) { // можно вставить 4 в итый рут
-				routes.get(i).add(0, routes.get(i-1).get(prevRouteLastIndex));
-				routes.get(i-1).remove(prevRouteLastIndex);
+			double sumCost1 = routes.get(i-1).getCost() + routes.get(i).getCost();
+			routes.get(i).add(0, routes.get(i-1).get(prevRouteLastIndex));
+			routes.get(i-1).remove(prevRouteLastIndex);
+			if (!routes.get(i).isFeasible() ||  routes.get(i-1).getCost() + routes.get(i).getCost() > sumCost1) { 
+				routes.get(i-1).add(routes.get(i).get(0));
+				routes.get(i).remove(0);
 			}
 		}
+		
+		totalCost = evaluateTotalCost();
+		System.out.print("(" + routesNumber + ", "+ (int)totalCost + ") " + this.toRouteString() + "\n"); // TODO debug only	
 	}
 	
 	private double evaluateTotalCost() {

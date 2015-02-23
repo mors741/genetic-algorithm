@@ -60,12 +60,11 @@ public class GA {
     	List<Individual> population = new ArrayList<Individual>(POPULATION_SIZE); 
     	initializePopulation(population);
     	//showPopulation(population);
-    	
-    	/*
-    	System.out.println(population.get(99));
-    	population.get(99).evaluateRoutes();
-    	System.out.println(population.get(99).toRouteString());   
-    	*/
+    	int i = 0;
+    	for (Individual indiv : population) {
+        	System.out.print(i++ + ": " + indiv + "-> ");
+        	indiv.evaluateRoutes();
+    	}
     	
     	//for (Chromosome chr : population){
     	//	System.out.println(chr.toString());
