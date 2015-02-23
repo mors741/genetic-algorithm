@@ -1,21 +1,21 @@
-package chromosome;
+package individual;
 
 import java.util.List;  
 import java.util.ArrayList;  
 import problem.*;
 
 
-public class Chromosome {
+public class Individual {
 	
 	private List<Integer> chromosome;
-	private List<List<Integer>> routes;
+	private List<Route> routes;
 	private int routesNumber = 1;
 	private double totalCost = 0;
 	
 	
-	public Chromosome() {
+	public Individual() {
 		chromosome = new ArrayList<Integer>(Problem.customersNumber);
-		routes = new ArrayList<List<Integer>>(Problem.customersNumber);
+		routes = new ArrayList<Route>(Problem.customersNumber);
 	}
 	
 	public void setChromosome(List<Integer> newChromosome) {
@@ -23,10 +23,11 @@ public class Chromosome {
     }
 	
 	public void evaluateRoutes() {
+		System.out.println("----------\nPhase 1:"); // TODO debug only
 		double currentCapacity = Problem.vehicleCapacity;
-		double currentTime = Problem.getDepot().distanceTo(Problem.getCustomer(chromosome.get(0)));
-		totalCost = currentTime;
-		routes.add(new ArrayList<Integer>(Problem.customersNumber));
+		double currentTime = Problem.getDepot().distanceTo(Problem.getCustomer(chromosome.get(0)))
+				+ Problem.getDepot().getReadyTime();
+		routes.add(new Route(Problem.customersNumber));
 		Point customer = null;
 		int prevGene = -1;
 		System.out.print("["); // TODO debug only
@@ -35,7 +36,6 @@ public class Chromosome {
 			
 			if (gene != chromosome.get(0)) {
 				currentTime += Problem.getCustomer(prevGene).distanceTo(customer);
-				totalCost += Problem.getCustomer(prevGene).distanceTo(customer);
 			}
 			
 			currentCapacity -= customer.getDemand();
@@ -46,11 +46,9 @@ public class Chromosome {
 				}
 				
 				currentCapacity = Problem.vehicleCapacity - customer.getDemand();
-				currentTime = Problem.getDepot().distanceTo(customer) + customer.getReadyTime();
-				totalCost += Problem.getCustomer(prevGene).distanceTo(Problem.getDepot()) + Problem.getDepot().distanceTo(customer)
-						- Problem.getCustomer(prevGene).distanceTo(customer);
+				currentTime = Problem.getDepot().getReadyTime() + Problem.getDepot().distanceTo(customer) + customer.getReadyTime();
 				
-				routes.add(new ArrayList<Integer>(Problem.customersNumber));
+				routes.add(new Route(Problem.customersNumber));
 				routesNumber++;
 				
 				System.out.print("] ["); // TODO debug only
@@ -65,11 +63,26 @@ public class Chromosome {
 			System.out.print(gene+ " "); // TODO debug only
 		}
 		
-		totalCost += customer.distanceTo(Problem.getDepot());
-		
 		System.out.println("]"); // TODO debug only
 		System.out.println("Routes: " + routesNumber); // TODO debug only
-		System.out.println("Total Cost: " + totalCost); // TODO debug only
+		System.out.println("Total Cost: " + evaluateTotalCost()); // TODO debug only
+		
+		System.out.println("----------\nPhase 2:"); // TODO debug only
+		for (int i = 1; i < routesNumber; i++) {
+			int prevRouteLastIndex = routes.get(i-1).size()-1;
+			if (true) { // можно вставить 4 в итый рут
+				routes.get(i).add(0, routes.get(i-1).get(prevRouteLastIndex));
+				routes.get(i-1).remove(prevRouteLastIndex);
+			}
+		}
+	}
+	
+	private double evaluateTotalCost() {
+		double tc = 0;
+		for (Route route : routes) {
+			tc += route.getCost();
+		}
+		return tc;
 	}
 	
     public boolean contains(int gene) {

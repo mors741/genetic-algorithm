@@ -1,8 +1,10 @@
 package main;
 
+import individual.*;
+
 import java.util.ArrayList;
 import java.util.List;
-import chromosome.*;
+
 import problem.Problem;
   
   
@@ -17,9 +19,9 @@ public class GA {
     public static final double EUCLIDEAN_RADIUS = 2.5;
       
   
-    void initializePopulation(List<Chromosome> population) {
+    void initializePopulation(List<Individual> population) {
     	int i;
-    	ChromosomeFactory chromosomeFactory = new ChromosomeFactory();
+    	IndividualFactory chromosomeFactory = new IndividualFactory();
     	for (i = 0; i<POPULATION_SIZE * INIT_RAND_RATE; i++) {
     		population.add(chromosomeFactory.generateRandomChromosome());
     	}
@@ -30,7 +32,7 @@ public class GA {
     	}
     }
     
-    void showPopulation(List<Chromosome> population) {
+    void showPopulation(List<Individual> population) {
     	for (int i = 0; i<POPULATION_SIZE; i++) {
     		System.out.println(i+": "+population.get(i));
     		if (i == 89) {
@@ -56,13 +58,13 @@ public class GA {
     	//System.out.println(Problem.getCustomer(8).getDueDate());
     	//System.out.println(Problem.getDepot().getY());
     	
-    	List<Chromosome> population = new ArrayList<Chromosome>(POPULATION_SIZE); 
+    	List<Individual> population = new ArrayList<Individual>(POPULATION_SIZE); 
     	initializePopulation(population);
     	//showPopulation(population);
     	
     	System.out.println(population.get(99));
     	population.get(99).evaluateRoutes();
-    	//System.out.println(population.get(99).toRouteString());   
+    	System.out.println(population.get(99).toRouteString());   
     	
     	
     	//for (Chromosome chr : population){
