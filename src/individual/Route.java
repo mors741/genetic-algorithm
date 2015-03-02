@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import problem.Point;
 import problem.Problem;
+import common.ArrayShuffler;
 
 public class Route extends ArrayList<Integer> {
 
@@ -12,8 +13,25 @@ public class Route extends ArrayList<Integer> {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private int[] invertArray = {-2,-1,1,2};
+	
 	public Route(int customersNumber) {
 		super(customersNumber);
+	}
+	
+	void invert(int startPoz) {
+		
+		ArrayShuffler.shuffle(invertArray);
+		
+		for (int i = 0; i < 4; i++){
+			if (startPoz + invertArray[i] < this.size() && startPoz + invertArray[i] >= 0) {				
+				int temp = this.get(startPoz);
+				this.set(startPoz, this.get(startPoz + invertArray[i]));
+				this.set(startPoz + invertArray[i], temp);
+				break;
+			}
+		}
+
 	}
 
 	public double getCost() {

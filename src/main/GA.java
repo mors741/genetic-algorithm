@@ -22,7 +22,7 @@ public class GA {
     void initializePopulation(List<Individual> population) {
     	int i;
     	IndividualFactory chromosomeFactory = new IndividualFactory();
-    	for (i = 0; i<POPULATION_SIZE * INIT_RAND_RATE; i++) {
+    	for (i = 0; i < POPULATION_SIZE * INIT_RAND_RATE; i++) {
     		population.add(chromosomeFactory.generateRandomChromosome());
     	}
     	while (i < POPULATION_SIZE){		
@@ -62,9 +62,14 @@ public class GA {
     	//showPopulation(population);
     	int i = 0;
     	for (Individual indiv : population) {
-        	System.out.print(i++ + ": " + indiv + "-> ");
+        	//System.out.print(i++ + ": " + indiv + "-> ");
         	indiv.evaluateRoutes();
+        	System.out.print(i++ + ": " + indiv + "\n");
     	}
+    	System.out.println("--mutation--");
+    	
+    	population.get(99).mutate();
+    	System.out.println("99: " + population.get(99));
     	
     	//for (Chromosome chr : population){
     	//	System.out.println(chr.toString());

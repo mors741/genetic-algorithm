@@ -2,6 +2,8 @@ package individual;
 
 import java.util.List;  
 import java.util.ArrayList;  
+import java.util.Random;
+
 import problem.*;
 
 
@@ -21,6 +23,21 @@ public class Individual {
 	public void setChromosome(List<Integer> newChromosome) {
         this.chromosome = new ArrayList<Integer>(newChromosome);
     }
+	
+	public void mutate() {
+		List<Integer> feasibleRoutes = new ArrayList<Integer>(routesNumber);
+		for (int i = 0; i < routesNumber; i++){
+			if (routes.get(i).size()>1){
+				feasibleRoutes.add(i);
+			}
+		}
+		Random rnd = new Random();
+
+		Route route = this.routes.get(feasibleRoutes.get(rnd.nextInt(feasibleRoutes.size())));
+		route.invert(rnd.nextInt(route.size()));
+
+		
+	}
 	
 	public void evaluateRoutes() {
 		double currentCapacity = Problem.vehicleCapacity;
@@ -71,7 +88,7 @@ public class Individual {
 		}
 		
 		totalCost = evaluateTotalCost();
-		System.out.print("(" + routesNumber + ", "+ (int)totalCost + ") " + this.toRouteString() + "\n"); // TODO debug only	
+		//System.out.print("(" + routesNumber + ", "+ (int)totalCost + ") " + this.toRouteString() + "\n"); // TODO debug only	
 	}
 	
 	private double evaluateTotalCost() {
@@ -128,6 +145,15 @@ public class Individual {
     	for (int i : chromosome) {
     		str.append(i);
     		str.append(" ");
+    	}
+    	str.append("-> (" + routesNumber + ", " + (int)totalCost + ") "); 	
+    	for (List<Integer> route : routes) {
+    		str.append("[");
+    		for (int gene : route) {
+    			str.append(gene+" ");
+    		}
+    		
+    		str.append("] ");
     	}
 		return str.toString();
     	
