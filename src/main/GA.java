@@ -60,16 +60,24 @@ public class GA {
     	List<Individual> population = new ArrayList<Individual>(POPULATION_SIZE); 
     	initializePopulation(population);
     	//showPopulation(population);
+
     	int i = 0;
     	for (Individual indiv : population) {
         	//System.out.print(i++ + ": " + indiv + "-> ");
         	indiv.evaluateRoutes();
-        	System.out.print(i++ + ": " + indiv + "\n");
     	}
-    	System.out.println("--mutation--");
+    	System.out.println();
+    	ParetoRankDeterminator prd = new ParetoRankDeterminator();
+    	prd.determineParetoRanks(population);
+    	for (int j = 0; j < POPULATION_SIZE; j++) {        	
+        	System.out.print(j + ": " + population.get(j) + "\n");
+        	
+    	}
     	
-    	population.get(99).mutate();
-    	System.out.println("99: " + population.get(99));
+    	
+    	//System.out.println("--mutation--");
+    	//population.get(99).mutate();
+    	//System.out.println("99: " + population.get(99));
     	
     	//for (Chromosome chr : population){
     	//	System.out.println(chr.toString());

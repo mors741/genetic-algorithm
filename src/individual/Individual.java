@@ -13,6 +13,7 @@ public class Individual {
 	private List<Route> routes;
 	private int routesNumber = 1;
 	private double totalCost = 0;
+	private int paretoRank;
 	
 	
 	public Individual() {
@@ -127,6 +128,27 @@ public class Individual {
         return totalCost;
     }
     
+	public boolean dominates(Individual other) {
+		if ((this.totalCost < other.totalCost && this.routesNumber <= other.routesNumber)
+				|| (this.totalCost <= other.totalCost && this.routesNumber < other.routesNumber)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+    
+    public double getParetoRank() {
+
+        return paretoRank;
+    }
+    
+    public void setParetoRank(int paretoRank) {
+
+        this.paretoRank = paretoRank;
+    }
+    
+    
+    
 	public String toRouteString() {
     	StringBuilder str = new StringBuilder(chromosome.size()*3);
     	for (List<Integer> route : routes) {
@@ -146,7 +168,7 @@ public class Individual {
     		str.append(i);
     		str.append(" ");
     	}
-    	str.append("-> (" + routesNumber + ", " + (int)totalCost + ") "); 	
+    	str.append("-- <"+ paretoRank +"> (" + routesNumber + ", " + (int)totalCost + ") "); 	
     	for (List<Integer> route : routes) {
     		str.append("[");
     		for (int gene : route) {
