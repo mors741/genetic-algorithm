@@ -12,7 +12,7 @@ public class GA {
   
     public static final int POPULATION_SIZE = 100;
     private static final int GENERATION_SPAN = 1000; 
-    public static final double CROSSOVER_RATE = 0.5;  
+    public static final double CROSSOVER_RATE = 0.8;  
     public static final double MUTATION_RATE = 0.2;
     
     public static final double INIT_RAND_RATE = 0.9;
@@ -68,12 +68,11 @@ public class GA {
     	}
     	System.out.println();
     	ParetoRankDeterminator prd = new ParetoRankDeterminator();
-    	prd.determineParetoRanks(population);
-    	for (int j = 0; j < POPULATION_SIZE; j++) {        	
-        	System.out.print(j + ": " + population.get(j) + "\n");
-        	
+
+    	population = prd.determineParetoRanks(population);
+    	for (int j = POPULATION_SIZE-1; j >= 0; j--) {        	
+        	System.out.print(j + ": " + population.get(j) + "\n");    	
     	}
-    	
     	
     	//System.out.println("--mutation--");
     	//population.get(99).mutate();
