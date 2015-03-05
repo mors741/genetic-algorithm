@@ -1,44 +1,17 @@
 package main;
 
-import individual.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import problem.Problem;
   
   
 public class GA {  
   
     public static final int POPULATION_SIZE = 100;
-    private static final int GENERATION_SPAN = 1000; 
+    public static final int GENERATION_SPAN = 1000; 
     public static final double CROSSOVER_RATE = 0.8;  
     public static final double MUTATION_RATE = 0.2;
     
     public static final double INIT_RAND_RATE = 0.9;
     public static final double EUCLIDEAN_RADIUS = 2.5;
-      
-  
-    void initializePopulation(List<Individual> population) {
-    	int i;
-    	IndividualFactory chromosomeFactory = new IndividualFactory();
-    	for (i = 0; i < POPULATION_SIZE * INIT_RAND_RATE; i++) {
-    		population.add(chromosomeFactory.generateRandomChromosome());
-    	}
-    	while (i < POPULATION_SIZE){		
-    		population.add(chromosomeFactory.generateGreedyChromosome());
-    		i++;
-    	}
-    }
-    
-    void showPopulation(List<Individual> population) {
-    	for (int i = 0; i<POPULATION_SIZE; i++) {
-    		System.out.println(i+": "+population.get(i));
-    		if (i == 89) {
-    			System.out.println("-----------------");
-    		}
-    	}
-    }
     
     public void go() {
     	double[][] testData = {
@@ -54,38 +27,14 @@ public class GA {
     		    {38.00, 70.00, 10.00, 534.00, 605.00,  90.00}, // 8
     	};
     	Problem.Init(testData, 200);
-    	//System.out.println(Problem.getCustomer(8).getDueDate());
-    	//System.out.println(Problem.getDepot().getY());
     	
-    	List<Individual> population = new ArrayList<Individual>(POPULATION_SIZE); 
-    	initializePopulation(population);
-    	//showPopulation(population);
+    	Population population = new Population(); 
 
-    	int i = 0;
-    	for (Individual indiv : population) {
-        	//System.out.print(i++ + ": " + indiv + "-> ");
-        	indiv.evaluateRoutes();
-    	}
-    	System.out.println();
-    	ParetoRankDeterminator prd = new ParetoRankDeterminator();
-
-    	population = prd.determineParetoRanks(population);
-    	for (int j = POPULATION_SIZE-1; j >= 0; j--) {        	
-        	System.out.print(j + ": " + population.get(j) + "\n");    	
-    	}
+    	population.initialize();
+    	population.evaluateRoutes();   	
+    	population.determineParetoRanks();
     	
-    	//System.out.println("--mutation--");
-    	//population.get(99).mutate();
-    	//System.out.println("99: " + population.get(99));
-    	
-    	//for (Chromosome chr : population){
-    	//	System.out.println(chr.toString());
-    	//}
-    	//Point p = Problem.getCustomer(8);
-    	//System.out.println("Nearest: "+ p.getNearestCustomerId());
-    	
-    	//Chromosome chr = new Chromosome();
-    	//chr.generateGreedyChromosome();
+    	population.showInverse();
 
     	
     }
