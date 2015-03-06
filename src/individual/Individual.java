@@ -137,7 +137,7 @@ public class Individual {
 		}
 	}
     
-    public double getParetoRank() {
+    public int getParetoRank() {
 
         return paretoRank;
     }
@@ -147,7 +147,18 @@ public class Individual {
         this.paretoRank = paretoRank;
     }
     
-    
+    public void backToChromosome() {
+    	chromosome.clear();
+    	for (Route r : routes) {
+    		for (int gene : r) {
+    			chromosome.add(gene);
+    		}
+    	}
+    	routes.clear();
+    	routesNumber = 1;
+    	totalCost = 0;
+    	paretoRank = 0;
+    }
     
 	public String toRouteString() {
     	StringBuilder str = new StringBuilder(chromosome.size()*3);

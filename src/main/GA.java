@@ -29,14 +29,31 @@ public class GA {
     	Problem.Init(testData, 200);
     	
     	Population population = new Population(); 
-
+    	
     	population.initialize();
     	population.evaluateRoutes();   	
     	population.determineParetoRanks();
+    	population.mate();
+    	population.showInverse();
+    	//population.get(0).
+    	
+    	population.backToChromosome();
     	
     	population.showInverse();
-
     	
+    	/* Time testung
+    	int N = 10000000;
+    	long time = System.currentTimeMillis();
+    	for (int i = 0; i < N; i++){
+    		population.tournamentClassic();
+    	}
+    	System.out.println(System.currentTimeMillis()- time);
+    	time = System.currentTimeMillis();
+    	for (int i = 0; i < N; i++){
+    		population.tournamentOptimized();
+    	}
+    	System.out.println(System.currentTimeMillis()- time);
+    	*/
     }
   
     public static void main(String[] args) {  
