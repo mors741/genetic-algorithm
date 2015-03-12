@@ -19,6 +19,10 @@ public class Route extends ArrayList<Integer> {
 		super(customersNumber);
 	}
 	
+	public Route(Route route) {
+		super(route);
+	}
+	
 	void invert(int startPoz) {
 		
 		ArrayShuffler.shuffle(invertArray);
@@ -41,6 +45,11 @@ public class Route extends ArrayList<Integer> {
 			res += Problem.getCustomer(this.get(i)).distanceTo(Problem.getCustomer(this.get(i+1)));
 		}
 		return res + Problem.getCustomer(this.get(i)).distanceTo(Problem.getDepot());
+	}
+	
+	public Route clone() {
+		Route clone = new Route(this);
+		return clone;
 	}
 	
 	public boolean isFeasible() {

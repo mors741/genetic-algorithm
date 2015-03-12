@@ -26,6 +26,7 @@ public class Individual {
     }
 	
 	public void mutate() {
+		routesNumber = routes.size();
 		List<Integer> feasibleRoutes = new ArrayList<Integer>(routesNumber);
 		for (int i = 0; i < routesNumber; i++){
 			if (routes.get(i).size()>1){
@@ -92,7 +93,7 @@ public class Individual {
 		//System.out.print("(" + routesNumber + ", "+ (int)totalCost + ") " + this.toRouteString() + "\n"); // TODO debug only	
 	}
 	
-	private double evaluateTotalCost() {
+	public double evaluateTotalCost() {
 		double tc = 0;
 		for (Route route : routes) {
 			tc += route.getCost();
@@ -116,6 +117,65 @@ public class Individual {
     public int getSize() {
 
         return chromosome.size();
+    }
+    public Individual clone() {
+    	Individual clone = new Individual();
+    	clone.chromosome = new ArrayList<Integer>(this.chromosome); // No need to
+    	for (Route route : this.routes) {
+    		clone.routes.add(new Route(route));
+    	}
+    	clone.paretoRank = this.paretoRank;
+    	clone.totalCost = this.totalCost;
+    	clone.routesNumber = this.routesNumber;
+        return clone;
+    }
+    
+    public boolean removeCustomerFromRoutes(int customer){
+    	for (Route route : routes){
+    		if (route.remove((Object)customer)){
+    			if (route.isEmpty()) {
+    				this.routes.remove(route);
+    			}
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    public void insertCustomerToRoutes(int customer) {
+    	//System.out.println("--Cust: " + customer);
+    	int bestRouteIndex = -1;
+    	int bestIndex = -1;
+    	double bestCost = Double.MAX_VALUE;
+    	double currentCost;
+    	for (int routeIndex = 0; routeIndex < routes.size();routeIndex++) {
+    		Route route = routes.get(routeIndex);
+    		for (int index = 0 ; index <= route.size(); index++) {
+    			route.add(index, customer);
+    			if (route.isFeasible()) {
+    				currentCost = this.evaluateTotalCost();
+    				if (currentCost < bestCost){
+    					bestRouteIndex = routeIndex;
+	    				bestIndex = index;
+	    				bestCost = currentCost;
+	    				//System.out.println("ri: "+bestRouteIndex+" i: "+bestIndex + " bc: " + bestCost);
+    				}
+    			}
+    			route.remove((Object)customer); 
+    		}
+    	}
+    	if (bestIndex == -1){
+    		Route newRoute = new Route(Problem.customersNumber);
+    		newRoute.add(customer);
+    		routes.add(newRoute);
+    	} else {
+    		routes.get(bestRouteIndex).add(bestIndex, customer);
+    	}
+    }
+    
+    public Route getRoute(int i) {
+
+        return routes.get(i);
     }
     
     public int getRoutesNumber() {

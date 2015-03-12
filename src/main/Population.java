@@ -2,8 +2,11 @@ package main;
 
 import individual.Individual;
 import individual.IndividualFactory;
+import individual.Route;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class Population extends ArrayList<Individual> {
@@ -90,6 +93,16 @@ public class Population extends ArrayList<Individual> {
 		}
 					
 	}
+	public void mutation(){
+		Random rand = new Random();
+		for (Individual indiv : this) {
+			if (rand.nextDouble() < GA.MUTATION_RATE) {
+				//System.out.println(indiv);
+				indiv.mutate();
+				//System.out.println(indiv);
+			}
+		}
+	}
 	
 	private int tournamentWiner(){
 		// Population is sorted by this stage, 
@@ -134,9 +147,41 @@ public class Population extends ArrayList<Individual> {
 	*/
 	
 	private void crossover(Individual parent1, Individual parent2){
-		System.out.println(parent1.getParetoRank()+ " + "+ parent2.getParetoRank());
-		add(parent1);	// TODO Crossover
-		add(parent2);	// TODO Links!! doesn't work well
+		//System.out.println(parent1+ " + "+ parent2);
+		
+		Individual child1 = parent1.clone();
+		Individual child2 = parent2.clone();
+		
+		Random rand = new Random();
+		
+		Route rRoute1 = child1.getRoute(rand.nextInt(child1.getRoutesNumber())).clone();		
+		Route rRoute2 = child2.getRoute(rand.nextInt(child2.getRoutesNumber())).clone();
+		
+		//System.out.println(rRoute1+ " + "+ rRoute2);
+		
+		Collections.shuffle(rRoute1);
+		Collections.shuffle(rRoute2);
+		
+		//System.out.println("shuffle " + rRoute1+ " + "+ rRoute2);
+		for (int customer : rRoute1) {
+			child2.removeCustomerFromRoutes(customer);
+		}
+		for (int customer : rRoute2) {
+			child1.removeCustomerFromRoutes(customer);
+		}
+		//System.out.println("ch1 rem " +child1);
+		//System.out.println("ch2 rem " +child2);
+		for (int customer : rRoute1) {
+			child2.insertCustomerToRoutes(customer);
+		}
+		//System.out.println("ch2 ins " +child2);
+		for (int customer : rRoute2) {
+			child1.insertCustomerToRoutes(customer);
+		}
+		//System.out.println("ch1 ins " +child1);
+		
+		add(child1);
+		add(child2);
 	}
 	
 	public void backToChromosome(){

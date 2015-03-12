@@ -5,10 +5,10 @@ import problem.Problem;
   
 public class GA {  
   
-    public static final int POPULATION_SIZE = 100;
-    public static final int GENERATION_SPAN = 1000; 
+    public static final int POPULATION_SIZE = 300;
+    public static final int GENERATION_SPAN = 350; 
     public static final double CROSSOVER_RATE = 0.8;  
-    public static final double MUTATION_RATE = 0.2;
+    public static final double MUTATION_RATE = 0.1;
     
     public static final double INIT_RAND_RATE = 0.9;
     public static final double EUCLIDEAN_RADIUS = 2.5;
@@ -31,29 +31,18 @@ public class GA {
     	Population population = new Population(); 
     	
     	population.initialize();
-    	population.evaluateRoutes();   	
-    	population.determineParetoRanks();
-    	population.mate();
-    	population.showInverse();
-    	//population.get(0).
-    	
-    	population.backToChromosome();
-    	
-    	population.showInverse();
-    	
-    	/* Time testung
-    	int N = 10000000;
-    	long time = System.currentTimeMillis();
-    	for (int i = 0; i < N; i++){
-    		population.tournamentClassic();
+    	for (int i = 0; i < GENERATION_SPAN; i++) {
+    		population.evaluateRoutes();
+    		population.determineParetoRanks();
+    		
+    		population.showInverse();
+        	System.out.println("------------------------------------------");
+    		
+    		population.mate();
+    		population.mutation();
+    		population.backToChromosome();
     	}
-    	System.out.println(System.currentTimeMillis()- time);
-    	time = System.currentTimeMillis();
-    	for (int i = 0; i < N; i++){
-    		population.tournamentOptimized();
-    	}
-    	System.out.println(System.currentTimeMillis()- time);
-    	*/
+
     }
   
     public static void main(String[] args) {  
