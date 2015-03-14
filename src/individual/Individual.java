@@ -63,7 +63,8 @@ public class Individual {
 				}
 				
 				currentCapacity = Problem.vehicleCapacity - customer.getDemand();
-				currentTime = Problem.getDepot().getReadyTime() + Problem.getDepot().distanceTo(customer) + customer.getReadyTime();
+				//currentTime = Problem.getDepot().getReadyTime() + Problem.getDepot().distanceTo(customer) + customer.getReadyTime();
+				currentTime = Math.max(Problem.getDepot().getReadyTime() + Problem.getDepot().distanceTo(customer), customer.getReadyTime());
 				
 				routes.add(new Route(Problem.customersNumber));
 				routesNumber++;
@@ -78,15 +79,19 @@ public class Individual {
 			prevGene = gene;
 		}
 		
+		//System.out.println("2-nd stage: " + this); //-
 		for (int i = 1; i < routesNumber; i++) {
 			int prevRouteLastIndex = routes.get(i-1).size()-1;
 			double sumCost1 = routes.get(i-1).getCost() + routes.get(i).getCost();
 			routes.get(i).add(0, routes.get(i-1).get(prevRouteLastIndex));
 			routes.get(i-1).remove(prevRouteLastIndex);
+			
 			if (!routes.get(i).isFeasible() ||  routes.get(i-1).getCost() + routes.get(i).getCost() > sumCost1) { 
 				routes.get(i-1).add(routes.get(i).get(0));
 				routes.get(i).remove(0);
-			}
+			} /*else {
+				System.out.println("2-nd stage worked"); //-
+			}*/
 		}
 		
 		totalCost = evaluateTotalCost();

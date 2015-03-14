@@ -201,6 +201,14 @@ public class Population extends ArrayList<Individual> {
     		System.out.println(i+": "+get(i));
     	}
     }
+	
+	public void showOptimal() {
+    	for (int i = this.size() - 1; i >= 0; i--) { // TODO: int i = GA.POPULATION_SIZE - 1;
+    		if (get(i).getParetoRank() == 1) {
+    			System.out.println(i+": "+get(i));
+    		}
+    	}
+    }
 	    
 }
 
