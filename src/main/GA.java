@@ -22,7 +22,7 @@ public class GA {
     		population.evaluateRoutes();
     		population.determineParetoRanks();
     		
-    		System.out.println(i+" ------------------------------------------");
+    		System.out.println(" -------------------------------------" +i+" -------------------------------------");
     		population.showOptimal();
         	
     		population.mate();
@@ -32,9 +32,7 @@ public class GA {
 
     }
   
-    public static void main(String[] args) {  
-    	
+    public static void main(String[] args) {     	
     	new GA().go();  
    }  
-  
 }  

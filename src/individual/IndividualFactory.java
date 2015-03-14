@@ -11,19 +11,19 @@ import problem.Problem;
 
 public class IndividualFactory {
 	
-    // Генерирует хромосому с помощью случайных перестановок
+	// Generate chromosome using random permutations 
 	public Individual generateRandomChromosome() {
     	Individual indiv = new Individual();
-    	// Заполняю по порядку
+    	// Filling in the order
         for (int i =0; i < Problem.customersNumber; i++){
         	indiv.getChromosome().add(i);   	
         } 
-        // И перемешиваю
+        // And shuffling
         Collections.shuffle(indiv.getChromosome());
         return indiv;
     }
 	
-    // Генерирует хромосому с помощью жадной процедуры на стр. 22
+	// Generate chromosome using greedy procedure from 22p.
 	public Individual generateGreedyChromosome() {
 		Individual indiv = new Individual();
     	Random random = new Random();
@@ -35,31 +35,30 @@ public class IndividualFactory {
         while (!tempChromosome.isEmpty()) {
         	int randIndex = (int)(random.nextInt(tempChromosome.size()));
         	int randCustId = tempChromosome.get(randIndex);
-        	//System.out.println(tempChromosome);
         	tempChromosome.remove(randIndex);
         	indiv.getChromosome().add(randCustId);
-        	// Если есть ближайшая, то новый цикл
         	Point randCust = Problem.getCustomer(randCustId);
         	while (true) {
-        		// Найдем ближайшую        		
+        		// Finding the nearest point		
         		double dist;
-            	double minDist = GA.EUCLIDEAN_RADIUS; // Если расстояние больше EUCLIDEAN_RADIUS, то все равно эта точка нас не интересует
+            	double minDist = GA.EUCLIDEAN_RADIUS; // If the distance is greater than EUCLIDEAN_RADIUS, then this point is not interesting anyway
             	int nearestId = -1;
             	for (Point p : Problem.customers) {
             		dist = randCust.distanceTo(p);
-            		if (dist < minDist && dist > 0 && !indiv.contains(p.getId())) { //2)чтобы исключить саму себя; 3)Еще нет в списке
+            		if (dist < minDist &&
+            				dist > 0 && // To exclude itself
+            				!indiv.getChromosome().contains(p.getId())) { // Still not in list
             			minDist = dist;
             			nearestId = p.getId();
             		}
             	}
-            	if (nearestId == -1) { // не существует нужной ближайшей точки
+            	if (nearestId == -1) { // The nearest point is not exist
             		break;
             	}
             	tempChromosome.remove((Object)nearestId);
             	indiv.getChromosome().add(nearestId);
             	randCust = Problem.getCustomer(nearestId);
         	}
-        	//System.out.println(chromosome);
         }
         return indiv;
     }

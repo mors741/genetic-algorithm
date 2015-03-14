@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import problem.Point;
 import problem.Problem;
+
 import common.ArrayShuffler;
 
 public class Route extends ArrayList<Integer> {
@@ -53,7 +54,7 @@ public class Route extends ArrayList<Integer> {
 	}
 	
 	public boolean isFeasible() {
-		// Check capacity
+		// Check capacity constrain
 		int capacity = 0;
 		for (int gene : this) {
 			capacity += Problem.getCustomer(gene).getDemand();
@@ -61,7 +62,7 @@ public class Route extends ArrayList<Integer> {
 		if (capacity > Problem.vehicleCapacity) {
 			return false;
 		}
-		// Check time windows
+		// Check time windows constrain
 		double time = Problem.getDepot().distanceTo(Problem.getCustomer(this.get(0)))
 				+ Problem.getDepot().getReadyTime();
 		for (int i = 0; i < this.size(); i++) {			
@@ -84,11 +85,10 @@ public class Route extends ArrayList<Integer> {
 			return false;
 		}
 		
-		return true; // TODO 
+		return true;
 	}
 	
 	public int getLastGene() {
 		return this.get(this.size()-1);
 	}
-
 }

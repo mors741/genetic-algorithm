@@ -59,8 +59,8 @@ public class Point{
 		return Math.sqrt(Math.pow(this.y-p.y, 2)+Math.pow(this.x-p.x, 2));
 	}
 	
-	// Возвращает номер ближайшей точки в пределах выбранного Евклидового радиуса
-	// или -1, если такой точки не сущестует
+	// Returns the number of the nearest point within Euclidean area
+	// or -1, if it's not exists
 	public int getNearestCustomerId() {
 		double dist;
     	double minDist = GA.EUCLIDEAN_RADIUS;
