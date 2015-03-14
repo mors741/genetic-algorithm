@@ -26,19 +26,19 @@ public class Individual {
     }
 	
 	public void mutate() {
-		routesNumber = routes.size();
-		List<Integer> feasibleRoutes = new ArrayList<Integer>(routesNumber);
-		for (int i = 0; i < routesNumber; i++){
-			if (routes.get(i).size()>1){
-				feasibleRoutes.add(i);
+		if (this.paretoRank != 1) {
+			routesNumber = routes.size();
+			List<Integer> feasibleRoutes = new ArrayList<Integer>(routesNumber);
+			for (int i = 0; i < routesNumber; i++){
+				if (routes.get(i).size()>1){
+					feasibleRoutes.add(i);
+				}
 			}
+			Random rnd = new Random();
+	
+			Route route = this.routes.get(feasibleRoutes.get(rnd.nextInt(feasibleRoutes.size())));
+			route.invert(rnd.nextInt(route.size()));
 		}
-		Random rnd = new Random();
-
-		Route route = this.routes.get(feasibleRoutes.get(rnd.nextInt(feasibleRoutes.size())));
-		route.invert(rnd.nextInt(route.size()));
-
-		
 	}
 	
 	public void evaluateRoutes() {
@@ -244,7 +244,7 @@ public class Individual {
     		str.append(i);
     		str.append(" ");
     	}
-    	str.append("-- <"+ paretoRank +"> (" + routesNumber + ", " + (int)totalCost + ") "); 	
+    	str.append("-- <"+ paretoRank +"> (" + routesNumber + "; " + String.format("%.2f", totalCost) + ") "); 	
     	for (List<Integer> route : routes) {
     		str.append("[");
     		for (int gene : route) {
