@@ -12,6 +12,11 @@ public class Population extends ArrayList<Individual> {
 
 	private static final long serialVersionUID = 7697698702244322610L;
 	
+	public long testTime1 = 0;
+	public long testTime2 = 0;
+	public long testTime3 = 0;
+	private long time;
+	
 	public Population(){
 		super(GA.POPULATION_SIZE);
 	}
@@ -119,27 +124,6 @@ public class Population extends ArrayList<Individual> {
 		}
 	}
 	
-	/*
-	public int tournamentOptimized(){ // May be wrong
-		Random rand = new Random();
-		if (rand.nextDouble() < GA.CROSSOVER_RATE) {
-			int winner = GA.POPULATION_SIZE;
-			int rndIndex;
-			for (int i = 0; i < 4; i++){
-				rndIndex = rand.nextInt(GA.POPULATION_SIZE);
-				if (rndIndex < winner) {
-					winner = rndIndex;
-				}
-				//System.out.println("w: "+winner+" rnd: "+rndIndex);
-			}
-			//System.out.println("winer = "+winner);
-			return winner;
-		} else {
-			return rand.nextInt(GA.POPULATION_SIZE);
-		}
-	}
-	*/
-	
 	private void crossover(Individual parent1, Individual parent2){
 		
 		Individual child1 = parent1.clone();
@@ -150,16 +134,20 @@ public class Population extends ArrayList<Individual> {
 		Route rRoute1 = child1.getRoute(rand.nextInt(child1.getRoutesNumber())).clone();		
 		Route rRoute2 = child2.getRoute(rand.nextInt(child2.getRoutesNumber())).clone();
 		
-		
 		Collections.shuffle(rRoute1);
 		Collections.shuffle(rRoute2);
-
+		
+		time = System.currentTimeMillis();
 		for (int customer : rRoute1) {
 			child2.getRouteNetwork().removeCustomer(customer);
 		}
 		for (int customer : rRoute2) {
 			child1.getRouteNetwork().removeCustomer(customer);
 		}
+		
+		testTime1 += System.currentTimeMillis() - time;
+		time = System.currentTimeMillis();
+		
 		for (int customer : rRoute1) {
 			child2.getRouteNetwork().insertCustomer(customer);
 		}
@@ -167,8 +155,11 @@ public class Population extends ArrayList<Individual> {
 			child1.getRouteNetwork().insertCustomer(customer);
 		}
 		
+		testTime2 += System.currentTimeMillis() - time;
+		
 		add(child1);
 		add(child2);
+		
 	}
 	
 	public void backToChromosome(){

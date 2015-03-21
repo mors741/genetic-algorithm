@@ -48,6 +48,38 @@ public class Route extends ArrayList<Integer> {
 		return res + Problem.getCustomer(this.get(i)).distanceTo(Problem.getDepot());
 	}
 	
+	public double getImaginaryCost(int index, int cust) {
+		double res;
+		if (index == 0) {
+			res = Problem.getDepot().distanceTo(Problem.getCustomer(cust));
+			res += Problem.getCustomer(cust).distanceTo(Problem.getCustomer(this.get(0)));
+			int i;
+			for (i = 0; i < this.size()-1; i++) {
+				res += Problem.getCustomer(this.get(i)).distanceTo(Problem.getCustomer(this.get(i+1)));
+			}
+			return res + Problem.getCustomer(this.get(i)).distanceTo(Problem.getDepot());	
+		} else {
+			res = Problem.getDepot().distanceTo(Problem.getCustomer(this.get(0)));
+			int i;
+			for (i = 0; i < index-1; i++) {
+				res += Problem.getCustomer(this.get(i)).distanceTo(Problem.getCustomer(this.get(i+1)));
+			}
+			
+			res += Problem.getCustomer(this.get(i)).distanceTo(Problem.getCustomer(cust));
+			if (index != this.size()) {
+				res += Problem.getCustomer(cust).distanceTo(Problem.getCustomer(this.get(i+1)));
+			} else {
+				return res + Problem.getCustomer(cust).distanceTo(Problem.getDepot());
+			}
+			
+			for (i = index; i < this.size()-1; i++) {
+				res += Problem.getCustomer(this.get(i)).distanceTo(Problem.getCustomer(this.get(i+1)));
+			}
+			return res + Problem.getCustomer(this.get(i)).distanceTo(Problem.getDepot());	
+		}
+
+	}
+	
 	public Route clone() {
 		Route clone = new Route(this);
 		return clone;
@@ -63,8 +95,9 @@ public class Route extends ArrayList<Integer> {
 			return false;
 		}
 		// Check time windows constrain
-		double time = Problem.getDepot().distanceTo(Problem.getCustomer(this.get(0)))
-				+ Problem.getDepot().getReadyTime();
+		double time = Math.max(Problem.getDepot().getReadyTime()
+				+ Problem.getDepot().distanceTo(Problem.getCustomer(this.get(0)))
+				, Problem.getCustomer(this.get(0)).getReadyTime());
 		for (int i = 0; i < this.size(); i++) {			
 			Point customer = Problem.getCustomer(this.get(i));
 			
@@ -85,6 +118,128 @@ public class Route extends ArrayList<Integer> {
 			return false;
 		}
 		
+		return true;
+	}
+	
+	public boolean isFeasible(int index, int cust) {
+		// Check capacity constrain
+		int capacity = 0;
+		for (int gene : this) {
+			capacity += Problem.getCustomer(gene).getDemand();
+		}
+		capacity += Problem.getCustomer(cust).getDemand();
+		if (capacity > Problem.vehicleCapacity) {
+			return false;
+		}
+		// Check time windows constrain
+		double time;
+		Point customer;
+		if (index == 0) {
+			time = Math.max(Problem.getDepot().getReadyTime()
+					+ Problem.getDepot().distanceTo(Problem.getCustomer(cust))
+					, Problem.getCustomer(cust).getReadyTime());
+			customer = Problem.getCustomer(cust);
+			
+			if (time > customer.getDueDate()) {
+				return false;
+			}
+			
+			time += customer.getServiceTime();
+			
+			customer = Problem.getCustomer(this.get(0));
+			time += Problem.getCustomer(cust).distanceTo(customer);				
+			if (time > customer.getDueDate()) {
+				return false;
+			} else if (time < customer.getReadyTime()) {
+				time = customer.getReadyTime();
+			}
+			
+			time += customer.getServiceTime();
+			
+			for (int i = 1; i < this.size(); i++) {
+				customer = Problem.getCustomer(this.get(i));				
+				time += Problem.getCustomer(this.get(i-1)).distanceTo(customer);				
+				if (time > customer.getDueDate()) {
+					return false;
+				} else if (time < customer.getReadyTime()) {
+					time = customer.getReadyTime();
+				}
+				
+				time += customer.getServiceTime();
+			}
+			
+		} else {
+			time = Math.max(Problem.getDepot().getReadyTime()
+					+ Problem.getDepot().distanceTo(Problem.getCustomer(this.get(0)))
+					, Problem.getCustomer(this.get(0)).getReadyTime());
+			customer = Problem.getCustomer(this.get(0));		
+			if (time > customer.getDueDate()) {
+				return false;
+			}			
+			time += customer.getServiceTime();	
+			int i;
+			for (i = 1; i < index; i++) { // Before index	
+				customer = Problem.getCustomer(this.get(i));
+				
+				time += Problem.getCustomer(this.get(i-1)).distanceTo(customer);
+				
+				if (time > customer.getDueDate()) {
+					return false;
+				} else if (time < customer.getReadyTime()) {
+					time = customer.getReadyTime();
+				}
+				
+				time += customer.getServiceTime();
+			}
+			
+			// index
+			customer = Problem.getCustomer(cust);
+			time += Problem.getCustomer(this.get(i-1)).distanceTo(customer);
+			if (time > customer.getDueDate()) {
+				return false;
+			} else if (time < customer.getReadyTime()) {
+				time = customer.getReadyTime();
+			}
+			
+			time += customer.getServiceTime();
+			
+			// index + 1
+			if (index != this.size()) {
+				customer = Problem.getCustomer(this.get(index));
+				time += Problem.getCustomer(cust).distanceTo(customer);
+				if (time > customer.getDueDate()) {
+					return false;
+				} else if (time < customer.getReadyTime()) {
+					time = customer.getReadyTime();
+				}
+				
+				time += customer.getServiceTime();
+				
+				// other
+				for (i = index+1; i < this.size(); i++) {
+					customer = Problem.getCustomer(this.get(i));
+					
+					time += Problem.getCustomer(this.get(i-1)).distanceTo(customer);
+					
+					if (time > customer.getDueDate()) {
+						return false;
+					} else if (time < customer.getReadyTime()) {
+						time = customer.getReadyTime();
+					}
+					
+					time += customer.getServiceTime();
+				}
+			}
+		}
+		if (index == this.size()) {// on the last place
+			if (time + Problem.getCustomer(cust).distanceTo(Problem.getDepot()) > Problem.getDepot().getDueDate()) {
+				return false;
+			}
+		} else {
+			if (time + Problem.getCustomer(this.getLastGene()).distanceTo(Problem.getDepot()) > Problem.getDepot().getDueDate()) {
+				return false;
+			}
+		}
 		return true;
 	}
 	

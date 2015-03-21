@@ -18,17 +18,50 @@ public class GA {
     	
     	Population population = new Population();    	
     	population.initialize();
+    	
+    	long time = System.currentTimeMillis();
+    	long routesTime = 0;
+    	long paretoTime = 0;
+    	long mateTime = 0;
+    	long mutationTime = 0;
+    	long backTime = 0;
+    	
     	for (int i = 0; i < GENERATION_SPAN; i++) {
     		population.evaluateRoutes();
+    		routesTime += System.currentTimeMillis() - time;
+    		time = System.currentTimeMillis();
+    		
     		population.determineParetoRanks();
+    		paretoTime += System.currentTimeMillis() - time;
+    		time = System.currentTimeMillis();
     		
     		System.out.println(" -------------------------------------" +i+" -------------------------------------");
     		population.showOptimal();
         	
     		population.mate();
+    		mateTime += System.currentTimeMillis() - time;
+    		time = System.currentTimeMillis();
+    		
     		population.mutation();
+    		mutationTime += System.currentTimeMillis() - time;
+    		time = System.currentTimeMillis();
+    		
     		population.backToChromosome();
+    		backTime += System.currentTimeMillis() - time;
+    		time = System.currentTimeMillis();
+    		
     	}
+    	
+    	System.out.println("routesTime: " + routesTime);
+    	System.out.println("paretoTime: " + paretoTime);
+    	System.out.println("mateTime: " + mateTime);
+    	System.out.println("mutationTime: " + mutationTime);
+    	System.out.println("backTime: " + backTime);
+    	System.out.println("total: " + (routesTime+paretoTime+mateTime+mutationTime+backTime));
+    	System.out.println();
+    	System.out.println("testTime1: " + population.testTime1);
+    	System.out.println("testTime2: " + population.testTime2);
+    	
 
     }
   

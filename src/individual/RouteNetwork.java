@@ -24,6 +24,16 @@ public class RouteNetwork extends ArrayList<Route> {
 		return tc;
 	}
 	
+	private double evaluateTotalCostExcept(int routeIndex) {
+		double tc = 0;
+		for (int i = 0; i < this.size(); i++) {
+			if (i != routeIndex){
+				tc += get(i).getCost();
+			}		
+		}
+		return tc;
+	}
+	
     public boolean removeCustomer(int customer){
     	for (Route route : this){
     		if (route.remove((Object)customer)){
@@ -44,16 +54,14 @@ public class RouteNetwork extends ArrayList<Route> {
     	for (int routeIndex = 0; routeIndex < this.size(); routeIndex++) {
     		Route route = this.get(routeIndex);
     		for (int index = 0 ; index <= route.size(); index++) {
-    			route.add(index, customer);
-    			if (route.isFeasible()) {
-    				currentCost = this.evaluateTotalCost();
+    			if (route.isFeasible(index, customer)) {
+    				currentCost = this.evaluateTotalCostExcept(routeIndex) + route.getImaginaryCost(index, customer);
     				if (currentCost < bestCost){
     					bestRouteIndex = routeIndex;
 	    				bestIndex = index;
 	    				bestCost = currentCost;
     				}
     			}
-    			route.remove((Object)customer); 
     		}
     	}
     	if (bestIndex == -1){
