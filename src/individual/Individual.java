@@ -38,20 +38,39 @@ public class Individual {
 		}
 	}
 	
-	public void evaluateRoutes() {
+	public void evaluateRoutes() {	
 		// Phase 1
 		double currentCapacity = Problem.vehicleCapacity;
-		double currentTime = Problem.getDepot().distanceTo(Problem.getCustomer(chromosome.get(0)))
-				+ Problem.getDepot().getReadyTime();
+		// For first customer
+		int gene = chromosome.get(0);
+		Point customer = Problem.getCustomer(gene);
+		double currentTime = Math.max(Problem.getDepot().getReadyTime()
+				+ Problem.getDepot().distanceTo(customer), customer.getReadyTime());
 		routes.add(new Route(Problem.customersNumber));
-		Point customer = null;
-		int prevGene = -1;
-		for (int gene : chromosome) {
+		currentCapacity -= customer.getDemand();
+		
+		if (currentCapacity < 0 || currentTime > customer.getDueDate()) { // To late (create new route)
+			
+			currentCapacity = Problem.vehicleCapacity - customer.getDemand();
+			currentTime = Math.max(Problem.getDepot().getReadyTime() + Problem.getDepot().distanceTo(customer), customer.getReadyTime());
+			
+			routes.add(new Route(Problem.customersNumber));
+			routesNumber++;
+			
+		} else if (currentTime < customer.getReadyTime()) { // To early (wait to ReadyTime)
+			currentTime=customer.getReadyTime();
+		}
+		
+		currentTime += customer.getServiceTime();
+		
+		routes.get(routesNumber-1).add(gene);
+		int prevGene = gene;
+		// For others
+		for (int i = 1; i < chromosome.size(); i++) {
+			gene = chromosome.get(i);
 			customer = Problem.getCustomer(gene);
 			
-			if (gene != chromosome.get(0)) {
-				currentTime += Problem.getCustomer(prevGene).distanceTo(customer);
-			}
+			currentTime += Problem.getCustomer(prevGene).distanceTo(customer);
 			
 			currentCapacity -= customer.getDemand();
 
@@ -87,6 +106,26 @@ public class Individual {
 		}
 		
 		totalCost = routes.evaluateTotalCost();
+	}
+	
+	public boolean theSameRoutesAs(Individual indiv){
+		
+		if (this.routes.size() != indiv.routes.size()) {
+			return false;
+		}
+		Route route;
+		for (int i = 0; i < this.routes.size(); i++) {
+			route = this.routes.get(i);
+			if (route.size() != indiv.routes.get(i).size()){
+				return false;
+			}
+			for (int j = 0; j < route.size(); j++) {
+				if (route.get(j) != indiv.routes.get(i).get(j)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
     
     public Individual clone() {
