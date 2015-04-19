@@ -13,7 +13,8 @@ public class Individual {
 	private List<Integer> chromosome;
 	private RouteNetwork routes;
 	private int routesNumber = 1;
-	private double totalCost = 0;
+	private int totalCost = 0;
+	private int isFeasible = 0;
 	private int paretoRank;
 	
 	
@@ -40,19 +41,19 @@ public class Individual {
 	
 	public void evaluateRoutes() {	
 		// Phase 1
-		double currentCapacity = Problem.vehicleCapacity;
+		int currentCapacity = Problem.vehicleCapacity;
 		// For first customer
 		int gene = chromosome.get(0);
 		Point customer = Problem.getCustomer(gene);
-		double currentTime = Math.max(Problem.getDepot().getReadyTime()
-				+ Problem.getDepot().distanceTo(customer), customer.getReadyTime());
+		int currentTime = Math.max(Problem.getDepot().getReadyTime()
+				+ Problem.getDepot().timeTo(customer), customer.getReadyTime());
 		routes.add(new Route(Problem.customersNumber));
 		currentCapacity -= customer.getDemand();
 		
 		if (currentCapacity < 0 || currentTime > customer.getDueDate()) { // To late (create new route)
 			
 			currentCapacity = Problem.vehicleCapacity - customer.getDemand();
-			currentTime = Math.max(Problem.getDepot().getReadyTime() + Problem.getDepot().distanceTo(customer), customer.getReadyTime());
+			currentTime = Math.max(Problem.getDepot().getReadyTime() + Problem.getDepot().timeTo(customer), customer.getReadyTime());
 			
 			routes.add(new Route(Problem.customersNumber));
 			routesNumber++;
@@ -70,14 +71,14 @@ public class Individual {
 			gene = chromosome.get(i);
 			customer = Problem.getCustomer(gene);
 			
-			currentTime += Problem.getCustomer(prevGene).distanceTo(customer);
+			currentTime += Problem.getCustomer(prevGene).timeTo(customer);
 			
 			currentCapacity -= customer.getDemand();
 
 			if (currentCapacity < 0 || currentTime > customer.getDueDate()) { // To late (create new route)
 				
 				currentCapacity = Problem.vehicleCapacity - customer.getDemand();
-				currentTime = Math.max(Problem.getDepot().getReadyTime() + Problem.getDepot().distanceTo(customer), customer.getReadyTime());
+				currentTime = Math.max(Problem.getDepot().getReadyTime() + Problem.getDepot().timeTo(customer), customer.getReadyTime());
 				
 				routes.add(new Route(Problem.customersNumber));
 				routesNumber++;
@@ -95,7 +96,7 @@ public class Individual {
 		// Phase 2
 		for (int i = 1; i < routesNumber; i++) {
 			int prevRouteLastIndex = routes.get(i-1).size()-1;
-			double sumCost1 = routes.get(i-1).getCost() + routes.get(i).getCost();
+			int sumCost1 = routes.get(i-1).getCost() + routes.get(i).getCost();
 			routes.get(i).add(0, routes.get(i-1).get(prevRouteLastIndex));
 			routes.get(i-1).remove(prevRouteLastIndex);
 			
@@ -106,6 +107,7 @@ public class Individual {
 		}
 		
 		totalCost = routes.evaluateTotalCost();
+		isFeasible = isFeasible() ? 1 : 0;
 	}
 	
 	public boolean theSameRoutesAs(Individual indiv){
@@ -139,13 +141,34 @@ public class Individual {
     	clone.routesNumber = this.routesNumber;
         return clone;
     }
-    
+
 	public boolean dominates(Individual other) {
-		if ((this.totalCost < other.totalCost && this.routesNumber <= other.routesNumber)
-				|| (this.totalCost <= other.totalCost && this.routesNumber < other.routesNumber)) {
+		if (this.totalCost <= other.totalCost 
+				&& this.routesNumber <= other.routesNumber 
+				&& this.isFeasible >= other.isFeasible
+				&& (this.totalCost < other.totalCost
+						|| this.routesNumber < other.routesNumber
+						|| this.isFeasible > other.isFeasible)) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	/**
+	 * according to maxLength and maxCars constraints
+	 */
+	public boolean isFeasible() {
+		int maxRouteLen = 0;
+		for (Route route : routes){
+			if (route.getCost() > maxRouteLen){
+				maxRouteLen = route.getCost();
+			}
+		}
+		if (maxRouteLen > Problem.maxLength || this.routesNumber > Problem.maxCars){
+			return false;
+		} else {
+			return true;
 		}
 	}
     
@@ -169,7 +192,7 @@ public class Individual {
     		str.append(" ");
     	}
     	str.append("-- ");*/
-    	str.append("<"+ paretoRank +"> (" + routesNumber + "; " + String.format("%.2f", totalCost) + ") "); 	
+    	str.append("<"+ paretoRank +"> (" + routesNumber + "; " + totalCost + "; " + isFeasible + ") "); 	
     	for (List<Integer> route : routes) {
     		str.append("[");
     		for (int gene : route) {
@@ -197,7 +220,11 @@ public class Individual {
         return routesNumber;
     }
     
-    public double getTotalCost() {
+    public int getIsFeasible() {
+        return isFeasible;
+    }
+    
+    public int getTotalCost() {
         return totalCost;
     }
     

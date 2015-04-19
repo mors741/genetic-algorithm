@@ -1,9 +1,5 @@
 package problem; 
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +7,32 @@ import java.util.List;
 public class Problem {
 	
 	public static int customersNumber;
-	public static double vehicleCapacity;
+	public static int vehicleCapacity;
 	public static Point depot;
+	public static int[][] distanceCoeffs; 
+	public static int[][] timeCoeffs;
 	public static List<Point> customers; // First cusomer's id = 0, not 1!
+	public static int maxLength;
+	public static int maxCars;
 	
+	public static void Init(Matrix m) {
+		vehicleCapacity = m.MaxMoney;
+
+		
+		distanceCoeffs = m.distanceCoeffs;
+		timeCoeffs = m.timeCoeffs;
+		customersNumber = distanceCoeffs.length - 1;
+		maxLength = m.MaxLength;
+		maxCars = m.maxCars;
+		
+		depot = new Point(-1, m.depot, m.amountOfMoney[0], m.getTimeWindow(0).start * 60, m.getTimeWindow(0).end * 60, m.serviceTime[0]);
+		customers = new ArrayList<Point>(customersNumber);
+		for (int i = 1; i <= customersNumber; i++) {
+									
+			customers.add(new Point(i-1, m.ATM[i], m.amountOfMoney[i], m.getTimeWindow(i).start * 60, m.getTimeWindow(i).end * 60, m.serviceTime[i]));
+		}
+	}
+	/*
 	public static void Init(double[][] data, int capacity) {
 		vehicleCapacity = capacity;
 		customersNumber = data.length-1;
@@ -60,9 +78,18 @@ public class Problem {
     		}
     	}
 	}
+	*/
 	
 	public static Point getDepot(){
 		return depot;
+	}
+	
+	public static int distanceBetween(Point p1, Point p2){
+		return distanceCoeffs[p1.getId()+1][p2.getId()+1];
+	}
+	
+	public static int timeBetween(Point p1, Point p2){
+		return timeCoeffs[p1.getId()+1][p2.getId()+1];
 	}
 	
 	public static Point getCustomer(int i){

@@ -11,7 +11,9 @@ import problem.Problem;
 
 public class IndividualFactory {
 	
-	// Generate chromosome using random permutations 
+	/**
+	 * Generate chromosome using random permutations 
+	 */
 	public Individual generateRandomChromosome() {
     	Individual indiv = new Individual();
     	// Filling in the order
@@ -23,7 +25,9 @@ public class IndividualFactory {
         return indiv;
     }
 	
-	// Generate chromosome using greedy procedure from 22p.
+	/**
+	 * Generate chromosome using greedy procedure from 22p.
+	 */
 	public Individual generateGreedyChromosome() {
 		Individual indiv = new Individual();
     	Random random = new Random();

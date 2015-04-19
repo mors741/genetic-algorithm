@@ -12,10 +12,10 @@ public class Population extends ArrayList<Individual> {
 
 	private static final long serialVersionUID = 7697698702244322610L;
 	
-	public long testTime1 = 0;
-	public long testTime2 = 0;
-	public long testTime3 = 0;
-	private long time;
+	//public long testTime1 = 0;
+	//public long testTime2 = 0;
+	//public long testTime3 = 0;
+	//private long time;
 	
 	public Population(){
 		super(GA.POPULATION_SIZE);
@@ -137,7 +137,7 @@ public class Population extends ArrayList<Individual> {
 		Collections.shuffle(rRoute1);
 		Collections.shuffle(rRoute2);
 		
-		time = System.currentTimeMillis();
+		//time = System.currentTimeMillis();
 		for (int customer : rRoute1) {
 			child2.getRouteNetwork().removeCustomer(customer);
 		}
@@ -145,8 +145,8 @@ public class Population extends ArrayList<Individual> {
 			child1.getRouteNetwork().removeCustomer(customer);
 		}
 		
-		testTime1 += System.currentTimeMillis() - time;
-		time = System.currentTimeMillis();
+		//testTime1 += System.currentTimeMillis() - time;
+		//time = System.currentTimeMillis();
 		
 		for (int customer : rRoute1) {
 			child2.getRouteNetwork().insertCustomer(customer);
@@ -155,7 +155,7 @@ public class Population extends ArrayList<Individual> {
 			child1.getRouteNetwork().insertCustomer(customer);
 		}
 		
-		testTime2 += System.currentTimeMillis() - time;
+		//testTime2 += System.currentTimeMillis() - time;
 		
 		add(child1);
 		add(child2);
@@ -177,6 +177,7 @@ public class Population extends ArrayList<Individual> {
 	public void showInverse() {
     	for (int i = GA.POPULATION_SIZE - 1; i >= 0; i--) {
     		System.out.println(i+": "+get(i));
+    		// TODO: for debug
     	}
     }
 	

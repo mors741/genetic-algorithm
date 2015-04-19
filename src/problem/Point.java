@@ -5,17 +5,15 @@ import main.GA;
 
 public class Point{
 	private int id;
-	private double x;
-	private double y;
-	private double demand;
-	private double rtime;
-	private double ddate;
-	private double stime;
+    private String ATM;
+	private int demand;
+	private int rtime;
+	private int ddate;
+	private int stime;
 	
-	public Point(int id, double x, double y, double demand, double rtime, double ddate, double stime) {
+	public Point(int id, String ATM, int demand, int rtime, int ddate, int stime) {
 		this.id = id;
-		this.x = x;
-		this.y = y;
+		this.ATM = ATM;
 		this.demand = demand;
 		this.rtime = rtime;
 		this.ddate = ddate;
@@ -26,27 +24,23 @@ public class Point{
 		return id;
 	}
 	
-	public double getX(){
-		return x;
+	public String getATM(){
+		return ATM;
 	}
 	
-	public double getY(){
-		return y;
-	}
-	
-	public double getDemand(){
+	public int getDemand(){
 		return demand;
 	}
 	
-	public double getReadyTime(){
+	public int getReadyTime(){
 		return rtime;
 	}
 	
-	public double getDueDate(){
+	public int getDueDate(){
 		return ddate;
 	}
 	
-	public double getServiceTime(){
+	public int getServiceTime(){
 		return stime;
 	}
 	
@@ -55,12 +49,19 @@ public class Point{
 		return String.valueOf(this.id);	
 	}
 	
-	public double distanceTo(Point p) {
-		return Math.sqrt(Math.pow(this.y-p.y, 2)+Math.pow(this.x-p.x, 2));
+	public int timeTo(Point p) {
+		return Problem.timeBetween(this, p);
 	}
 	
-	// Returns the number of the nearest point within Euclidean area
-	// or -1, if it's not exists
+	public int distanceTo(Point p) {
+		return Problem.distanceBetween(this, p);
+		//return Math.sqrt(Math.pow(this.y-p.y, 2)+Math.pow(this.x-p.x, 2));
+	}
+	
+	/**
+	 * @return the number of the nearest point within Euclidean area
+	 * or -1, if it's not exists
+	 */
 	public int getNearestCustomerId() {
 		double dist;
     	double minDist = GA.EUCLIDEAN_RADIUS;

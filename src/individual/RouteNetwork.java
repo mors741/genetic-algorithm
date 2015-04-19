@@ -16,16 +16,16 @@ public class RouteNetwork extends ArrayList<Route> {
 		super(capacity);
 	}
 	
-	public double evaluateTotalCost() {
-		double tc = 0;
+	public int evaluateTotalCost() {
+		int tc = 0;
 		for (Route route : this) {
 			tc += route.getCost();
 		}
 		return tc;
 	}
 	
-	private double evaluateTotalCostExcept(int routeIndex) {
-		double tc = 0;
+	private int evaluateTotalCostExcept(int routeIndex) {
+		int tc = 0;
 		for (int i = 0; i < this.size(); i++) {
 			if (i != routeIndex){
 				tc += get(i).getCost();
@@ -49,8 +49,8 @@ public class RouteNetwork extends ArrayList<Route> {
     public void insertCustomer(int customer) {
     	int bestRouteIndex = -1;
     	int bestIndex = -1;
-    	double bestCost = Double.MAX_VALUE;
-    	double currentCost;
+    	int bestCost = Integer.MAX_VALUE;
+    	int currentCost;
     	for (int routeIndex = 0; routeIndex < this.size(); routeIndex++) {
     		Route route = this.get(routeIndex);
     		for (int index = 0 ; index <= route.size(); index++) {
