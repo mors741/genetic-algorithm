@@ -12,7 +12,7 @@ public class GA {
     public static final double MUTATION_RATE = 0.1;
     
     public static final double INIT_RAND_RATE = 0.9;
-    public static final double EUCLIDEAN_RADIUS = 80;
+    public static final double EUCLIDEAN_RADIUS = 100;
     
     public void go() {
     	//Problem.Init("resources/C101.csv", 100);
@@ -28,7 +28,7 @@ public class GA {
     	//long mutationTime = 0;
     	//long backTime = 0;
     	
-    	for (int i = 0; i < GENERATION_SPAN; i++) {
+    	for (int i = 0; i < GENERATION_SPAN - 1; i++) {
     		population.evaluateRoutes();
     		//routesTime += System.currentTimeMillis() - time;
     		//time = System.currentTimeMillis();
@@ -54,6 +54,10 @@ public class GA {
     		//time = System.currentTimeMillis();
     		
     	}
+		population.evaluateRoutes();		
+		population.determineParetoRanks();		
+		System.out.println(" -------------------------------------" + (GENERATION_SPAN - 1) +" -------------------------------------");
+		population.showOptimal();
     	
     	//System.out.println("routesTime: " + routesTime);
     	//System.out.println("paretoTime: " + paretoTime);
@@ -62,8 +66,7 @@ public class GA {
     	//System.out.println("backTime: " + backTime);
     	//System.out.println("total: " + (routesTime+paretoTime+mateTime+mutationTime+backTime));
     	//System.out.println();
-    	//System.out.println("testTime1: " + population.testTime1);
-    	//System.out.println("testTime2: " + population.testTime2);
+
     	
 
     }

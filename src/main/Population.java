@@ -27,12 +27,11 @@ public class Population extends ArrayList<Individual> {
 	
 	public void initialize() {
 		int i;
-    	IndividualFactory chromosomeFactory = new IndividualFactory();
     	for (i = 0; i < GA.POPULATION_SIZE * GA.INIT_RAND_RATE; i++) {
-    		add(chromosomeFactory.generateRandomChromosome());
+    		add(IndividualFactory.generateRandomChromosome());
     	}
     	while (i < GA.POPULATION_SIZE){		
-    		add(chromosomeFactory.generateGreedyChromosome());
+    		add(IndividualFactory.generateGreedyChromosome());
     		i++;
     	}	
 	}
@@ -53,22 +52,18 @@ public class Population extends ArrayList<Individual> {
 	}
 	
 	public void determineParetoRanks(){
-		
 		Population tempPop = new Population(this);
 		this.clear();
-		
 		int currentRank = 1;
 		int n = GA.POPULATION_SIZE;
 		Individual indiv;
 		while (n != 0) {
-			
 			for (int i = 0; i < n;i++){
 				indiv = tempPop.get(i);
 				if (tempPop.isNotDominated(indiv)){
 					indiv.setParetoRank(currentRank);
 				}
 			}
-			
 			for (int i = 0; i < n;i++){
 				indiv = tempPop.get(i);
 				if (indiv.getParetoRank() == currentRank){
@@ -83,17 +78,30 @@ public class Population extends ArrayList<Individual> {
 	}
 	
 	public void mate(){
-
 		Population parents = new Population(this);
 		this.clear();
-		this.add(parents.get(0));
-		this.add(parents.get(1));
-
-		for (int i = 2; i < GA.POPULATION_SIZE; i+=2){
-			crossover(parents.get(tournamentWiner()), parents.get(tournamentWiner()));
+		int i=0;
+		for (Individual eliteParent : parents){
+			if (eliteParent.getParetoRank() == 1){
+				if (!this.contains(eliteParent)){
+					this.add(eliteParent.clone());
+					//System.out.println("))))))) Taking " + eliteParent + " to next ganeration");
+					i++;
+				}
+			} else {
+				break;
+			}
 		}
-					
+		if (i % 2 == 1){
+			this.add(parents.get(0));
+			//System.out.println("))))))) Taking " + parents.get(0) + " to next ganeration again :)");
+			i++;
+		}
+		for ( ; i < GA.POPULATION_SIZE; i+=2){
+			crossover(parents.get(tournamentWiner()), parents.get(tournamentWiner()));
+		}		
 	}
+	
 	public void mutation(){
 		Random rand = new Random();
 		for (Individual indiv : this) {
@@ -125,15 +133,11 @@ public class Population extends ArrayList<Individual> {
 	}
 	
 	private void crossover(Individual parent1, Individual parent2){
-		
 		Individual child1 = parent1.clone();
 		Individual child2 = parent2.clone();
-		
 		Random rand = new Random();
-		
 		Route rRoute1 = child1.getRoute(rand.nextInt(child1.getRoutesNumber())).clone();		
 		Route rRoute2 = child2.getRoute(rand.nextInt(child2.getRoutesNumber())).clone();
-		
 		Collections.shuffle(rRoute1);
 		Collections.shuffle(rRoute2);
 		
@@ -177,7 +181,6 @@ public class Population extends ArrayList<Individual> {
 	public void showInverse() {
     	for (int i = GA.POPULATION_SIZE - 1; i >= 0; i--) {
     		System.out.println(i+": "+get(i));
-    		// TODO: for debug
     	}
     }
 	

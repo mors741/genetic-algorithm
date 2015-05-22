@@ -3,15 +3,15 @@ package problem;
 import main.GA;
 
 
-public class Point{
-	private int id;
-    private String ATM;
-	private int demand;
-	private int rtime;
-	private int ddate;
-	private int stime;
+public final class Point{
+	private final int id;
+    private final String ATM;
+	private final int demand;
+	private final int rtime;
+	private final int ddate;
+	private final int stime;
 	
-	public Point(int id, String ATM, int demand, int rtime, int ddate, int stime) {
+	Point(int id, String ATM, int demand, int rtime, int ddate, int stime) {
 		this.id = id;
 		this.ATM = ATM;
 		this.demand = demand;

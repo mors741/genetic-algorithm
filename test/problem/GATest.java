@@ -1,6 +1,8 @@
 package problem;
 
 import static org.junit.Assert.assertEquals;
+import individual.Individual;
+import individual.Route;
 
 import org.junit.After;
 import org.junit.Before;
@@ -42,7 +44,29 @@ public class GATest {
 	}
 	
 	@Test
-	public void test() {
+	public void testIndividual() {
+		Individual ind = new Individual();
+		ind.setParetoRank(1);
+		Route r = new Route(100);
+		r.add(1);
+		r.add(2);
+		ind.getRouteNetwork().add(r);
+		r = new Route(100);
+		r.add(3);
+		r.add(4);
+		r.add(5);
+		ind.getRouteNetwork().add(r);
+		r = new Route(100);
+		r.add(7);
+		ind.getRouteNetwork().add(r);
+		r = new Route(100);
+		r.add(6);
+		ind.getRouteNetwork().add(r);
+		r = new Route(100);
+		r.add(0);
+		ind.getRouteNetwork().add(r);
+		System.out.println(ind);
+		
 		/*
 		assertEquals(6, 7);
 		assertEquals(50, Problem.getDepot().distanceTo(Problem.getCustomer(1)));

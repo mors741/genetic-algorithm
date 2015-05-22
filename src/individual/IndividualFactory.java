@@ -14,7 +14,7 @@ public class IndividualFactory {
 	/**
 	 * Generate chromosome using random permutations 
 	 */
-	public Individual generateRandomChromosome() {
+	public static Individual generateRandomChromosome() {
     	Individual indiv = new Individual();
     	// Filling in the order
         for (int i =0; i < Problem.customersNumber; i++){
@@ -28,7 +28,7 @@ public class IndividualFactory {
 	/**
 	 * Generate chromosome using greedy procedure from 22p.
 	 */
-	public Individual generateGreedyChromosome() {
+	public static Individual generateGreedyChromosome() {
 		Individual indiv = new Individual();
     	Random random = new Random();
     	List<Integer> tempChromosome = new ArrayList<Integer>(Problem.customersNumber);

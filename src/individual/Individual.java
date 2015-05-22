@@ -110,7 +110,7 @@ public class Individual {
 		isFeasible = isFeasible() ? 1 : 0;
 	}
 	
-	public boolean theSameRoutesAs(Individual indiv){
+	private boolean theSameRoutesAs(Individual indiv){
 		
 		if (this.routes.size() != indiv.routes.size()) {
 			return false;
@@ -202,6 +202,10 @@ public class Individual {
     		str.append("] ");
     	}
 		return str.toString();
+    }
+    
+    public boolean equals(Object obj){
+    	return this.theSameRoutesAs((Individual)obj);
     }
     
 	public RouteNetwork getRouteNetwork() {

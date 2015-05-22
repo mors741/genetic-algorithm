@@ -16,9 +16,7 @@ public class Problem {
 	public static int maxCars;
 	
 	public static void Init(Matrix m) {
-		vehicleCapacity = m.MaxMoney;
-
-		
+		vehicleCapacity = m.MaxMoney;	
 		distanceCoeffs = m.distanceCoeffs;
 		timeCoeffs = m.timeCoeffs;
 		customersNumber = distanceCoeffs.length - 1;
@@ -28,7 +26,7 @@ public class Problem {
 		depot = new Point(-1, m.depot, m.amountOfMoney[0], m.getTimeWindow(0).start * 60, m.getTimeWindow(0).end * 60, m.serviceTime[0]);
 		customers = new ArrayList<Point>(customersNumber);
 		for (int i = 1; i <= customersNumber; i++) {
-									
+					
 			customers.add(new Point(i-1, m.ATM[i], m.amountOfMoney[i], m.getTimeWindow(i).start * 60, m.getTimeWindow(i).end * 60, m.serviceTime[i]));
 		}
 	}

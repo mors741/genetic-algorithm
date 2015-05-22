@@ -12,14 +12,14 @@ public class Matrix {
 	//private ArrayList<RiderTimeWindow> riderTimeWindows;
 	public int[] amountOfMoney = {0, 10, 20, 30, 20, 20, 10, 20, 30}; //(количество денег, которое нужно загрузить в каждый банкомат, может быть 0)
 	public int[] serviceTime = {0, 1800, 1800, 1800, 1800, 1800, 1800, 1800, 1800}; // - вместо этого можно просто int serviceTime (это время обслуживания одного банкомата, сейчас оно одно для всех, но в идеале может различаться для разных типов банкоматов и даже быть уникальным для каждого)
-	public int MaxMoney = 60; // (макс количество денег, которое может перевезти машина)
+	public int MaxMoney = 80; // (макс количество денег, которое может перевезти машина)
 	public int[] amountOfCassettes; // (кол-во кассет, которое нужно завезти в банкомат) - это сейчас не используется
 	public int VolumeOneCar; // (макс кол-во кассет, кот. может перевезти машина) - не используется
 	public double FixPrice; // - фикс стоимость подъезда машины к банкомату
 	public double LengthPrice; // - цена за километр пути
 	public int MaxATMInWay; // - макс кол-во банкоматов в маршруте
 	public int MaxTime; // - макс время которое можно затрачивать на 1 маршрут
-	public int MaxLength = 300; // макс длина одного маршрута
+	public int MaxLength = 400; // макс длина одного маршрута
 	public String depot = "Depot"; // - идентификатор депо
 	public int maxCars = 5; // - макс доступное кол-во машин
 	public double[] AtmPrice; // - стоимость подъезда к каждому банкомату (сейчас не используется)
@@ -31,10 +31,10 @@ public class Matrix {
 		timeWindows.add(new TimeWindow(0, 1380));
 		timeWindows.add(new TimeWindow(60, 360));
 		timeWindows.add(new TimeWindow(120, 600));
-		timeWindows.add(new TimeWindow(540, 1320));
-		timeWindows.add(new TimeWindow(60, 600));
+		timeWindows.add(new TimeWindow(1040, 1320));
+		timeWindows.add(new TimeWindow(60, 400));
 		timeWindows.add(new TimeWindow(200, 1000));
-		timeWindows.add(new TimeWindow(540, 1020));
+		timeWindows.add(new TimeWindow(940, 1020));
 		timeWindows.add(new TimeWindow(160, 300));
 		timeWindows.add(new TimeWindow(200, 400));
 	}

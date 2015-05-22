@@ -3,7 +3,7 @@ package common;
 import java.util.Random;
 
 public class ArrayShuffler {
-	  // Implementing Fisher–Yates shuffle
+	  // Implementing Fisher-Yates shuffle
 	  public static void shuffle(int[] ar)
 	  {
 	    Random rnd = new Random();

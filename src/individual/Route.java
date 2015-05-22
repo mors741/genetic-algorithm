@@ -25,7 +25,6 @@ public class Route extends ArrayList<Integer> {
 	}
 	
 	void invert(int startPoz) {
-		
 		ArrayShuffler.shuffle(invertArray);
 		
 		for (int i = 0; i < 4; i++){
@@ -36,7 +35,6 @@ public class Route extends ArrayList<Integer> {
 				break;
 			}
 		}
-
 	}
 
 	public int getCost() {
