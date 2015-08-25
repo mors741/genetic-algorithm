@@ -1,23 +1,25 @@
-package main;
+package ru.bpc.cm.items.routing.pareto.main;
 
-import problem.Matrix;
-import problem.Problem;
+import ru.bpc.cm.items.routing.pareto.outer.Matrix;
+import ru.bpc.cm.items.routing.pareto.problem.Problem;
   
   
-public class GA {  
+public class Pareto {  
   
-    public static final int POPULATION_SIZE = 10;
-    public static final int GENERATION_SPAN = 10;
-    public static final double CROSSOVER_RATE = 0.8;  
-    public static final double MUTATION_RATE = 0.1;
+    public static int POPULATION_SIZE = 10;
+    public static int GENERATION_SPAN = 10;
+    public static double CROSSOVER_RATE = 0.8;  
+    public static double MUTATION_RATE = 0.1;
     
-    public static final double INIT_RAND_RATE = 0.9;
-    public static final double EUCLIDEAN_RADIUS = 100;
+    public static double INIT_RAND_RATE = 0.9;
+    public static double EUCLIDEAN_RADIUS = 100;
     
-    public void go() {
+    public Pareto(Matrix problem) {
     	//Problem.Init("resources/C101.csv", 100);
-    	Problem.Init(new Matrix());
-    	
+    	Problem.Init(problem);
+    }
+    
+    public void computeResult() {
     	Population population = new Population();    	
     	population.initialize();
     	
@@ -72,6 +74,14 @@ public class GA {
     }
   
     public static void main(String[] args) {     	
-    	new GA().go();  
+    	Pareto solver = new Pareto(new Matrix(3));
+    	Pareto.POPULATION_SIZE = 10;
+    	Pareto.GENERATION_SPAN = 10;
+    	Pareto.CROSSOVER_RATE = 0.8;  
+    	Pareto.MUTATION_RATE = 0.1;
+        
+    	Pareto.INIT_RAND_RATE = 0.9;
+    	Pareto.EUCLIDEAN_RADIUS = 100;
+    	solver.computeResult();
    }  
 }  

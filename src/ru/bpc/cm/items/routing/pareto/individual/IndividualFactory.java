@@ -1,13 +1,13 @@
-package individual;
+package ru.bpc.cm.items.routing.pareto.individual;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import main.GA;
-import problem.Point;
-import problem.Problem;
+import ru.bpc.cm.items.routing.pareto.main.Pareto;
+import ru.bpc.cm.items.routing.pareto.problem.Point;
+import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 public class IndividualFactory {
 	
@@ -45,7 +45,7 @@ public class IndividualFactory {
         	while (true) {
         		// Finding the nearest point		
         		double dist;
-            	double minDist = GA.EUCLIDEAN_RADIUS; // If the distance is greater than EUCLIDEAN_RADIUS, then this point is not interesting anyway
+            	double minDist = Pareto.EUCLIDEAN_RADIUS; // If the distance is greater than EUCLIDEAN_RADIUS, then this point is not interesting anyway
             	int nearestId = -1;
             	for (Point p : Problem.customers) {
             		dist = randCust.distanceTo(p);

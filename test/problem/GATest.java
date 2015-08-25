@@ -1,8 +1,11 @@
 package problem;
 
 import static org.junit.Assert.assertEquals;
-import individual.Individual;
-import individual.Route;
+
+import ru.bpc.cm.items.routing.pareto.individual.Individual;
+import ru.bpc.cm.items.routing.pareto.individual.Route;
+import ru.bpc.cm.items.routing.pareto.outer.Matrix;
+import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +16,7 @@ public class GATest {
 	@Before
 	public void before(){
 		System.out.println("Before");
-		Matrix m = new Matrix();
+		Matrix m = new Matrix(3);
 		Problem.Init(m);
 	}
 	

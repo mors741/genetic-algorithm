@@ -1,7 +1,9 @@
-package problem; 
+package ru.bpc.cm.items.routing.pareto.problem; 
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.bpc.cm.items.routing.pareto.outer.Matrix;
 
 
 public class Problem {
@@ -23,11 +25,11 @@ public class Problem {
 		maxLength = m.MaxLength;
 		maxCars = m.maxCars;
 		
-		depot = new Point(-1, m.depot, m.amountOfMoney[0], m.getTimeWindow(0).start * 60, m.getTimeWindow(0).end * 60, m.serviceTime[0]);
+		depot = new Point(-1, m.depot, m.amountOfMoney[0], m.getTimeWindow(0).StartWork * 60, m.getTimeWindow(0).EndWork * 60, m.serviceTime[0]);
 		customers = new ArrayList<Point>(customersNumber);
 		for (int i = 1; i <= customersNumber; i++) {
 					
-			customers.add(new Point(i-1, m.ATM[i], m.amountOfMoney[i], m.getTimeWindow(i).start * 60, m.getTimeWindow(i).end * 60, m.serviceTime[i]));
+			customers.add(new Point(i-1, m.ATM[i], m.amountOfMoney[i], m.getTimeWindow(i).StartWork * 60, m.getTimeWindow(i).EndWork * 60, m.serviceTime[i]));
 		}
 	}
 	/*

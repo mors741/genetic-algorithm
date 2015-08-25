@@ -1,11 +1,10 @@
-package individual;
+package ru.bpc.cm.items.routing.pareto.individual;
 
 import java.util.ArrayList;
 
-import problem.Point;
-import problem.Problem;
-
-import common.ArrayShuffler;
+import ru.bpc.cm.items.routing.pareto.common.ArrayShuffler;
+import ru.bpc.cm.items.routing.pareto.problem.Point;
+import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 public class Route extends ArrayList<Integer> {
 

@@ -1,12 +1,12 @@
-package main;
-
-import individual.Individual;
-import individual.IndividualFactory;
-import individual.Route;
+package ru.bpc.cm.items.routing.pareto.main;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+
+import ru.bpc.cm.items.routing.pareto.individual.Individual;
+import ru.bpc.cm.items.routing.pareto.individual.IndividualFactory;
+import ru.bpc.cm.items.routing.pareto.individual.Route;
 
 public class Population extends ArrayList<Individual> {
 
@@ -18,7 +18,7 @@ public class Population extends ArrayList<Individual> {
 	//private long time;
 	
 	public Population(){
-		super(GA.POPULATION_SIZE);
+		super(Pareto.POPULATION_SIZE);
 	}
 	
 	public Population(Population population){
@@ -27,10 +27,10 @@ public class Population extends ArrayList<Individual> {
 	
 	public void initialize() {
 		int i;
-    	for (i = 0; i < GA.POPULATION_SIZE * GA.INIT_RAND_RATE; i++) {
+    	for (i = 0; i < Pareto.POPULATION_SIZE * Pareto.INIT_RAND_RATE; i++) {
     		add(IndividualFactory.generateRandomChromosome());
     	}
-    	while (i < GA.POPULATION_SIZE){		
+    	while (i < Pareto.POPULATION_SIZE){		
     		add(IndividualFactory.generateGreedyChromosome());
     		i++;
     	}	
@@ -55,7 +55,7 @@ public class Population extends ArrayList<Individual> {
 		Population tempPop = new Population(this);
 		this.clear();
 		int currentRank = 1;
-		int n = GA.POPULATION_SIZE;
+		int n = Pareto.POPULATION_SIZE;
 		Individual indiv;
 		while (n != 0) {
 			for (int i = 0; i < n;i++){
@@ -97,7 +97,7 @@ public class Population extends ArrayList<Individual> {
 			//System.out.println("))))))) Taking " + parents.get(0) + " to next ganeration again :)");
 			i++;
 		}
-		for ( ; i < GA.POPULATION_SIZE; i+=2){
+		for ( ; i < Pareto.POPULATION_SIZE; i+=2){
 			crossover(parents.get(tournamentWiner()), parents.get(tournamentWiner()));
 		}		
 	}
@@ -105,7 +105,7 @@ public class Population extends ArrayList<Individual> {
 	public void mutation(){
 		Random rand = new Random();
 		for (Individual indiv : this) {
-			if (rand.nextDouble() < GA.MUTATION_RATE) {
+			if (rand.nextDouble() < Pareto.MUTATION_RATE) {
 				indiv.mutate();
 			}
 		}
@@ -115,17 +115,17 @@ public class Population extends ArrayList<Individual> {
 		// Population is sorted by this stage, 
 		// So tournament winer is just Individual with smallest index
 		Random rand = new Random();
-		int winner = GA.POPULATION_SIZE;
+		int winner = Pareto.POPULATION_SIZE;
 		int rndIndex;
 		int[] tournamentSet = new int[4];
 		for (int i = 0; i < 4; i++){
-			rndIndex = rand.nextInt(GA.POPULATION_SIZE);
+			rndIndex = rand.nextInt(Pareto.POPULATION_SIZE);
 			tournamentSet[i] = rndIndex;
 			if (rndIndex < winner) {
 				winner = rndIndex;
 			}
 		}
-		if (rand.nextDouble() < GA.CROSSOVER_RATE) {
+		if (rand.nextDouble() < Pareto.CROSSOVER_RATE) {
 			return winner;
 		} else {
 			return tournamentSet[rand.nextInt(4)];
@@ -173,19 +173,19 @@ public class Population extends ArrayList<Individual> {
 	}
 
 	public void show() {
-    	for (int i = 0; i < GA.POPULATION_SIZE; i++) {
+    	for (int i = 0; i < Pareto.POPULATION_SIZE; i++) {
     		System.out.println(i+": "+get(i));
     	}
     }
 	
 	public void showInverse() {
-    	for (int i = GA.POPULATION_SIZE - 1; i >= 0; i--) {
+    	for (int i = Pareto.POPULATION_SIZE - 1; i >= 0; i--) {
     		System.out.println(i+": "+get(i));
     	}
     }
 	
 	public void showOptimal() {
-    	for (int i = GA.POPULATION_SIZE - 1; i >= 0; i--) {
+    	for (int i = Pareto.POPULATION_SIZE - 1; i >= 0; i--) {
     		if (get(i).getParetoRank() == 1) {
     			System.out.println(i+": "+get(i));
     		}

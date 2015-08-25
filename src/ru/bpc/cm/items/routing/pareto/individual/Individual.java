@@ -1,11 +1,11 @@
-package individual;
+package ru.bpc.cm.items.routing.pareto.individual;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import problem.Point;
-import problem.Problem;
+import ru.bpc.cm.items.routing.pareto.problem.Point;
+import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 
 public class Individual {

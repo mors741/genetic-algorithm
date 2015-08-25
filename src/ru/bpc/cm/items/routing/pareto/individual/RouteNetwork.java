@@ -1,8 +1,8 @@
-package individual;
+package ru.bpc.cm.items.routing.pareto.individual;
 
 import java.util.ArrayList;
 
-import problem.Problem;
+import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 public class RouteNetwork extends ArrayList<Route> {
 	

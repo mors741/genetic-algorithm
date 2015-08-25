@@ -1,6 +1,6 @@
-package problem;
+package ru.bpc.cm.items.routing.pareto.problem;
 
-import main.GA;
+import ru.bpc.cm.items.routing.pareto.main.Pareto;
 
 
 public final class Point{
@@ -64,7 +64,7 @@ public final class Point{
 	 */
 	public int getNearestCustomerId() {
 		double dist;
-    	double minDist = GA.EUCLIDEAN_RADIUS;
+    	double minDist = Pareto.EUCLIDEAN_RADIUS;
     	int minId = -1;
     	for (Point p : Problem.customers) {
     		dist = this.distanceTo(p);

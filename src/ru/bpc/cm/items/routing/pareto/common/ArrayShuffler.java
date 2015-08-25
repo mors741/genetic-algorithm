@@ -1,4 +1,4 @@
-package common;
+package ru.bpc.cm.items.routing.pareto.common;
 
 import java.util.Random;
 
