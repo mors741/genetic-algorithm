@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import ru.bpc.cm.items.routing.pareto.outer.SolutionRoutes;
 import ru.bpc.cm.items.routing.pareto.problem.Point;
 import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 
-public class Individual {
+public class Individual implements SolutionRoutes {
 	
 	private List<Integer> chromosome;
 	private RouteNetwork routes;
@@ -165,7 +166,7 @@ public class Individual {
 				maxRouteLen = route.getCost();
 			}
 		}
-		if (maxRouteLen > Problem.maxLength || this.routesNumber > Problem.maxCars){
+		if (maxRouteLen > Problem.maxRouteLength || this.routesNumber > Problem.maxCars){
 			return false;
 		} else {
 			return true;
@@ -243,4 +244,16 @@ public class Individual {
 	public void setChromosome(List<Integer> newChromosome) {
         this.chromosome = new ArrayList<Integer>(newChromosome);
     }
+	
+	public ArrayList<? extends ArrayList<Integer>> getRoutes() {
+		ArrayList<ArrayList<Integer>> aRoutes = new ArrayList<ArrayList<Integer>>(); 
+		for (Route route : this.getRouteNetwork()){
+			Route aRoute = new Route(route.size());
+			for (Integer point : route) {
+				aRoute.add(point + 1);
+			}
+			aRoutes.add(aRoute);
+		}
+		return aRoutes;
+	}
 }

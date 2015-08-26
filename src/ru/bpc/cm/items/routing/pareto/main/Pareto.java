@@ -1,8 +1,11 @@
 package ru.bpc.cm.items.routing.pareto.main;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import ru.bpc.cm.items.routing.pareto.individual.Individual;
 import ru.bpc.cm.items.routing.pareto.outer.Matrix;
+import ru.bpc.cm.items.routing.pareto.outer.SolutionRoutes;
 import ru.bpc.cm.items.routing.pareto.problem.Problem;
   
   
@@ -14,7 +17,7 @@ public class Pareto {
     public static double MUTATION_RATE = 0.1;
     
     public static double INIT_RAND_RATE = 0.9;
-    public static double EUCLIDEAN_RADIUS = 100;
+    public static double EUCLIDEAN_RADIUS = 3;
     private Population population;
     
     public Pareto(Matrix problem) {
@@ -23,7 +26,7 @@ public class Pareto {
     	population = new Population();
     }
     
-    public void computeResult() {
+    public Individual computeResult() {
     	population.initialize();
     	
     	//long time = System.currentTimeMillis();
@@ -63,6 +66,8 @@ public class Pareto {
 		population.determineParetoRanks();
 		System.out.println(" -------------------------------------" + (GENERATION_SPAN - 1) +" -------------------------------------");
 		population.showOptimal();
+		
+		return population.getResult();
     	
     	//System.out.println("routesTime: " + routesTime);
     	//System.out.println("paretoTime: " + paretoTime);
@@ -75,8 +80,8 @@ public class Pareto {
   
     public static void main(String[] args) {
     	Matrix m = new Matrix(4);
-    	m.ENC = new int[]{0, 1, 3, 2};  //(идентификаторы инкассаций)
-    	m.ATM = new String[]{"1", "132964", "155652", "155750"}; //(соотв. идентификаторы банкоматов)
+    	m.ENC = new int[]{0, 1, 3, 2};  //(РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹ РёРЅРєР°СЃСЃР°С†РёР№)
+    	m.ATM = new String[]{"1", "132964", "155652", "155750"}; //(СЃРѕРѕС‚РІ. РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹ Р±Р°РЅРєРѕРјР°С‚РѕРІ)
     	m.distanceCoeffs = new int[][]{{0, 17, 39, 19}, {18, 0, 26, 33}, {42, 29, 0, 67}, {20, 33, 66, 0}}; 
     	m.timeCoeffs = new int[][]{{0, 17, 39, 19},{18, 0, 26, 33},{42, 29, 0, 67},{20, 33, 66, 0}}; 
     	m.addTimeWindow(0, 0, 10000, false);
@@ -84,21 +89,21 @@ public class Pareto {
     	m.addTimeWindow(2, 600, 1080, false);
     	m.addTimeWindow(3, 480, 840, false);
     	m.addRiderTimeWindow(60, 1380);
-    	m.amountOfMoney = new int[]{0, 500000, 500000, 500000};  //(количество денег, которое нужно загрузить в каждый банкомат, может быть 0)
-    	m.serviceTime = new int[]{20, 20, 20, 20}; 	 // - вместо этого можно просто int serviceTime (это время обслуживания одного банкомата, сейчас оно одно для всех, но в идеале может различаться для разных типов банкоматов и даже быть уникальным для каждого)
-    	m.MaxMoney = 40000000;  // (макс количество денег, которое может перевезти машина)
-    	m.amountOfCassettes = new int[] {0, 200, 200, 200};  // (кол-во кассет, которое нужно завезти в банкомат) - это сейчас не используется
-    	m.VolumeOneCar = 40000000;  // (макс кол-во кассет, кот. может перевезти машина) - не используется
-    	m.FixPrice = 100.0;  // - фикс стоимость подъезда машины к банкомату
-    	m.LengthPrice = 20.0;  // - цена за километр пути
-    	m.MaxATMInWay = 7; // - макс кол-во банкоматов в маршруте
-    	m.MaxTime = 0;  // - макс время которое можно затрачивать на 1 маршрут
-    	m.MaxLength = 0;  // макс длина одного маршрута
-    	m.depot = "1";  // - идентификатор депо
-    	m.maxCars = 5;  // - макс доступное кол-во машин
-    	m.AtmPrice = new double[] {100.0, 100.0, 100.0, 100.0};  // - стоимость подъезда к каждому банкомату (сейчас не используется)
-    	m.currCode = 810;  // - валюта всех денежных параметров
-    	m.windowMode = 0;  // - режим окон для банкоматов, обычный и дефолтный (при котором, каждое окно ставится на максимально возможный промежуток);
+    	m.amountOfMoney = new int[]{0, 500000, 500000, 500000};  //(РєРѕР»РёС‡РµСЃС‚РІРѕ РґРµРЅРµРі, РєРѕС‚РѕСЂРѕРµ РЅСѓР¶РЅРѕ Р·Р°РіСЂСѓР·РёС‚СЊ РІ РєР°Р¶РґС‹Р№ Р±Р°РЅРєРѕРјР°С‚, РјРѕР¶РµС‚ Р±С‹С‚СЊ 0)
+    	m.serviceTime = new int[]{20, 20, 20, 20};  // - РІРјРµСЃС‚Рѕ СЌС‚РѕРіРѕ РјРѕР¶РЅРѕ РїСЂРѕСЃС‚Рѕ int serviceTime (СЌС‚Рѕ РІСЂРµРјСЏ РѕР±СЃР»СѓР¶РёРІР°РЅРёСЏ РѕРґРЅРѕРіРѕ Р±Р°РЅРєРѕРјР°С‚Р°, СЃРµР№С‡Р°СЃ РѕРЅРѕ РѕРґРЅРѕ РґР»СЏ РІСЃРµС…, РЅРѕ РІ РёРґРµР°Р»Рµ РјРѕР¶РµС‚ СЂР°Р·Р»РёС‡Р°С‚СЊСЃСЏ РґР»СЏ СЂР°Р·РЅС‹С… С‚РёРїРѕРІ Р±Р°РЅРєРѕРјР°С‚РѕРІ Рё РґР°Р¶Рµ Р±С‹С‚СЊ СѓРЅРёРєР°Р»СЊРЅС‹Рј РґР»СЏ РєР°Р¶РґРѕРіРѕ)
+    	m.MaxMoney = 40000000; // (РјР°РєСЃ РєРѕР»РёС‡РµСЃС‚РІРѕ РґРµРЅРµРі, РєРѕС‚РѕСЂРѕРµ РјРѕР¶РµС‚ РїРµСЂРµРІРµР·С‚Рё РјР°С€РёРЅР°)
+    	m.amountOfCassettes = new int[] {0, 200, 200, 200};  // (РєРѕР»-РІРѕ РєР°СЃСЃРµС‚, РєРѕС‚РѕСЂРѕРµ РЅСѓР¶РЅРѕ Р·Р°РІРµР·С‚Рё РІ Р±Р°РЅРєРѕРјР°С‚) - СЌС‚Рѕ СЃРµР№С‡Р°СЃ РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ
+    	m.VolumeOneCar = 40000000; // (РјР°РєСЃ РєРѕР»-РІРѕ РєР°СЃСЃРµС‚, РєРѕС‚. РјРѕР¶РµС‚ РїРµСЂРµРІРµР·С‚Рё РјР°С€РёРЅР°) - РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ
+    	m.FixPrice = 100.0;  // - С„РёРєСЃ СЃС‚РѕРёРјРѕСЃС‚СЊ РїРѕРґСЉРµР·РґР° РјР°С€РёРЅС‹ Рє Р±Р°РЅРєРѕРјР°С‚Сѓ
+    	m.LengthPrice = 20.0;  // - С†РµРЅР° Р·Р° РєРёР»РѕРјРµС‚СЂ РїСѓС‚Рё
+    	m.MaxATMInWay = 7; // - РјР°РєСЃ РєРѕР»-РІРѕ Р±Р°РЅРєРѕРјР°С‚РѕРІ РІ РјР°СЂС€СЂСѓС‚Рµ
+    	m.MaxTime = 0; // - РјР°РєСЃ РІСЂРµРјСЏ РєРѕС‚РѕСЂРѕРµ РјРѕР¶РЅРѕ Р·Р°С‚СЂР°С‡РёРІР°С‚СЊ РЅР° 1 РјР°СЂС€СЂСѓС‚
+    	m.MaxLength = 0; // РјР°РєСЃ РґР»РёРЅР° РѕРґРЅРѕРіРѕ РјР°СЂС€СЂСѓС‚Р°
+    	m.depot = "1";  // - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРµРїРѕ
+    	m.maxCars = 5;   // - РјР°РєСЃ РґРѕСЃС‚СѓРїРЅРѕРµ РєРѕР»-РІРѕ РјР°С€РёРЅ
+    	m.AtmPrice = new double[] {100.0, 100.0, 100.0, 100.0}; // - СЃС‚РѕРёРјРѕСЃС‚СЊ РїРѕРґСЉРµР·РґР° Рє РєР°Р¶РґРѕРјСѓ Р±Р°РЅРєРѕРјР°С‚Сѓ (СЃРµР№С‡Р°СЃ РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ)
+    	m.currCode = 810; // - РІР°Р»СЋС‚Р° РІСЃРµС… РґРµРЅРµР¶РЅС‹С… РїР°СЂР°РјРµС‚СЂРѕРІ
+    	m.windowMode = 0; // - СЂРµР¶РёРј РѕРєРѕРЅ РґР»СЏ Р±Р°РЅРєРѕРјР°С‚РѕРІ, РѕР±С‹С‡РЅС‹Р№ Рё РґРµС„РѕР»С‚РЅС‹Р№ (РїСЂРё РєРѕС‚РѕСЂРѕРј, РєР°Р¶РґРѕРµ РѕРєРЅРѕ СЃС‚Р°РІРёС‚СЃСЏ РЅР° РјР°РєСЃРёРјР°Р»СЊРЅРѕ РІРѕР·РјРѕР¶РЅС‹Р№ РїСЂРѕРјРµР¶СѓС‚РѕРє);
     	Pareto solver = new Pareto(m);
     	Pareto.POPULATION_SIZE = 10;
     	Pareto.GENERATION_SPAN = 10;
@@ -106,7 +111,31 @@ public class Pareto {
     	Pareto.MUTATION_RATE = 0.1;
         
     	Pareto.INIT_RAND_RATE = 0.9;
-    	Pareto.EUCLIDEAN_RADIUS = 100;
-    	solver.computeResult();
+    	Pareto.EUCLIDEAN_RADIUS = 30;
+    	SolutionRoutes result = solver.computeResult();
+    	
+    	for (ArrayList<Integer> route : result.getRoutes()) {
+    		System.out.print("[");
+    		for (Integer pid : route) {
+    			System.out.print(pid + " ");
+    		}
+    		System.out.println("]");
+    	}
+    	
+    	for (ArrayList<Integer> route : result.getRoutes()) {
+    		int order = 1;
+    		int pointTime = m.getTimeWindows().get(0).StartWork; // start time of depot
+    		pointTime -= m.serviceTime[0]; // if not serving depot in the beginning
+    		int prevCust = 0;
+    		for (Integer pid : route) {
+    			pointTime = Math.max(pointTime + m.timeCoeffs[prevCust][pid] + m.serviceTime[prevCust], m.getTimeWindows().get(pid).StartWork);
+    			System.out.println(pid + " " + order + " "  +pointTime);
+    			prevCust = pid;
+    			order++;
+    		}
+    	}
+    	
+    	
+
    }  
 }  

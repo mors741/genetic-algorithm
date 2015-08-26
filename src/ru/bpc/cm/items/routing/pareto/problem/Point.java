@@ -5,14 +5,16 @@ import ru.bpc.cm.items.routing.pareto.main.Pareto;
 
 public final class Point{
 	private final int id;
+	private final int ENC;
     private final String ATM;
 	private final int demand;
 	private final int rtime;
 	private final int ddate;
 	private final int stime;
 	
-	Point(int id, String ATM, int demand, int rtime, int ddate, int stime) {
+	Point(int id, int ENC, String ATM, int demand, int rtime, int ddate, int stime) {
 		this.id = id;
+		this.ENC = ENC;
 		this.ATM = ATM;
 		this.demand = demand;
 		this.rtime = rtime;
@@ -22,6 +24,10 @@ public final class Point{
 	
 	public int getId(){
 		return id;
+	}
+	
+	public int getENC(){
+		return ENC;
 	}
 	
 	public String getATM(){

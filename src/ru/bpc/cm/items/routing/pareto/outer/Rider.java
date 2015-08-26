@@ -3,7 +3,7 @@ package ru.bpc.cm.items.routing.pareto.outer;
 import java.util.ArrayList;
 
 public class Rider {
-	ArrayList<Integer> atmList;
+	public ArrayList<Integer> atmList;
 	public ArrayList<Double> cost;
 	public ArrayList<Integer> time;
 	public ArrayList<Integer> timewait;

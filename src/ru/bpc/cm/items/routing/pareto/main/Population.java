@@ -7,6 +7,9 @@ import java.util.Random;
 import ru.bpc.cm.items.routing.pareto.individual.Individual;
 import ru.bpc.cm.items.routing.pareto.individual.IndividualFactory;
 import ru.bpc.cm.items.routing.pareto.individual.Route;
+import ru.bpc.cm.items.routing.pareto.outer.Rider;
+import ru.bpc.cm.items.routing.pareto.outer.Riders;
+import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 public class Population extends ArrayList<Individual> {
 
@@ -191,6 +194,10 @@ public class Population extends ArrayList<Individual> {
     		}
     	}
     }
+		
+	public Individual getResult() {
+		return this.get(0);
+	}
 	    
 }
 
