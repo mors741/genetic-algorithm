@@ -112,7 +112,12 @@ public class Pareto {
         
     	Pareto.INIT_RAND_RATE = 0.9;
     	Pareto.EUCLIDEAN_RADIUS = 30;
-    	SolutionRoutes result = solver.computeResult();
+    	Individual result = solver.computeResult();
+    	
+    	System.out.println("result.isMaxCarsSatisfied = " + result.isMaxCarsSatisfied);
+    	System.out.println("result.isMaxCustInRouteSatisfied = " + result.isMaxCustInRouteSatisfied);
+    	System.out.println("result.isMaxRouteLengthSatisfied = " + result.isMaxRouteLengthSatisfied);
+    	System.out.println("result.isMaxRouteTimeSatisfied = " + result.isMaxRouteTimeSatisfied);
     	
     	for (ArrayList<Integer> route : result.getRoutes()) {
     		System.out.print("[");

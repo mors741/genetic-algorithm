@@ -81,15 +81,18 @@ public class Problem {
 	public static void Init(Matrix m) {
 		vehicleCapacity = m.MaxMoney == 0 ? Integer.MAX_VALUE : m.MaxMoney;	
 		distanceCoeffs = m.distanceCoeffs;
-		timeCoeffs = m.timeCoeffs;
+		timeCoeffs = m.timeCoeffs; // in seconds
 		customersNumber = distanceCoeffs.length - 1;
+		
 		maxRouteLength = m.MaxLength == 0 ? Integer.MAX_VALUE : m.MaxLength;
 		maxCars = m.maxCars == 0 ? Integer.MAX_VALUE : m.maxCars;
+		maxCustInRoute = m.MaxATMInWay == 0 ? Integer.MAX_VALUE : m.MaxATMInWay;
+		maxRouteTime = m.MaxTime == 0 ? Integer.MAX_VALUE : m.MaxTime;
 		
-		depot = new Point(-1, m.ENC[0], m.depot, m.amountOfMoney[0], m.getTimeWindow(0).StartWork * 60, m.getTimeWindow(0).EndWork * 60, m.serviceTime[0]);
+		depot = new Point(-1, m.ENC[0], m.depot, m.amountOfMoney[0], m.getTimeWindow(0).StartWork, m.getTimeWindow(0).EndWork, m.serviceTime[0]);
 		customers = new ArrayList<Point>(customersNumber);
 		for (int i = 1; i <= customersNumber; i++) {					
-			customers.add(new Point(i-1, m.ENC[i], m.ATM[i], m.amountOfMoney[i], m.getTimeWindow(i).StartWork * 60, m.getTimeWindow(i).EndWork * 60, m.serviceTime[i]));
+			customers.add(new Point(i-1, m.ENC[i], m.ATM[i], m.amountOfMoney[i], m.getTimeWindow(i).StartWork, m.getTimeWindow(i).EndWork, m.serviceTime[i]));
 		}
 		
 		riderTimeWindows = m.getRiderTimeWindows();
@@ -97,8 +100,6 @@ public class Problem {
 		volumeOneCar = m.VolumeOneCar;
 		servicePrice = m.FixPrice;
 		kmPrice = m.LengthPrice;
-		maxCustInRoute = m.MaxATMInWay;
-		maxRouteTime = m.MaxTime;
 		atmPrice = m.AtmPrice;
 		currCode = m.currCode;
 		windowMode = m.windowMode;

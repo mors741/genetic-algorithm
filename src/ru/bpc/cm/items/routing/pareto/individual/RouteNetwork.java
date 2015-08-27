@@ -16,19 +16,19 @@ public class RouteNetwork extends ArrayList<Route> {
 		super(capacity);
 	}
 	
-	public int evaluateTotalCost() {
+	public int evaluateTotalDistance() {
 		int tc = 0;
 		for (Route route : this) {
-			tc += route.getCost();
+			tc += route.getDistance();
 		}
 		return tc;
 	}
 	
-	private int evaluateTotalCostExcept(int routeIndex) {
+	private int evaluateTotalDistanceExcept(int routeIndex) {
 		int tc = 0;
 		for (int i = 0; i < this.size(); i++) {
 			if (i != routeIndex){
-				tc += get(i).getCost();
+				tc += get(i).getDistance();
 			}		
 		}
 		return tc;
@@ -55,7 +55,7 @@ public class RouteNetwork extends ArrayList<Route> {
     		Route route = this.get(routeIndex);
     		for (int index = 0 ; index <= route.size(); index++) {
     			if (route.isFeasible(index, customer)) {
-    				currentCost = this.evaluateTotalCostExcept(routeIndex) + route.getImaginaryCost(index, customer);
+    				currentCost = this.evaluateTotalDistanceExcept(routeIndex) + route.getImaginaryDistance(index, customer);
     				if (currentCost < bestCost){
     					bestRouteIndex = routeIndex;
 	    				bestIndex = index;

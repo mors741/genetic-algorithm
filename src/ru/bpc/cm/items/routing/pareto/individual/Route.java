@@ -36,7 +36,7 @@ public class Route extends ArrayList<Integer> {
 		}
 	}
 
-	public int getCost() {
+	public int getDistance() {
 		if (this.isEmpty()){
 			System.out.println("Customer can not be reached from depot without time window constraint violation");
 		}
@@ -48,7 +48,19 @@ public class Route extends ArrayList<Integer> {
 		return res + Problem.getCustomer(this.get(i)).distanceTo(Problem.getDepot());
 	}
 	
-	public int getImaginaryCost(int index, int cust) {
+	public int getTime() {
+		int pointTime = Problem.getDepot().getReadyTime() + Problem.getDepot().getServiceTime(); // start time of depot
+		pointTime -= Problem.getDepot().getServiceTime(); // if not serving depot in the beginning
+		int prevCust = 0;
+		for (Integer pid : this) {
+			pointTime = Math.max(pointTime + Problem.getCustomer(prevCust).timeTo(Problem.getCustomer(pid)) + Problem.getCustomer(prevCust).getServiceTime(), Problem.getCustomer(pid).getReadyTime());
+			prevCust = pid;
+		}
+		pointTime += Problem.getCustomer(prevCust).timeTo(Problem.getDepot());
+		return pointTime;
+	}
+	
+	public int getImaginaryDistance(int index, int cust) {
 		int res;
 		if (index == 0) {
 			res = Problem.getDepot().distanceTo(Problem.getCustomer(cust));
