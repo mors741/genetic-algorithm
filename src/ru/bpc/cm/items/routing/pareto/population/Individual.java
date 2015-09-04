@@ -21,17 +21,17 @@ public class Individual implements SolutionRoutes {
 	private int isFeasible = 0;
 	private int paretoRank;
 
-	public boolean isMaxCarsSatisfied;
-	public boolean isMaxRouteLengthSatisfied;
-	public boolean isMaxCustInRouteSatisfied;
-	public boolean isMaxRouteTimeSatisfied;
+	private boolean isMaxCarsSatisfied;
+	private boolean isMaxRouteLengthSatisfied;
+	private boolean isMaxCustInRouteSatisfied;
+	private boolean isMaxRouteTimeSatisfied;
 
-	public Individual() {
+	Individual() {
 		chromosome = new ArrayList<Integer>(Problem.getInstance().customersNumber);
 		routes = new RouteNetwork(Problem.getInstance().customersNumber);
 	}
 
-	public void mutate() {
+	void mutate() {
 		if (this.paretoRank != 1) {
 			routesNumber = routes.size();
 			List<Integer> feasibleRoutes = new ArrayList<Integer>(routesNumber);
@@ -47,7 +47,7 @@ public class Individual implements SolutionRoutes {
 		}
 	}
 
-	public void evaluateRoutes() {
+	void evaluateRoutes() {
 		// Phase 1
 		int currentCapacity = Problem.getInstance().vehicleCapacity;
 		// For first customer
@@ -168,7 +168,7 @@ public class Individual implements SolutionRoutes {
 		return b1 || !b2;
 	}
 
-	public boolean dominates(Individual other) {
+	boolean dominates(Individual other) {
 		if (this.totalCost <= other.totalCost && this.routesNumber <= other.routesNumber
 				&& this.betterOrEqualTo(this.isMaxCarsSatisfied, other.isMaxCarsSatisfied)
 				&& this.betterOrEqualTo(this.isMaxCustInRouteSatisfied, other.isMaxCustInRouteSatisfied)
@@ -198,7 +198,7 @@ public class Individual implements SolutionRoutes {
 	// }
 	// }
 
-	public void checkConstraints() {
+	void checkConstraints() {
 		// evaluate maxRouteLen, maxCust, maxTime
 		int maxRouteLen = 0;
 		int maxCust = 0;
@@ -224,7 +224,7 @@ public class Individual implements SolutionRoutes {
 		isMaxRouteTimeSatisfied = maxTime <= Problem.getInstance().maxRouteTime ? true : false;
 	}
 
-	public void backToChromosome() {
+	void backToChromosome() {
 		chromosome.clear();
 		for (Route r : routes) {
 			for (int gene : r) {
@@ -260,7 +260,7 @@ public class Individual implements SolutionRoutes {
 		return this.theSameRoutesAs((Individual) obj);
 	}
 
-	public RouteNetwork getRouteNetwork() {
+	RouteNetwork getRouteNetwork() {
 		return routes;
 	}
 
@@ -268,31 +268,31 @@ public class Individual implements SolutionRoutes {
 		return this.chromosome;
 	}
 
-	public Route getRoute(int i) {
+	Route getRoute(int i) {
 		return routes.get(i);
 	}
 
-	public int getRoutesNumber() {
+	int getRoutesNumber() {
 		return routesNumber;
 	}
 
-	public int getIsFeasible() {
+	int getIsFeasible() {
 		return isFeasible;
 	}
 
-	public int getTotalCost() {
+	int getTotalCost() {
 		return totalCost;
 	}
 
-	public int getParetoRank() {
+	int getParetoRank() {
 		return paretoRank;
 	}
 
-	public void setParetoRank(int paretoRank) {
+	void setParetoRank(int paretoRank) {
 		this.paretoRank = paretoRank;
 	}
 
-	public void setChromosome(List<Integer> newChromosome) {
+	void setChromosome(List<Integer> newChromosome) {
 		this.chromosome = new ArrayList<Integer>(newChromosome);
 	}
 

@@ -13,12 +13,12 @@ import ru.bpc.cm.items.routing.pareto.problem.Problem;
  * @author mors741
  * Using static factory pattern 
  */
-public class IndividualFactory {
+class IndividualFactory {
 
 	/**
 	 * Generate chromosome using random permutations
 	 */
-	public static Individual generateRandomChromosome() {
+	static Individual generateRandomChromosome() {
 		Individual indiv = new Individual();
 		// Filling in the order
 		for (int i = 0; i < Problem.getInstance().customersNumber; i++) {
@@ -32,7 +32,7 @@ public class IndividualFactory {
 	/**
 	 * Generate chromosome using greedy procedure from 22p.
 	 */
-	public static Individual generateGreedyChromosome() {
+	static Individual generateGreedyChromosome() {
 		Individual indiv = new Individual();
 		Random random = new Random();
 		List<Integer> tempChromosome = new ArrayList<Integer>(Problem.getInstance().customersNumber);

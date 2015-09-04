@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
-public class RouteNetwork extends ArrayList<Route> {
+class RouteNetwork extends ArrayList<Route> {
 
 	private static final long serialVersionUID = -6180881689433423705L;
 
-	public RouteNetwork() {
+	RouteNetwork() {
 		super();
 	}
 
-	public RouteNetwork(int capacity) {
+	RouteNetwork(int capacity) {
 		super(capacity);
 	}
 
-	public int evaluateTotalDistance() {
+	int evaluateTotalDistance() {
 		int tc = 0;
 		for (Route route : this) {
 			tc += route.getDistance();
@@ -34,7 +34,7 @@ public class RouteNetwork extends ArrayList<Route> {
 		return tc;
 	}
 
-	public boolean removeCustomer(int customer) {
+	boolean removeCustomer(int customer) {
 		for (Route route : this) {
 			if (route.remove((Object) customer)) {
 				if (route.isEmpty()) {
@@ -46,7 +46,7 @@ public class RouteNetwork extends ArrayList<Route> {
 		return false;
 	}
 
-	public void insertCustomer(int customer) {
+	void insertCustomer(int customer) {
 		int bestRouteIndex = -1;
 		int bestIndex = -1;
 		int bestCost = Integer.MAX_VALUE;

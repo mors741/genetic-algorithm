@@ -6,20 +6,17 @@ import ru.bpc.cm.items.routing.pareto.common.ArrayShuffler;
 import ru.bpc.cm.items.routing.pareto.problem.Point;
 import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
-public class Route extends ArrayList<Integer> {
+class Route extends ArrayList<Integer> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private int[] invertArray = { -2, -1, 1, 2 };
 
-	public Route(int customersNumber) {
+	Route(int customersNumber) {
 		super(customersNumber);
 	}
 
-	public Route(Route route) {
+	Route(Route route) {
 		super(route);
 	}
 
@@ -36,7 +33,7 @@ public class Route extends ArrayList<Integer> {
 		}
 	}
 
-	public int getDistance() {
+	int getDistance() {
 		if (this.isEmpty()) {
 			System.out.println("Customer can not be reached from depot without time window constraint violation");
 		}
@@ -48,7 +45,7 @@ public class Route extends ArrayList<Integer> {
 		return res + Problem.getInstance().getCustomer(this.get(i)).distanceTo(Problem.getInstance().getDepot());
 	}
 
-	public int getTime() {
+	int getTime() {
 		int pointTime = Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().getServiceTime(); // start
 																									// time
 																									// of
@@ -66,7 +63,7 @@ public class Route extends ArrayList<Integer> {
 		return pointTime;
 	}
 
-	public int getImaginaryDistance(int index, int cust) {
+	int getImaginaryDistance(int index, int cust) {
 		int res;
 		if (index == 0) {
 			res = Problem.getInstance().getDepot().distanceTo(Problem.getInstance().getCustomer(cust));
@@ -103,7 +100,7 @@ public class Route extends ArrayList<Integer> {
 		return clone;
 	}
 
-	public boolean isFeasible() {
+	boolean isFeasible() {
 		// Check capacity constrain
 		int capacity = 0;
 		for (int gene : this) {
@@ -140,7 +137,7 @@ public class Route extends ArrayList<Integer> {
 		return true;
 	}
 
-	public boolean isFeasible(int index, int cust) {
+	boolean isFeasible(int index, int cust) {
 		// Check capacity constrain
 		int capacity = 0;
 		for (int gene : this) {
@@ -262,7 +259,7 @@ public class Route extends ArrayList<Integer> {
 		return true;
 	}
 
-	public int getLastGene() {
+	int getLastGene() {
 		return this.get(this.size() - 1);
 	}
 }

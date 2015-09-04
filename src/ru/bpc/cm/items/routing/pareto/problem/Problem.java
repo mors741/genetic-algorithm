@@ -20,68 +20,68 @@ public class Problem {
 	/**
 	 * Maximum amount of money that car can store.
 	 */
-	public int vehicleCapacity;
-	public Point depot;
-	public int[][] distanceCoeffs;
-	public int[][] timeCoeffs;
-	public List<Point> customers; // First cusomer's id = 0, not 1!
-	public int maxRouteLength;
+	public final int vehicleCapacity;
+	public final Point depot;
+	public final int[][] distanceCoeffs;
+	public final int[][] timeCoeffs;
+	public final List<Point> customers; // First cusomer's id = 0, not 1!
+	public final int maxRouteLength;
 	/**
 	 * Maximum amount of cars that can be used in solution.
 	 */
-	public int maxCars;
+	public final int maxCars;
 
 	/**
 	 * Maximum time that driver has.
 	 */
-	public int maxRouteTime;
+	public final int maxRouteTime;
 	/**
 	 * The price of servicing one ATM.
 	 */
-	public double servicePrice;
+	public final double servicePrice;
 	/**
 	 * The price of one kilometer of the route.
 	 */
-	public double kmPrice;
+	public final double kmPrice;
 	/**
 	 * Maximum amount of ATMs in one route.
 	 */
-	public int maxCustInRoute;
+	public final int maxCustInRoute;
 
 	/**
 	 * Currency of all cash parameters.
 	 */
-	public int currCode;
+	public final int currCode;
 	/**
 	 * ATM window mode. Normal and default (in which, each time window is placed
 	 * on the maximum possible period);
 	 */
-	public int windowMode;
+	public final int windowMode;
 
 	/**
 	 * Time windows of car drivers.
 	 * 
 	 * @Unsupported
 	 */
-	public ArrayList<RiderTimeWindow> riderTimeWindows;
+	public final ArrayList<RiderTimeWindow> riderTimeWindows;
 	/**
 	 * Max amount of cassettes that one car can store.
 	 * 
 	 * @Unsupported
 	 */
-	public int volumeOneCar;
+	public final int volumeOneCar;
 	/**
 	 * Amount of cassettes that each ATM needs.
 	 * 
 	 * @Unsupported
 	 */
-	public int[] amountOfCassettes;
+	public final int[] amountOfCassettes;
 	/**
 	 * The price of servicing each ATM.
 	 * 
 	 * @Unsupported
 	 */
-	public double[] atmPrice;
+	public final double[] atmPrice;
 	
 	private Problem(Matrix m) {
 		vehicleCapacity = m.MaxMoney == 0 ? Integer.MAX_VALUE : m.MaxMoney;
