@@ -17,7 +17,7 @@ public class GATest {
 	public void before() {
 		System.out.println("Before");
 		Matrix m = new Matrix(3);
-		Problem.Init(m);
+		Problem.initialize(m);
 	}
 
 	@After
@@ -28,20 +28,20 @@ public class GATest {
 	@Test
 	public void testProblem() {
 
-		assertEquals(8, Problem.customersNumber);
+		assertEquals(8, Problem.getInstance().customersNumber);
 
-		assertEquals(0, Problem.getCustomer(0).getId());
-		assertEquals(-1, Problem.getDepot().getId());
-		assertEquals("C002", Problem.getCustomer(2).getATM());
-		assertEquals(20, Problem.getCustomer(1).getDemand());
-		assertEquals(1800, Problem.getCustomer(1).getServiceTime());
+		assertEquals(0, Problem.getInstance().getCustomer(0).getId());
+		assertEquals(-1, Problem.getInstance().getDepot().getId());
+		assertEquals("C002", Problem.getInstance().getCustomer(2).getATM());
+		assertEquals(20, Problem.getInstance().getCustomer(1).getDemand());
+		assertEquals(1800, Problem.getInstance().getCustomer(1).getServiceTime());
 
-		assertEquals(50, Problem.getDepot().distanceTo(Problem.getCustomer(1)));
-		assertEquals(30000, Problem.getCustomer(0).timeTo(Problem.getCustomer(1)));
+		assertEquals(50, Problem.getInstance().getDepot().distanceTo(Problem.getInstance().getCustomer(1)));
+		assertEquals(30000, Problem.getInstance().getCustomer(0).timeTo(Problem.getInstance().getCustomer(1)));
 
-		assertEquals(1, Problem.getCustomer(0).getNearestCustomerId());
-		assertEquals(7, Problem.getCustomer(1).getNearestCustomerId());
-		assertEquals(1, Problem.getCustomer(2).getNearestCustomerId());
+		assertEquals(1, Problem.getInstance().getCustomer(0).getNearestCustomerId());
+		assertEquals(7, Problem.getInstance().getCustomer(1).getNearestCustomerId());
+		assertEquals(1, Problem.getInstance().getCustomer(2).getNearestCustomerId());
 		System.out.println();
 
 	}

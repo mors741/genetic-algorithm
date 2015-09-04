@@ -8,80 +8,82 @@ import ru.bpc.cm.items.routing.heneticmethod.RiderTimeWindow;
 
 /**
  * @author mors741
- *
+ * Using singleton pattern
  */
 public class Problem {
+	private static Problem INSTANCE;
+	
 	/**
 	 * Amount of customers in problem.
 	 */
-	public static int customersNumber;
+	public int customersNumber;
 	/**
 	 * Maximum amount of money that car can store.
 	 */
-	public static int vehicleCapacity;
-	public static Point depot;
-	public static int[][] distanceCoeffs;
-	public static int[][] timeCoeffs;
-	public static List<Point> customers; // First cusomer's id = 0, not 1!
-	public static int maxRouteLength;
+	public int vehicleCapacity;
+	public Point depot;
+	public int[][] distanceCoeffs;
+	public int[][] timeCoeffs;
+	public List<Point> customers; // First cusomer's id = 0, not 1!
+	public int maxRouteLength;
 	/**
 	 * Maximum amount of cars that can be used in solution.
 	 */
-	public static int maxCars;
+	public int maxCars;
 
 	/**
 	 * Maximum time that driver has.
 	 */
-	public static int maxRouteTime;
+	public int maxRouteTime;
 	/**
 	 * The price of servicing one ATM.
 	 */
-	public static double servicePrice;
+	public double servicePrice;
 	/**
 	 * The price of one kilometer of the route.
 	 */
-	public static double kmPrice;
+	public double kmPrice;
 	/**
 	 * Maximum amount of ATMs in one route.
 	 */
-	public static int maxCustInRoute;
+	public int maxCustInRoute;
 
 	/**
 	 * Currency of all cash parameters.
 	 */
-	public static int currCode;
+	public int currCode;
 	/**
 	 * ATM window mode. Normal and default (in which, each time window is placed
 	 * on the maximum possible period);
 	 */
-	public static int windowMode;
+	public int windowMode;
 
 	/**
 	 * Time windows of car drivers.
 	 * 
 	 * @Unsupported
 	 */
-	public static ArrayList<RiderTimeWindow> riderTimeWindows;
+	public ArrayList<RiderTimeWindow> riderTimeWindows;
 	/**
 	 * Max amount of cassettes that one car can store.
 	 * 
 	 * @Unsupported
 	 */
-	public static int volumeOneCar;
+	public int volumeOneCar;
 	/**
 	 * Amount of cassettes that each ATM needs.
 	 * 
 	 * @Unsupported
 	 */
-	public static int[] amountOfCassettes;
+	public int[] amountOfCassettes;
 	/**
 	 * The price of servicing each ATM.
 	 * 
 	 * @Unsupported
 	 */
-	public static double[] atmPrice;
-
-	public static void Init(Matrix m) {
+	public double[] atmPrice;
+	
+	private Problem(Matrix m) {
 		vehicleCapacity = m.MaxMoney == 0 ? Integer.MAX_VALUE : m.MaxMoney;
 		distanceCoeffs = m.distanceCoeffs;
 		timeCoeffs = m.timeCoeffs; // in seconds
@@ -109,20 +111,32 @@ public class Problem {
 		currCode = m.currCode;
 		windowMode = m.windowMode;
 	}
+	
+	public static Problem getInstance() {
+		if (INSTANCE == null) {
+			throw new NullPointerException("Use Problem.initialize(Matrix m); first.");
+		} else {
+			return INSTANCE;
+		}
+	}
 
-	public static Point getDepot() {
+	public static void initialize(Matrix m) {
+		INSTANCE = new Problem(m);
+	}
+
+	public Point getDepot() {
 		return depot;
 	}
 
-	public static int distanceBetween(Point p1, Point p2) {
+	public int distanceBetween(Point p1, Point p2) {
 		return distanceCoeffs[p1.getId() + 1][p2.getId() + 1];
 	}
 
-	public static int timeBetween(Point p1, Point p2) {
+	public int timeBetween(Point p1, Point p2) {
 		return timeCoeffs[p1.getId() + 1][p2.getId() + 1];
 	}
 
-	public static Point getCustomer(int i) {
+	public Point getCustomer(int i) {
 		return customers.get(i);
 	}
 }

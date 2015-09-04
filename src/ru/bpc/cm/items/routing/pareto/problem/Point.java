@@ -2,7 +2,7 @@ package ru.bpc.cm.items.routing.pareto.problem;
 
 import ru.bpc.cm.items.routing.pareto.Pareto;
 
-public final class Point {
+public class Point {
 	private final int id;
 	private final int ENC;
 	private final String ATM;
@@ -55,11 +55,11 @@ public final class Point {
 	}
 
 	public int timeTo(Point p) {
-		return Problem.timeBetween(this, p);
+		return Problem.getInstance().timeBetween(this, p);
 	}
 
 	public int distanceTo(Point p) {
-		return Problem.distanceBetween(this, p);
+		return Problem.getInstance().distanceBetween(this, p);
 		// return Math.sqrt(Math.pow(this.y-p.y, 2)+Math.pow(this.x-p.x, 2));
 	}
 
@@ -71,7 +71,7 @@ public final class Point {
 		double dist;
 		double minDist = Pareto.EUCLIDEAN_RADIUS;
 		int minId = -1;
-		for (Point p : Problem.customers) {
+		for (Point p : Problem.getInstance().customers) {
 			dist = this.distanceTo(p);
 			if (dist < minDist && dist > 0) {
 				minDist = dist;

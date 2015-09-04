@@ -14,11 +14,11 @@ public class Pareto {
 
 	public static double INIT_RAND_RATE = 0.9;
 	public static double EUCLIDEAN_RADIUS = 3;
+	
 	private Population population;
 
 	public Pareto(Matrix problem) {
-		// Problem.Init("resources/C101.csv", 100);
-		Problem.Init(problem);
+		Problem.initialize(problem);
 		population = new Population();
 	}
 
@@ -41,9 +41,9 @@ public class Pareto {
 			// paretoTime += System.currentTimeMillis() - time;
 			// time = System.currentTimeMillis();
 
-			System.out.println(" -------------------------------------" + i + " -------------------------------------");
+//			System.out.println(" -------------------------------------" + i + " -------------------------------------");
 			// population.showOptimal();
-			population.showInverse();
+//			population.showInverse();
 
 			population.mate();
 			// mateTime += System.currentTimeMillis() - time;
@@ -60,9 +60,9 @@ public class Pareto {
 		}
 		population.evaluateRoutes();
 		population.determineParetoRanks();
-		System.out.println(" -------------------------------------" + (GENERATION_SPAN - 1)
-				+ " -------------------------------------");
-		population.showOptimal();
+//		System.out.println(" -------------------------------------" + (GENERATION_SPAN - 1)
+//				+ " -------------------------------------");
+//		population.showOptimal();
 
 		return population.getResult();
 

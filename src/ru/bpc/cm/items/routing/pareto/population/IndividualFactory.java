@@ -8,7 +8,11 @@ import java.util.Random;
 import ru.bpc.cm.items.routing.pareto.Pareto;
 import ru.bpc.cm.items.routing.pareto.problem.Point;
 import ru.bpc.cm.items.routing.pareto.problem.Problem;
-
+/**
+ * 
+ * @author mors741
+ * Using static factory pattern 
+ */
 public class IndividualFactory {
 
 	/**
@@ -17,7 +21,7 @@ public class IndividualFactory {
 	public static Individual generateRandomChromosome() {
 		Individual indiv = new Individual();
 		// Filling in the order
-		for (int i = 0; i < Problem.customersNumber; i++) {
+		for (int i = 0; i < Problem.getInstance().customersNumber; i++) {
 			indiv.getChromosome().add(i);
 		}
 		// And shuffling
@@ -31,8 +35,8 @@ public class IndividualFactory {
 	public static Individual generateGreedyChromosome() {
 		Individual indiv = new Individual();
 		Random random = new Random();
-		List<Integer> tempChromosome = new ArrayList<Integer>(Problem.customersNumber);
-		for (int i = 0; i < Problem.customersNumber; i++) {
+		List<Integer> tempChromosome = new ArrayList<Integer>(Problem.getInstance().customersNumber);
+		for (int i = 0; i < Problem.getInstance().customersNumber; i++) {
 			tempChromosome.add(i);
 		}
 
@@ -41,7 +45,7 @@ public class IndividualFactory {
 			int randCustId = tempChromosome.get(randIndex);
 			tempChromosome.remove(randIndex);
 			indiv.getChromosome().add(randCustId);
-			Point randCust = Problem.getCustomer(randCustId);
+			Point randCust = Problem.getInstance().getCustomer(randCustId);
 			while (true) {
 				// Finding the nearest point
 				double dist;
@@ -53,7 +57,7 @@ public class IndividualFactory {
 															// interesting
 															// anyway
 				int nearestId = -1;
-				for (Point p : Problem.customers) {
+				for (Point p : Problem.getInstance().customers) {
 					dist = randCust.distanceTo(p);
 					if (dist < minDist && dist > 0 && // To exclude itself
 							!indiv.getChromosome().contains(p.getId())) { // Still
@@ -69,7 +73,7 @@ public class IndividualFactory {
 				}
 				tempChromosome.remove((Object) nearestId);
 				indiv.getChromosome().add(nearestId);
-				randCust = Problem.getCustomer(nearestId);
+				randCust = Problem.getInstance().getCustomer(nearestId);
 			}
 		}
 		return indiv;

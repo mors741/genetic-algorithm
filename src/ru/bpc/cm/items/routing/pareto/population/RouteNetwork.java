@@ -66,7 +66,7 @@ public class RouteNetwork extends ArrayList<Route> {
 			}
 		}
 		if (bestIndex == -1) {
-			Route newRoute = new Route(Problem.customersNumber);
+			Route newRoute = new Route(Problem.getInstance().customersNumber);
 			newRoute.add(customer);
 			this.add(newRoute);
 		} else {

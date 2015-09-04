@@ -27,8 +27,8 @@ public class Individual implements SolutionRoutes {
 	public boolean isMaxRouteTimeSatisfied;
 
 	public Individual() {
-		chromosome = new ArrayList<Integer>(Problem.customersNumber);
-		routes = new RouteNetwork(Problem.customersNumber);
+		chromosome = new ArrayList<Integer>(Problem.getInstance().customersNumber);
+		routes = new RouteNetwork(Problem.getInstance().customersNumber);
 	}
 
 	public void mutate() {
@@ -49,22 +49,22 @@ public class Individual implements SolutionRoutes {
 
 	public void evaluateRoutes() {
 		// Phase 1
-		int currentCapacity = Problem.vehicleCapacity;
+		int currentCapacity = Problem.getInstance().vehicleCapacity;
 		// For first customer
 		int gene = chromosome.get(0);
-		Point customer = Problem.getCustomer(gene);
-		int currentTime = Math.max(Problem.getDepot().getReadyTime() + Problem.getDepot().timeTo(customer),
+		Point customer = Problem.getInstance().getCustomer(gene);
+		int currentTime = Math.max(Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().timeTo(customer),
 				customer.getReadyTime());
-		routes.add(new Route(Problem.customersNumber));
+		routes.add(new Route(Problem.getInstance().customersNumber));
 		currentCapacity -= customer.getDemand();
 
 		if (currentCapacity < 0 || currentTime > customer.getDueDate()) { // To late (create new route)
 
-			currentCapacity = Problem.vehicleCapacity - customer.getDemand();
-			currentTime = Math.max(Problem.getDepot().getReadyTime() + Problem.getDepot().timeTo(customer),
+			currentCapacity = Problem.getInstance().vehicleCapacity - customer.getDemand();
+			currentTime = Math.max(Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().timeTo(customer),
 					customer.getReadyTime());
 
-			routes.add(new Route(Problem.customersNumber));
+			routes.add(new Route(Problem.getInstance().customersNumber));
 			routesNumber++;
 
 		} else if (currentTime < customer.getReadyTime()) { // To early (wait to ReadyTime)
@@ -78,19 +78,19 @@ public class Individual implements SolutionRoutes {
 		// For others
 		for (int i = 1; i < chromosome.size(); i++) {
 			gene = chromosome.get(i);
-			customer = Problem.getCustomer(gene);
+			customer = Problem.getInstance().getCustomer(gene);
 
-			currentTime += Problem.getCustomer(prevGene).timeTo(customer);
+			currentTime += Problem.getInstance().getCustomer(prevGene).timeTo(customer);
 
 			currentCapacity -= customer.getDemand();
 
 			if (currentCapacity < 0 || currentTime > customer.getDueDate()) { // To late (create new route)
 
-				currentCapacity = Problem.vehicleCapacity - customer.getDemand();
-				currentTime = Math.max(Problem.getDepot().getReadyTime() + Problem.getDepot().timeTo(customer),
+				currentCapacity = Problem.getInstance().vehicleCapacity - customer.getDemand();
+				currentTime = Math.max(Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().timeTo(customer),
 						customer.getReadyTime());
 
-				routes.add(new Route(Problem.customersNumber));
+				routes.add(new Route(Problem.getInstance().customersNumber));
 				routesNumber++;
 
 			} else if (currentTime < customer.getReadyTime()) { // To early (wait to ReadyTime)
@@ -218,10 +218,10 @@ public class Individual implements SolutionRoutes {
 			}
 		}
 		// set constraints properties
-		isMaxRouteLengthSatisfied = maxRouteLen <= Problem.maxRouteLength ? true : false;
-		isMaxCarsSatisfied = this.routesNumber <= Problem.maxCars ? true : false;
-		isMaxCustInRouteSatisfied = maxCust <= Problem.maxCustInRoute ? true : false;
-		isMaxRouteTimeSatisfied = maxTime <= Problem.maxRouteTime ? true : false;
+		isMaxRouteLengthSatisfied = maxRouteLen <= Problem.getInstance().maxRouteLength ? true : false;
+		isMaxCarsSatisfied = this.routesNumber <= Problem.getInstance().maxCars ? true : false;
+		isMaxCustInRouteSatisfied = maxCust <= Problem.getInstance().maxCustInRoute ? true : false;
+		isMaxRouteTimeSatisfied = maxTime <= Problem.getInstance().maxRouteTime ? true : false;
 	}
 
 	public void backToChromosome() {
