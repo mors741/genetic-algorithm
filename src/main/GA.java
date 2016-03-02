@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Arrays;
+
 import problem.Problem;
   
   
@@ -13,59 +15,38 @@ public class GA {
     public static final double INIT_RAND_RATE = 0.9;
     public static final double EUCLIDEAN_RADIUS = 2.5;
     
-    public void go() {
-    	Problem.Init("resources/C101.csv", 100);
+    public void run(String resource, int customers) {
+    	System.out.print(resource + ": " + customers + " - ");
+    	Problem.Init(resource, customers);
     	
     	Population population = new Population();    	
     	population.initialize();
     	
     	long time = System.currentTimeMillis();
-    	long routesTime = 0;
-    	long paretoTime = 0;
-    	long mateTime = 0;
-    	long mutationTime = 0;
-    	long backTime = 0;
     	
     	for (int i = 0; i < GENERATION_SPAN; i++) {
-    		population.evaluateRoutes();
-    		routesTime += System.currentTimeMillis() - time;
-    		time = System.currentTimeMillis();
-    		
+    		population.evaluateRoutes();		
     		population.determineParetoRanks();
-    		paretoTime += System.currentTimeMillis() - time;
-    		time = System.currentTimeMillis();
     		
-    		System.out.println(" -------------------------------------" +i+" -------------------------------------");
-    		population.showOptimal();
+//    		System.out.println(" -------------------------------------" +i+" -------------------------------------");
+//    		population.showOptimal();
         	
-    		population.mate();
-    		mateTime += System.currentTimeMillis() - time;
-    		time = System.currentTimeMillis();
-    		
+    		population.mate();		
     		population.mutation();
-    		mutationTime += System.currentTimeMillis() - time;
-    		time = System.currentTimeMillis();
     		
     		population.backToChromosome();
-    		backTime += System.currentTimeMillis() - time;
-    		time = System.currentTimeMillis();
     		
     	}
-    	
-    	System.out.println("routesTime: " + routesTime);
-    	System.out.println("paretoTime: " + paretoTime);
-    	System.out.println("mateTime: " + mateTime);
-    	System.out.println("mutationTime: " + mutationTime);
-    	System.out.println("backTime: " + backTime);
-    	System.out.println("total: " + (routesTime+paretoTime+mateTime+mutationTime+backTime));
-    	System.out.println();
-    	System.out.println("testTime1: " + population.testTime1);
-    	System.out.println("testTime2: " + population.testTime2);
-    	
+    	System.out.println(System.currentTimeMillis() - time);  	
 
     }
   
-    public static void main(String[] args) {     	
-    	new GA().go();  
+    public static void main(String[] args) {
+    	GA algorithm = new GA();
+    	for (String test : Arrays.asList("resources/C201.csv", "resources/R201.csv","resources/RC201.csv")) {
+    		for (int i = 1; i <= 10; i++) {
+        		algorithm.run(test, 10*i);   		
+        	}
+    	}   	
    }  
 }  
