@@ -506,7 +506,7 @@ public class ParetoTest {
 	
 	@Before
     public  void before() {
-    	test7();
+    	test3();
 	}
     	
 	@Test

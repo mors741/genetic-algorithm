@@ -21,11 +21,6 @@ public class Individual implements SolutionRoutes {
 	private int isFeasible = 0;
 	private int paretoRank;
 
-	private boolean isMaxCarsSatisfied;
-	private boolean isMaxRouteLengthSatisfied;
-	private boolean isMaxCustInRouteSatisfied;
-	private boolean isMaxRouteTimeSatisfied;
-
 	Individual() {
 		chromosome = new ArrayList<Integer>(Problem.getInstance().customersNumber);
 		routes = new RouteNetwork(Problem.getInstance().customersNumber);
@@ -159,31 +154,9 @@ public class Individual implements SolutionRoutes {
 		return clone;
 	}
 
-	/*
-	 * b1 is strictly better than b2
-	 */
-	private boolean betterThan(boolean b1, boolean b2) {
-		return b1 && !b2;
-	}
-
-	/*
-	 * b1 is better or equal to b2
-	 */
-	private boolean betterOrEqualTo(boolean b1, boolean b2) {
-		return b1 || !b2;
-	}
-
 	boolean dominates(Individual other) {
 		if (this.totalCost <= other.totalCost && this.routesNumber <= other.routesNumber
-				&& this.betterOrEqualTo(this.isMaxCarsSatisfied, other.isMaxCarsSatisfied)
-				&& this.betterOrEqualTo(this.isMaxCustInRouteSatisfied, other.isMaxCustInRouteSatisfied)
-				&& this.betterOrEqualTo(this.isMaxRouteLengthSatisfied, other.isMaxRouteLengthSatisfied)
-				&& this.betterOrEqualTo(this.isMaxRouteTimeSatisfied, other.isMaxRouteTimeSatisfied)
-				&& (this.totalCost < other.totalCost || this.routesNumber < other.routesNumber
-						|| betterThan(this.isMaxCarsSatisfied, other.isMaxCarsSatisfied)
-						|| betterThan(this.isMaxCustInRouteSatisfied, other.isMaxCustInRouteSatisfied)
-						|| betterThan(this.isMaxRouteLengthSatisfied, other.isMaxRouteLengthSatisfied)
-						|| betterThan(this.isMaxRouteTimeSatisfied, other.isMaxRouteTimeSatisfied))) {
+				&& (this.totalCost < other.totalCost || this.routesNumber < other.routesNumber)) {
 			return true;
 		} else {
 			return false;
@@ -222,11 +195,6 @@ public class Individual implements SolutionRoutes {
 				maxTime = tempTime;
 			}
 		}
-		// set constraints properties
-		isMaxRouteLengthSatisfied = maxRouteLen <= Problem.getInstance().maxRouteLength ? true : false;
-		isMaxCarsSatisfied = this.routesNumber <= Problem.getInstance().maxCars ? true : false;
-		isMaxCustInRouteSatisfied = maxCust <= Problem.getInstance().maxCustInRoute ? true : false;
-		isMaxRouteTimeSatisfied = maxTime <= Problem.getInstance().maxRouteTime ? true : false;
 	}
 
 	void backToChromosome() {
@@ -248,8 +216,7 @@ public class Individual implements SolutionRoutes {
 		 * for (int i : chromosome) { str.append(i); str.append(" "); }
 		 * str.append("-- ");
 		 */
-		str.append("<" + paretoRank + "> (" + routesNumber + "; " + totalCost + "; " + isMaxCarsSatisfied + "; "
-				+ isMaxCustInRouteSatisfied + "; " + isMaxRouteLengthSatisfied + "; " + isMaxRouteTimeSatisfied + ") ");
+		str.append("<" + paretoRank + "> (" + routesNumber + "; " + totalCost + ") ");
 		for (List<Integer> route : routes) {
 			str.append("[");
 			for (int gene : route) {
