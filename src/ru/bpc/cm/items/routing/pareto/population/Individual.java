@@ -58,7 +58,8 @@ public class Individual implements SolutionRoutes {
 		routes.add(new Route(Problem.getInstance().customersNumber));
 		currentCapacity -= customer.getDemand();
 
-		if (currentCapacity < 0 || currentTime > customer.getDueDate()) { // To late (create new route)
+		if (currentCapacity < 0 // Not enough money
+				|| currentTime > customer.getDueDate()) { // To late -> create new route
 
 			currentCapacity = Problem.getInstance().vehicleCapacity - customer.getDemand();
 			currentTime = Math.max(Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().timeTo(customer),
@@ -83,8 +84,15 @@ public class Individual implements SolutionRoutes {
 			currentTime += Problem.getInstance().getCustomer(prevGene).timeTo(customer);
 
 			currentCapacity -= customer.getDemand();
-
-			if (currentCapacity < 0 || currentTime > customer.getDueDate()) { // To late (create new route)
+			
+			// not considered
+			// 		maxCars	
+			//      MaxLength 
+			if (currentCapacity < 0 // Not enough money
+					|| currentTime > customer.getDueDate() // To late
+					|| currentTime >= Problem.getInstance().maxRouteTime
+					|| routes.get(routesNumber - 1).size() >= Problem.getInstance().maxCustInRoute
+					|| routes.get(routesNumber - 1).getDistance() >= Problem.getInstance().maxRouteLength) { // create new route
 
 				currentCapacity = Problem.getInstance().vehicleCapacity - customer.getDemand();
 				currentTime = Math.max(Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().timeTo(customer),
@@ -105,12 +113,12 @@ public class Individual implements SolutionRoutes {
 
 		// Phase 2
 		for (int i = 1; i < routesNumber; i++) {
-			int prevRouteLastIndex = routes.get(i - 1).size() - 1;
+			int prevRouteLastIndex = routes.get(i - 1).size() - 1; // TODO: ?
 			int sumCost1 = routes.get(i - 1).getDistance() + routes.get(i).getDistance();
 			routes.get(i).add(0, routes.get(i - 1).get(prevRouteLastIndex));
 			routes.get(i - 1).remove(prevRouteLastIndex);
 
-			if (!routes.get(i).isFeasible()
+			if (routes.get(i - 1).isEmpty() || !routes.get(i).isFeasible()
 					|| routes.get(i - 1).getDistance() + routes.get(i).getDistance() > sumCost1) {
 				routes.get(i - 1).add(routes.get(i).get(0));
 				routes.get(i).remove(0);
