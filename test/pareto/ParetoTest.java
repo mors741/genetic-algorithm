@@ -1,5 +1,9 @@
 package pareto;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -504,9 +508,91 @@ public class ParetoTest {
 		*/
 	}
 	
+	private void testSolomon() {	
+		
+
+		String problemName = "C101";
+		int customersNumber = 100;
+		
+		m = new Matrix(customersNumber+1);
+		m.ENC = new int[customersNumber+1];
+		m.ATM = new String[customersNumber+1];
+    	m.amountOfMoney = new int[customersNumber+1];  //(количество денег, которое нужно загрузить в каждый банкомат, может быть 0)
+    	m.serviceTime = new int[customersNumber+1];  // - вместо этого можно просто int serviceTime (это время обслуживания одного банкомата, сейчас оно одно для всех, но в идеале может различаться для разных типов банкоматов и даже быть уникальным для каждого)
+    	m.amountOfCassettes = new int[customersNumber+1];  // (кол-во кассет, которое нужно завезти в банкомат) - это сейчас не используется
+    	m.AtmPrice = new double[customersNumber+1]; // - стоимость подъезда к каждому банкомату (сейчас не используется)
+		
+		for (int i = 0; i <= customersNumber; i++){
+			m.ENC[i] = i;
+			m.ATM[i] = Integer.toString(i);
+			m.amountOfCassettes[i] = i==0 ? 0 : 200;
+			m.AtmPrice[i] = 100.0;
+		}
+		
+		
+		int i = 0;
+    	BufferedReader br = null;
+    	String line = "";
+    	String cvsSplitBy = ";";
+    	int[][] coordinates = new int[customersNumber+1][2];
+    	try {
+    		 
+    		br = new BufferedReader(new FileReader("resources/"+problemName+".csv"));
+    		line = br.readLine();
+    		m.MaxMoney = Integer.parseInt(line.substring(0, line.indexOf(cvsSplitBy)));
+
+    		while (i <= customersNumber && (line = br.readLine()) != null) {
+    			String[] splLine = line.split(cvsSplitBy);
+    			coordinates[i][0] = (int)Double.parseDouble(splLine[0]);
+        		coordinates[i][1] = (int)Double.parseDouble(splLine[1]);
+        		m.amountOfMoney[i] = (int)Double.parseDouble(splLine[2]);
+        		m.addTimeWindow(i, (int)Double.parseDouble(splLine[3]), (int)Double.parseDouble(splLine[4]), false);
+        		m.serviceTime[i] = (int)Double.parseDouble(splLine[5]);
+    			i++;
+    		}
+    		
+    		m.distanceCoeffs = new int[customersNumber+1][customersNumber+1];
+    		m.timeCoeffs = new int[customersNumber+1][customersNumber+1];
+    		for (int k = 0; k <=  customersNumber; k++) {
+    			for (int l = 0; l <=  customersNumber; l++) {
+    				double dist = Math.sqrt(Math.pow((coordinates[k][0] - coordinates[l][0]), 2) + Math.pow((coordinates[k][1] - coordinates[l][1]), 2));
+    				dist = dist*1000;
+    				m.distanceCoeffs[k][l] = (int) Math.sqrt(Math.pow((coordinates[k][0] - coordinates[l][0]), 2) + Math.pow((coordinates[k][1] - coordinates[l][1]), 2));
+    				m.timeCoeffs[k][l] = m.distanceCoeffs[k][l];
+    			}
+    		}
+    		
+    		m.addRiderTimeWindow(60, 1380);
+    		
+        	m.VolumeOneCar = 40000000; // (макс кол-во кассет, кот. может перевезти машина) - не используется
+        	m.FixPrice = 100.0;  // - фикс стоимость подъезда машины к банкомату
+        	m.LengthPrice = 20.0;  // - цена за километр пути
+        	m.MaxATMInWay = 0; // - макс кол-во банкоматов в маршруте
+        	m.MaxTime = 0; // - макс время которое можно затрачивать на 1 маршрут
+        	m.MaxLength = 0; // макс длина одного маршрута
+        	m.depot = "1";  // - идентификатор депо
+        	m.maxCars = 0;   // - макс доступное кол-во машин
+        	m.currCode = 810; // - валюта всех денежных параметров
+        	m.windowMode = 0; // - режим окон для банкоматов, обычный и дефолтный (при котором, каждое окно ставится на максимально возможный промежуток);
+        	System.out.println();
+    	} catch (FileNotFoundException e) {
+    		e.printStackTrace();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	} finally {
+    		if (br != null) {
+    			try {
+    				br.close();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+	}
+	
 	@Before
     public  void before() {
-    	test3();
+		testSolomon();
 	}
     	
 	@Test
