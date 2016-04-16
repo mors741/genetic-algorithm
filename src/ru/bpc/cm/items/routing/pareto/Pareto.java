@@ -41,9 +41,8 @@ public class Pareto {
 			// paretoTime += System.currentTimeMillis() - time;
 			// time = System.currentTimeMillis();
 
-//			System.out.println(" -------------------------------------" + i + " -------------------------------------");
-			// population.showOptimal();
-//			population.showInverse();
+			System.out.println(" -------------------------------------" + i + " -------------------------------------");
+			population.showInverse();
 
 			population.mate();
 			// mateTime += System.currentTimeMillis() - time;
@@ -60,9 +59,6 @@ public class Pareto {
 		}
 		population.evaluateRoutes();
 		population.determineParetoRanks();
-//		System.out.println(" -------------------------------------" + (GENERATION_SPAN - 1)
-//				+ " -------------------------------------");
-//		population.showOptimal();
 
 		return population.getResult();
 

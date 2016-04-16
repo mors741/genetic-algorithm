@@ -85,9 +85,6 @@ public class Individual implements SolutionRoutes {
 
 			currentCapacity -= customer.getDemand();
 			
-			// not considered
-			// 		maxCars	
-			//      MaxLength 
 			if (currentCapacity < 0 // Not enough money
 					|| currentTime > customer.getDueDate() // To late
 					|| currentTime >= Problem.getInstance().maxRouteTime
