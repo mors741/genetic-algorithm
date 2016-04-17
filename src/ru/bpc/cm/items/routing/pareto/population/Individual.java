@@ -244,7 +244,7 @@ public class Individual implements SolutionRoutes {
 		return routes.get(i);
 	}
 
-	int getRoutesNumber() {
+	public int getRoutesNumber() {
 		return routesNumber;
 	}
 
@@ -252,7 +252,7 @@ public class Individual implements SolutionRoutes {
 		return isFeasible;
 	}
 
-	int getTotalCost() {
+	public int getTotalCost() {
 		return totalCost;
 	}
 

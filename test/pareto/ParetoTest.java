@@ -595,7 +595,6 @@ public class ParetoTest {
 	public void testProblem() {
     	Pareto solver = new Pareto(m);
     	Pareto.POPULATION_SIZE = 100;
-    	Pareto.GENERATION_SPAN = 100;
     	Pareto.CROSSOVER_RATE = 0.8;
     	Pareto.MUTATION_RATE = 0.1;
         
