@@ -11,10 +11,14 @@ import org.junit.Test;
 
 import ru.bpc.cm.items.routing.heneticmethod.Matrix;
 import ru.bpc.cm.items.routing.pareto.Pareto;
+import ru.bpc.cm.items.routing.pareto.population.Individual;
 import ru.bpc.cm.items.routing.SolutionRoutes;
   
   
 public class ParetoTest {
+	
+	String problemName;
+	int customerNumber;
 	
 	Matrix m;
 	
@@ -587,41 +591,197 @@ public class ParetoTest {
 	
 	@Before
     public  void before() {
-		//test1();
-		testSolomon("C101", 100);
+//		test3();
+//		problemName = "C201";
+//		customerNumber = 10;
+//		testSolomon(problemName, customerNumber);
 	}
     	
 	@Test
 	public void testProblem() {
-    	Pareto solver = new Pareto(m);
-    	Pareto.POPULATION_SIZE = 100;
-    	Pareto.CROSSOVER_RATE = 0.8;
-    	Pareto.MUTATION_RATE = 0.1;
-        
-    	Pareto.INIT_RAND_RATE = 0.9;
-    	Pareto.EUCLIDEAN_RADIUS = 30;
-    	SolutionRoutes result = solver.computeResult();
+//    	Pareto solver = new Pareto(m);
+//    	Pareto.POPULATION_SIZE = 100;
+//    	Pareto.CROSSOVER_RATE = 0.8;
+//    	Pareto.MUTATION_RATE = 0.1;
+//        
+//    	Pareto.INIT_RAND_RATE = 0.9;
+//    	Pareto.EUCLIDEAN_RADIUS = 30;
+//    	solver.computeResult();
+		
+
+//		for (int t = 10; t <= 40; t+=5){ // for R & RC
+//		for (int t = 60; t <= 90; t+=5){
+		for (int t = 70; t <= 100; t+=5){
+			problemName = "C201";
+			customerNumber = t;
+			testSolomon(problemName, customerNumber);
+			
+			int routesNumber = 0;
+			int totalCost = 0;
+
+			if (problemName.equals("C201")) {
+				if (customerNumber == 70) {
+					routesNumber = 3;
+					totalCost = 4993;
+				} else if (customerNumber == 75) {
+					routesNumber = 3;
+					totalCost = 5092;				
+				} else if (customerNumber == 80) {
+					routesNumber = 3;
+					totalCost = 5223;
+				} else if (customerNumber == 85) {
+					routesNumber = 3;
+					totalCost = 5250;
+				} else if (customerNumber == 90) {
+					routesNumber = 3;
+					totalCost = 5452;
+				} else if (customerNumber == 95) {
+					routesNumber = 3;
+					totalCost = 5742;
+				} else {
+					routesNumber = 3;
+					totalCost = 5891;
+				}
+			} else if (problemName.equals("R201")) {
+				if (customerNumber == 10) {
+					routesNumber = 1;
+					totalCost = 2536;
+				} else if (customerNumber == 15) {
+					routesNumber = 1;
+					totalCost = 3529;				
+				} else if (customerNumber == 20) {
+					routesNumber = 2;
+					totalCost = 4093;
+				} else if (customerNumber == 25) {
+					routesNumber = 2;
+					totalCost = 5227;
+				} else if (customerNumber == 30) {
+					routesNumber = 2;
+					totalCost = 5737;
+				} else if (customerNumber == 35) {
+					routesNumber = 2;
+					totalCost = 6632;
+				} else {
+					routesNumber = 2;
+					totalCost = 7926;
+				}
+			} else {
+				if (customerNumber == 10) {
+					routesNumber = 1;
+					totalCost = 1941;
+				} else if (customerNumber == 15) {
+					routesNumber = 1;
+					totalCost = 3349;				
+				} else if (customerNumber == 20) {
+					routesNumber = 2;
+					totalCost = 3982;
+				} else if (customerNumber == 25) {
+					routesNumber = 2;
+					totalCost = 4313;
+				} else if (customerNumber == 30) {
+					routesNumber = 2;
+					totalCost = 6796;
+				} else if (customerNumber == 35) {
+					routesNumber = 2;
+					totalCost = 7587;
+				} else {
+					routesNumber = 2;
+					totalCost = 9337;
+				}
+			}
+			
+			System.out.println("pop-size, "+ problemName + " - " + customerNumber);
+	    	for (int i = 1; i <= 40; i++) {	
+	    		int optimalFound = 0;
+	    		int totalTime = 0;
+	    		for (int j = 0; j < 10; j++) {
+	        		Pareto p = new Pareto(m);
+	        		//TODO пересчитать евклидов радиус!!
+	        		Pareto.POPULATION_SIZE = i*10;
+	        		Pareto.EUCLIDEAN_RADIUS = 30;
+	        		long time = System.currentTimeMillis();
+	        		Individual result = p.computeResult();
+//	        		System.out.println(result);
+	    			totalTime += System.currentTimeMillis() - time;
+								
+	    			if (result.getRoutesNumber()==routesNumber && result.getTotalCost()<totalCost*1.02) {
+	        			optimalFound++;
+	        		}      		
+	    		}
+	    		System.out.println((i*10) + "," + optimalFound*10);
+	    		
+	    	}
+		}
+//		System.out.println("pop-size, "+ problemName + " - " + customerNumber);
+//    	for (int i = 1; i <= 40; i++) {	
+//    		int optimalFound = 0;
+//    		int totalTime = 0;
+//    		for (int j = 0; j < 10; j++) {
+//        		Pareto p = new Pareto(m);
+//        		//TODO пересчитать евклидов радиус!!
+//        		Pareto.POPULATION_SIZE = i*10;
+//        		Pareto.EUCLIDEAN_RADIUS = 30;
+//        		long time = System.currentTimeMillis();
+//        		Individual result = p.computeResult();
+////        		System.out.println(result);
+//    			totalTime += System.currentTimeMillis() - time;
+//					
+//    			//C201
+////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<1942*1.02) { //10
+////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<2295*1.02) { //15
+////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<2650*1.02) { //20
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<2147*1.02) { //25
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<2324*1.02) { //30
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<2545*1.02) { //35
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<3251*1.02) { //40
+//    			
+//    			//R201
+////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<2536*1.02) { //10
+////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<3529*1.02) { //15
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<4093*1.02) { //20
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<5227*1.02) { //25
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<5737*1.02) { //30
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<6632*1.02) { //35
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<7926*1.02) { //40
+//					
+//    			//RC201
+////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<1941*1.02) { //10
+////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<3349*1.02) { //15
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<3982*1.02) { //20
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<4313*1.02) { //25
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<6796*1.02) { //30
+////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<7587*1.02) { //35
+////            	if (result.getRoutesNumber()==2 && result.getTotalCost()<9337*1.02) { //40
+//    			
+//    			if (result.getRoutesNumber()==routesNumber && result.getTotalCost()<totalCost*1.02) {
+//        			optimalFound++;
+//        		}      		
+//    		}
+////    		System.out.println((i*10) + "," + optimalFound*10 + "," + totalTime/20);
+//    		System.out.println((i*10) + "," + optimalFound*10);
+//    		
+//    	}
     	
-    	for (ArrayList<Integer> route : result.getRoutes()) {
-    		System.out.print("[");
-    		for (Integer pid : route) {
-    			System.out.print(pid + " ");
-    		}
-    		System.out.println("]");
-    	}
-    	
-    	for (ArrayList<Integer> route : result.getRoutes()) {
-    		int order = 1;
-    		int pointTime = m.getTimeWindows().get(0).StartWork; // start time of depot
-    		pointTime -= m.serviceTime[0]; // if not serving depot in the beginning
-    		int prevCust = 0;
-    		for (Integer pid : route) {
-    			pointTime = Math.max(pointTime + m.timeCoeffs[prevCust][pid] + m.serviceTime[prevCust], m.getTimeWindows().get(pid).StartWork);
-    			System.out.println(pid + " " + order + " "  +pointTime);
-    			prevCust = pid;
-    			order++;
-    		}
-    	}
+//    	for (ArrayList<Integer> route : result.getRoutes()) {
+//    		System.out.print("[");
+//    		for (Integer pid : route) {
+//    			System.out.print(pid + " ");
+//    		}
+//    		System.out.println("]");
+//    	}
+//    	
+//    	for (ArrayList<Integer> route : result.getRoutes()) {
+//    		int order = 1;
+//    		int pointTime = m.getTimeWindows().get(0).StartWork; // start time of depot
+//    		pointTime -= m.serviceTime[0]; // if not serving depot in the beginning
+//    		int prevCust = 0;
+//    		for (Integer pid : route) {
+//    			pointTime = Math.max(pointTime + m.timeCoeffs[prevCust][pid] + m.serviceTime[prevCust], m.getTimeWindows().get(pid).StartWork);
+//    			System.out.println(pid + " " + order + " "  +pointTime);
+//    			prevCust = pid;
+//    			order++;
+//    		}
+//    	}
 
 	}
     	 	

@@ -27,15 +27,14 @@ public class Pareto {
 	}
 	
 	public Individual computeResult() {
-		
 		population.initialize();
 		List<Individual> prevOptimalIndividualList = new ArrayList<Individual>();
 		
 		population.evaluateRoutes();
 		population.determineParetoRanks();
 		
-		System.out.println(" ------------------------------------- 0 -------------------------------------");
-		population.showInverse();
+//		System.out.println(" ------------------------------------- 0 -------------------------------------");
+//		population.showInverse();
 		
 		int generationCounter = 1;
 		List<Individual> optimalIndividualList = null;
@@ -48,13 +47,13 @@ public class Pareto {
 			population.evaluateRoutes();
 			population.determineParetoRanks();
 
-			System.out.println(" ------------------------------------- " + (generationCounter++) + " -------------------------------------");
-			population.showInverse();
-			System.out.println("OPTIMAL");
+//			System.out.println(" ------------------------------------- " + (generationCounter++) + " -------------------------------------");
+//			population.showInverse();
+//			System.out.println("OPTIMAL");
 			optimalIndividualList = population.getOptimalList();
-			for (Individual i : optimalIndividualList) {
-				System.out.println(i);
-			}
+//			for (Individual i : optimalIndividualList) {
+//				System.out.println(i);
+//			}
 				
 			areListsIdentical = true;
 			if (optimalIndividualList.size() == prevOptimalIndividualList.size()) {		
@@ -71,12 +70,12 @@ public class Pareto {
 				}
 			}
 			prevOptimalIndividualList = optimalIndividualList;
-			System.out.println("SAME: " + sameResultCounter);
+//			System.out.println("SAME: " + sameResultCounter);
 		}
-		System.out.println("OPTIMAL");
-		for (Individual i : population.getOptimalList()) {
-			System.out.println(i);
-		}
+//		System.out.println("OPTIMAL");
+//		for (Individual i : population.getOptimalList()) {
+//			System.out.println(i);
+//		}
 		return optimalIndividualList.get(0);
 	}
 }
