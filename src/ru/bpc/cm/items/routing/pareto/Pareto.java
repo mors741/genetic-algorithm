@@ -7,8 +7,8 @@ import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 public class Pareto {
 
-	public static int POPULATION_SIZE = 10;
-	public static int GENERATION_SPAN = 10;
+	public static int POPULATION_SIZE = 300;
+	public static int GENERATION_SPAN = 350;
 	public static double CROSSOVER_RATE = 0.8;
 	public static double MUTATION_RATE = 0.1;
 
@@ -41,9 +41,8 @@ public class Pareto {
 			// paretoTime += System.currentTimeMillis() - time;
 			// time = System.currentTimeMillis();
 
-//			System.out.println(" -------------------------------------" + i + " -------------------------------------");
-			// population.showOptimal();
-//			population.showInverse();
+			System.out.println(" -------------------------------------" + i + " -------------------------------------");
+			population.showInverse();
 
 			population.mate();
 			// mateTime += System.currentTimeMillis() - time;
@@ -60,9 +59,6 @@ public class Pareto {
 		}
 		population.evaluateRoutes();
 		population.determineParetoRanks();
-//		System.out.println(" -------------------------------------" + (GENERATION_SPAN - 1)
-//				+ " -------------------------------------");
-//		population.showOptimal();
 
 		return population.getResult();
 

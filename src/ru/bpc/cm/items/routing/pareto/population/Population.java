@@ -2,9 +2,12 @@ package ru.bpc.cm.items.routing.pareto.population;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 import ru.bpc.cm.items.routing.pareto.Pareto;
+import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 public class Population extends ArrayList<Individual> {
 
@@ -184,16 +187,60 @@ public class Population extends ArrayList<Individual> {
 		}
 	}
 
+//	public void showOptimal() {
+//		for (int i = Pareto.POPULATION_SIZE - 1; i >= 0; i--) {
+//			if (get(i).getParetoRank() == 1) {
+//				System.out.println(i + ": " + get(i));
+//			}
+//		}
+//	}
+	
+	
 	public void showOptimal() {
-		for (int i = Pareto.POPULATION_SIZE - 1; i >= 0; i--) {
-			if (get(i).getParetoRank() == 1) {
-				System.out.println(i + ": " + get(i));
-			}
+		int i = 0;
+		while (i < Pareto.POPULATION_SIZE && get(i).getParetoRank() == 1) {
+			System.out.println(i+": "+get(i));
+			i++;
 		}
+    }
+	
+	/**
+	 * @return ORDERED by routes number DISTINCT list of optimal individuals  
+	 */
+	public List<Individual> getOptimalList() {
+		List<Individual> optimalIndividualsList = new ArrayList<Individual>();
+		int i = 0;
+		while (i < Pareto.POPULATION_SIZE && get(i).getParetoRank() == 1) {
+			Individual candidate = get(i);
+			boolean alreadyInList = false;
+			for (Individual optimal : optimalIndividualsList) {
+				if (optimal.getRoutesNumber() == candidate.getRoutesNumber()) {
+					alreadyInList = true;
+					break;
+				}
+			}
+			if (!alreadyInList) {
+				optimalIndividualsList.add(candidate);
+			}
+			i++;
+		}
+		
+		optimalIndividualsList.sort(new Comparator<Individual> (){
+			public int compare(Individual o1, Individual o2) {
+				return o2.getRoutesNumber() - o1.getRoutesNumber();
+			}	
+		});
+		return optimalIndividualsList;
 	}
 
 	public Individual getResult() {
-		return this.get(0);
+		Individual bestIndividual = getOptimalList().get(0);
+		if (bestIndividual.getRoutesNumber() > Problem.getInstance().maxCars){
+			System.out.println("Impossible (maxCars constraint violated)");
+			return null;
+		} else {
+			return bestIndividual;
+		}
 	}
 
 }
