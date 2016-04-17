@@ -508,11 +508,7 @@ public class ParetoTest {
 		*/
 	}
 	
-	private void testSolomon() {	
-		
-
-		String problemName = "C101";
-		int customersNumber = 100;
+	private void testSolomon(String problemName, int customersNumber) {	
 		
 		m = new Matrix(customersNumber+1);
 		m.ENC = new int[customersNumber+1];
@@ -556,9 +552,8 @@ public class ParetoTest {
     		for (int k = 0; k <=  customersNumber; k++) {
     			for (int l = 0; l <=  customersNumber; l++) {
     				double dist = Math.sqrt(Math.pow((coordinates[k][0] - coordinates[l][0]), 2) + Math.pow((coordinates[k][1] - coordinates[l][1]), 2));
-    				dist = dist*1000;
-    				m.distanceCoeffs[k][l] = (int) Math.sqrt(Math.pow((coordinates[k][0] - coordinates[l][0]), 2) + Math.pow((coordinates[k][1] - coordinates[l][1]), 2));
-    				m.timeCoeffs[k][l] = m.distanceCoeffs[k][l];
+    				m.distanceCoeffs[k][l] = (int) (dist*10); // to prevent loosing accuracy *10. Not 1000 because of Solomon results
+    				m.timeCoeffs[k][l] = (int) dist; // if multiply this, time window constraints will be violated
     			}
     		}
     		
@@ -592,7 +587,8 @@ public class ParetoTest {
 	
 	@Before
     public  void before() {
-		testSolomon();
+		//test1();
+		testSolomon("C101", 100);
 	}
     	
 	@Test
