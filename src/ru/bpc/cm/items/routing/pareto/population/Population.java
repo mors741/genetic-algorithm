@@ -227,7 +227,7 @@ public class Population extends ArrayList<Individual> {
 		
 		optimalIndividualsList.sort(new Comparator<Individual> (){
 			public int compare(Individual o1, Individual o2) {
-				return o2.getRoutesNumber() - o1.getRoutesNumber();
+				return o1.getRoutesNumber() - o2.getRoutesNumber();
 			}	
 		});
 		return optimalIndividualsList;

@@ -1,5 +1,8 @@
 package ru.bpc.cm.items.routing.pareto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.bpc.cm.items.routing.heneticmethod.Matrix;
 import ru.bpc.cm.items.routing.pareto.population.Individual;
 import ru.bpc.cm.items.routing.pareto.population.Population;
@@ -21,54 +24,32 @@ public class Pareto {
 		Problem.initialize(problem);
 		population = new Population();
 	}
-
+	
 	public Individual computeResult() {
 		population.initialize();
-
-		// long time = System.currentTimeMillis();
-		// long routesTime = 0;
-		// long paretoTime = 0;
-		// long mateTime = 0;
-		// long mutationTime = 0;
-		// long backTime = 0;
-
-		for (int i = 0; i < GENERATION_SPAN - 1; i++) {
-			population.evaluateRoutes();
-			// routesTime += System.currentTimeMillis() - time;
-			// time = System.currentTimeMillis();
-
-			population.determineParetoRanks();
-			// paretoTime += System.currentTimeMillis() - time;
-			// time = System.currentTimeMillis();
-
-			System.out.println(" -------------------------------------" + i + " -------------------------------------");
-			population.showInverse();
-
-			population.mate();
-			// mateTime += System.currentTimeMillis() - time;
-			// time = System.currentTimeMillis();
-
-			population.mutation();
-			// mutationTime += System.currentTimeMillis() - time;
-			// time = System.currentTimeMillis();
-
-			population.backToChromosome();
-			// backTime += System.currentTimeMillis() - time;
-			// time = System.currentTimeMillis();
-
-		}
+		List<Individual> optimalIndividualList = new ArrayList<Individual>();
+		
 		population.evaluateRoutes();
 		population.determineParetoRanks();
+		
+		System.out.println(" ------------------------------------- 0 -------------------------------------");
+		population.showInverse();
 
-		return population.getResult();
+		for (int i = 1; i < GENERATION_SPAN; i++) {
+			population.mate();
+			population.mutation();
+			population.backToChromosome();
+			population.evaluateRoutes();
+			population.determineParetoRanks();
 
-		// System.out.println("routesTime: " + routesTime);
-		// System.out.println("paretoTime: " + paretoTime);
-		// System.out.println("mateTime: " + mateTime);
-		// System.out.println("mutationTime: " + mutationTime);
-		// System.out.println("backTime: " + backTime);
-		// System.out.println("total: " +
-		// (routesTime+paretoTime+mateTime+mutationTime+backTime));
-		// System.out.println();
+			System.out.println(" ------------------------------------- " + i + " -------------------------------------");
+			population.showInverse();
+		}
+		System.out.println("OPTIMAL");
+		optimalIndividualList = population.getOptimalList();
+		for (Individual i : population.getOptimalList()) {
+			System.out.println(i);
+		}
+		return optimalIndividualList.get(0);
 	}
 }
