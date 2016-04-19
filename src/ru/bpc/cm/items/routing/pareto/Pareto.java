@@ -19,6 +19,8 @@ public class Pareto {
 	
 	public static double MAX_SAME_RESULT = 5;
 	
+	public static boolean SHOW_DEBUG = false;
+	
 	private Population population;
 
 	public Pareto(Matrix problem) {
@@ -33,8 +35,10 @@ public class Pareto {
 		population.evaluateRoutes();
 		population.determineParetoRanks();
 		
-//		System.out.println(" ------------------------------------- 0 -------------------------------------");
-//		population.showInverse();
+		if (SHOW_DEBUG) {
+			System.out.println(" ------------------------------------- 0 -------------------------------------");
+			population.showInverse();
+		}
 		
 		int generationCounter = 1;
 		List<Individual> optimalIndividualList = null;
@@ -47,13 +51,18 @@ public class Pareto {
 			population.evaluateRoutes();
 			population.determineParetoRanks();
 
-//			System.out.println(" ------------------------------------- " + (generationCounter++) + " -------------------------------------");
-//			population.showInverse();
-//			System.out.println("OPTIMAL");
 			optimalIndividualList = population.getOptimalList();
-//			for (Individual i : optimalIndividualList) {
-//				System.out.println(i);
-//			}
+			
+			if (SHOW_DEBUG) {
+				System.out.println(" ------------------------------------- " + (generationCounter++) + " -------------------------------------");
+				population.showInverse();
+				System.out.println("OPTIMAL: " + optimalIndividualList.size());
+				for (Individual i : optimalIndividualList) {
+					System.out.println(i);
+				}
+			}
+			
+
 				
 			areListsIdentical = true;
 			if (optimalIndividualList.size() == prevOptimalIndividualList.size()) {		
@@ -70,12 +79,16 @@ public class Pareto {
 				}
 			}
 			prevOptimalIndividualList = optimalIndividualList;
-//			System.out.println("SAME: " + sameResultCounter);
+			if (SHOW_DEBUG) {
+				System.out.println("SAME: " + sameResultCounter);
+			}
 		}
-//		System.out.println("OPTIMAL");
-//		for (Individual i : population.getOptimalList()) {
-//			System.out.println(i);
-//		}
+		if (SHOW_DEBUG) {
+			System.out.println("OPTIMAL");
+			for (Individual i : population.getOptimalList()) {
+				System.out.println(i);
+			}
+		}
 		return optimalIndividualList.get(0);
 	}
 }

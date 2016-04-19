@@ -15,15 +15,10 @@ import ru.bpc.cm.items.routing.pareto.population.Individual;
 import ru.bpc.cm.items.routing.SolutionRoutes;
   
   
-public class ParetoTest {
+public class MatrixTest {
 	
-	String problemName;
-	int customerNumber;
-	
-	Matrix m;
-	
-	private void test1() {
-		m = new Matrix(4);
+	public static Matrix test1() {
+		Matrix m = new Matrix(4);
     	m.ENC = new int[]{0, 1, 3, 2};  //(идентификаторы инкассаций)
     	m.ATM = new String[]{"1", "132964", "155652", "155750"}; //(соотв. идентификаторы банкоматов)
     	m.distanceCoeffs = new int[][]{{0, 17, 39, 19}, {18, 0, 26, 33}, {42, 29, 0, 67}, {20, 33, 66, 0}}; 
@@ -48,7 +43,7 @@ public class ParetoTest {
     	m.AtmPrice = new double[] {100.0, 100.0, 100.0, 100.0}; // - стоимость подъезда к каждому банкомату (сейчас не используется)
     	m.currCode = 810; // - валюта всех денежных параметров
     	m.windowMode = 0; // - режим окон для банкоматов, обычный и дефолтный (при котором, каждое окно ставится на максимально возможный промежуток);
-		
+		return m;
 		/*
 		~~~~~~~~~~~~~~~Riders~~~~~~~~~~~~~~~~~~~
 		Rider:
@@ -85,9 +80,8 @@ public class ParetoTest {
 	}
 	
 	// 20/05/2015
-	// 20/05/2015
-	private void test2() {
-		m = new Matrix(5);
+	public static Matrix test2() {
+		Matrix m = new Matrix(5);
 		m.ENC = new int[]{0, 232583, 232584, 232581, 198008};
 		m.ATM = new String[]{"1", "155652", "155696", "210004", "501260"};
 		m.distanceCoeffs = new int[][]{{0, 47, 10, 30, 49}, {56, 0, 51, 76, 10}, {53, 6, 0, 24, 50}, {4, 17, 31, 0, 75}, {22, 20, 5000, 5000, 0}};
@@ -113,6 +107,7 @@ public class ParetoTest {
 		m.AtmPrice = new double[]{3500.0, 3500.0, 3500.0, 3500.0, 3500.0};
 		m.currCode = 810;
 		m.windowMode = 0;
+		return m;
 		
 		/*~~~~~~~~~~~~~~~Riders~~~~~~~~~~~~~~~~~~~
 			Rider:
@@ -135,9 +130,8 @@ public class ParetoTest {
 	}
 	
 	// 09/04/2015
-	// 09/04/2015
-	private void test3() {
-		m = new Matrix(25);
+	public static Matrix test3() {
+		Matrix m = new Matrix(25);
 		m.ENC = new int[]{0, 63177, 63189, 63182, 63180, 63201, 63188, 63194, 63187, 63190, 63198, 63179, 63176, 63178, 63196, 63192, 63202, 63204, 63183, 63184, 63181, 63191, 63200, 63185, 63186};
 		m.ATM = new String[]{"1", "202524", "202576", "202580", "202640", "202658", "202670", "202682", "202688", "202722", "202748", "202758", "202778", "202784", "202790", "202800", "202900", "210004", "300284", "300454", "451013", "451054", "451084", "451104", "451106"};
 		m.distanceCoeffs = new int[][]{{0, 10, 19, 16, 8, 13, 15, 8, 13, 16, 10, 10, 6, 19, 8, 8, 14, 12, 10, 16, 19, 6, 20, 8, 6}, {17, 0, 17, 11, 24, 18, 22, 8, 12, 27, 5, 18, 26, 17, 6, 22, 9, 11, 21, 18, 13, 21, 17, 10, 12}, {20, 12, 0, 13, 26, 20, 25, 15, 14, 20, 14, 21, 37, 15, 9, 24, 23, 21, 14, 20, 13, 23, 5, 22, 14}, {5, 4, 12, 0, 18, 11, 6, 11, 12, 21, 20, 12, 12, 3, 15, 8, 25, 14, 7, 6, 19, 22, 23, 12, 8}, {21, 20, 11, 21, 0, 20, 25, 9, 11, 30, 10, 17, 29, 21, 10, 25, 7, 8, 14, 19, 17, 4, 26, 22, 14}, {1, 7, 12, 10, 7, 0, 5, 14, 12, 26, 19, 9, 10, 2, 15, 5, 15, 12, 14, 6, 11, 20, 11, 21, 7}, {18, 18, 12, 25, 19, 23, 0, 10, 13, 28, 2, 20, 27, 19, 4, 23, 13, 13, 10, 7, 12, 16, 10, 17, 7}, {15, 13, 5, 21, 9, 20, 3, 0, 4, 23, 7, 14, 22, 15, 4, 19, 11, 9, 13, 18, 16, 5, 25, 2, 21}, {13, 6, 10, 9, 6, 5, 13, 11, 0, 23, 18, 8, 9, 3, 14, 5, 14, 11, 14, 17, 12, 6, 20, 7, 20}, {12, 5, 9, 17, 11, 10, 11, 9, 19, 0, 16, 12, 14, 4, 11, 10, 21, 14, 10, 12, 13, 13, 15, 13, 14}, {4, 11, 10, 18, 12, 16, 2, 1, 20, 12, 0, 12, 20, 11, 7, 16, 17, 9, 10, 22, 26, 19, 19, 8, 27}, {19, 8, 19, 17, 7, 12, 19, 17, 33, 24, 5, 0, 9, 15, 19, 5, 15, 8, 8, 18, 20, 12, 20, 7, 21}, {13, 6, 13, 10, 9, 11, 7, 11, 27, 18, 4, 10, 0, 8, 13, 6, 9, 6, 22, 25, 27, 7, 32, 6, 37}, {20, 6, 11, 17, 15, 12, 20, 18, 26, 25, 15, 11, 9, 0, 20, 9, 21, 17, 9, 10, 16, 11, 10, 12, 12}, {5, 10, 10, 4, 17, 6, 15, 4, 23, 10, 10, 18, 10, 8, 0, 14, 9, 7, 13, 10, 11, 11, 13, 11, 12}, {5, 9, 8, 6, 16, 10, 14, 6, 18, 10, 10, 18, 9, 5, 14, 0, 15, 14, 28, 16, 19, 30, 23, 21, 21}, {21, 17, 19, 31, 26, 22, 20, 19, 27, 26, 34, 20, 22, 30, 32, 27, 0, 6, 11, 20, 11, 21, 2, 7, 18}, {16, 12, 24, 19, 23, 10, 11, 28, 19, 27, 19, 3, 23, 13, 13, 20, 21, 0, 13, 17, 10, 18, 14, 9, 14}, {12, 6, 3, 13, 13, 12, 29, 20, 13, 10, 15, 8, 13, 5, 28, 37, 11, 28, 0, 9, 26, 21, 9, 15, 20}, {10, 11, 9, 20, 20, 36, 27, 12, 12, 23, 4, 24, 16, 13, 19, 15, 3, 22, 4, 0, 21, 13, 2, 5, 11}, {11, 10, 7, 10, 11, 25, 19, 11, 11, 14, 7, 15, 12, 8, 9, 16, 11, 17, 3, 4, 0, 15, 12, 8, 21}, {15, 20, 7, 8, 24, 7, 16, 23, 15, 19, 12, 12, 15, 24, 26, 8, 25, 4, 27, 19, 5, 0, 11, 16, 6}, {7, 8, 19, 17, 30, 24, 8, 4, 8, 19, 20, 12, 9, 20, 19, 6, 22, 14, 8, 21, 19, 10, 0, 16, 15}, {25, 9, 11, 29, 12, 12, 24, 22, 12, 20, 4, 9, 20, 15, 7, 15, 14, 8, 14, 19, 10, 11, 8, 0, 19}, {8, 10, 29, 11, 7, 18, 14, 12, 14, 3, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 0}};
@@ -183,6 +177,7 @@ public class ParetoTest {
 		m.AtmPrice = new double[]{3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0};
 		m.currCode = 810;
 		m.windowMode = 0;
+		return m;
 		 
 		/*~~~~~~~~~~~~~~~Riders~~~~~~~~~~~~~~~~~~~
 		   Rider:
@@ -246,8 +241,8 @@ public class ParetoTest {
  	}
 	
 	// 01/04/2015
-	private void test4() {	
-		m = new Matrix(20);
+	public static Matrix test4() {	
+		Matrix m = new Matrix(20);
 		m.ENC = new int[]{0, 29990, 29983, 29977, 29978, 29988, 29992, 29987, 29986, 29991, 29980, 29985, 29995, 29976, 29982, 29979, 29984, 29996, 29994, 29981};
 		m.ATM = new String[]{"1", "202524", "202576", "202580", "202640", "202670", "202682", "202688", "202722", "202748", "202784", "202800", "210004", "300284", "300454", "451013", "451054", "451084", "451104", "451106"};
 		m.distanceCoeffs = new int[][]{{0, 10, 19, 16, 8, 15, 8, 13, 16, 10, 19, 8, 14, 12, 10, 16, 19, 6, 8, 6}, {17, 0, 17, 11, 22, 12, 5, 18, 26, 17, 6, 22, 9, 11, 21, 18, 13, 21, 10, 12}, {20, 12, 0, 13, 25, 14, 14, 21, 37, 15, 9, 24, 23, 21, 14, 20, 13, 23, 22, 14}, {5, 4, 12, 0, 6, 12, 20, 12, 12, 3, 15, 8, 25, 14, 7, 6, 19, 22, 12, 8}, {21, 20, 11, 25, 0, 11, 10, 17, 29, 21, 10, 25, 7, 8, 14, 6, 11, 20, 11, 7}, {18, 18, 12, 23, 13, 0, 2, 20, 27, 19, 4, 23, 13, 13, 10, 7, 12, 16, 10, 7}, {15, 13, 5, 20, 4, 7, 0, 14, 22, 15, 4, 19, 11, 9, 13, 18, 16, 5, 25, 21}, {13, 6, 10, 5, 11, 18, 8, 0, 9, 3, 14, 5, 14, 11, 14, 17, 12, 6, 20, 20}, {12, 5, 9, 10, 9, 16, 12, 14, 0, 4, 11, 10, 21, 14, 10, 12, 13, 13, 15, 14}, {4, 11, 10, 16, 1, 12, 12, 20, 11, 0, 7, 16, 17, 9, 22, 25, 27, 7, 32, 37}, {20, 6, 11, 17, 18, 25, 15, 11, 9, 20, 0, 9, 21, 17, 13, 10, 11, 11, 13, 12}, {5, 9, 8, 6, 14, 10, 10, 18, 9, 5, 14, 0, 15, 14, 6, 11, 20, 11, 2, 7}, {18, 16, 12, 23, 11, 19, 27, 19, 3, 23, 13, 13, 0, 20, 21, 13, 17, 18, 14, 9}, {14, 12, 13, 12, 20, 13, 10, 15, 8, 13, 5, 28, 37, 0, 11, 28, 26, 21, 9, 15}, {20, 9, 20, 27, 12, 12, 23, 4, 24, 16, 13, 19, 15, 3, 0, 22, 21, 13, 2, 5}, {11, 7, 11, 19, 11, 11, 14, 7, 15, 12, 8, 9, 16, 11, 3, 0, 4, 15, 12, 8}, {20, 8, 7, 16, 23, 15, 19, 12, 12, 15, 24, 26, 8, 25, 27, 19, 0, 5, 11, 16}, {8, 17, 24, 8, 4, 8, 19, 20, 12, 9, 20, 19, 6, 14, 8, 21, 19, 0, 10, 25}, {11, 12, 12, 24, 22, 12, 20, 4, 9, 20, 15, 7, 14, 8, 14, 19, 10, 19, 0, 10}, {11, 7, 18, 14, 12, 14, 3, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 0}};
@@ -288,6 +283,7 @@ public class ParetoTest {
 		m.AtmPrice = new double[]{3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0};
 		m.currCode = 810;
 		m.windowMode = 0;
+		return m;
 
 		/*
 		~~~~~~~~~~~~~~~Riders~~~~~~~~~~~~~~~~~~~
@@ -324,8 +320,8 @@ public class ParetoTest {
  	}
 	
 	// 28/03/2015
-	private void test5() {	
-		m = new Matrix(20);
+	public static Matrix test5() {	
+		Matrix m = new Matrix(20);
 		m.ENC = new int[]{0, 22, 14, 8, 9, 19, 24, 18, 17, 23, 11, 26, 16, 28, 7, 13, 10, 15, 27, 12};
 		m.ATM = new String[]{"1", "202524", "202576", "202580", "202640", "202670", "202682", "202688", "202722", "202748", "202784", "202790", "202800", "210004", "300284", "300454", "451013", "451054", "451104", "451106"};
 		m.distanceCoeffs = new int[][]{{0, 10, 19, 16, 8, 15, 8, 13, 16, 10, 19, 8, 8, 14, 10, 16, 19, 6, 8, 6}, {17, 0, 17, 11, 22, 8, 12, 5, 18, 26, 17, 6, 9, 11, 21, 18, 13, 21, 10, 12}, {20, 12, 0, 13, 25, 15, 14, 14, 21, 37, 15, 9, 23, 21, 14, 20, 13, 23, 22, 14}, {5, 4, 12, 0, 6, 11, 12, 20, 12, 12, 3, 15, 25, 14, 7, 6, 19, 22, 12, 8}, {21, 20, 11, 25, 0, 9, 11, 10, 17, 29, 21, 10, 7, 8, 14, 6, 11, 20, 11, 7}, {18, 18, 12, 23, 10, 0, 13, 2, 20, 27, 19, 4, 13, 13, 10, 7, 12, 16, 10, 7}, {15, 13, 5, 20, 3, 4, 0, 7, 14, 22, 15, 4, 11, 9, 13, 18, 16, 5, 25, 21}, {13, 6, 10, 5, 13, 11, 18, 0, 8, 9, 3, 14, 14, 11, 14, 17, 12, 6, 20, 20}, {12, 5, 9, 10, 11, 9, 16, 12, 0, 14, 4, 11, 21, 14, 10, 12, 13, 13, 15, 14}, {4, 11, 10, 16, 2, 1, 12, 12, 20, 0, 11, 7, 17, 9, 22, 25, 27, 7, 32, 37}, {20, 6, 11, 17, 20, 18, 25, 15, 11, 9, 0, 20, 21, 17, 9, 10, 16, 11, 10, 12}, {5, 10, 10, 4, 15, 4, 10, 10, 18, 10, 8, 0, 9, 7, 13, 10, 11, 11, 13, 12}, {5, 9, 8, 6, 14, 6, 10, 10, 18, 9, 5, 15, 0, 14, 6, 11, 20, 11, 2, 7}, {18, 16, 12, 23, 10, 11, 19, 27, 19, 3, 13, 13, 20, 0, 21, 13, 17, 18, 14, 9}, {14, 12, 13, 13, 12, 20, 13, 10, 15, 13, 5, 28, 37, 11, 0, 28, 26, 21, 9, 15}, {20, 9, 20, 20, 27, 12, 12, 23, 24, 16, 13, 19, 15, 3, 22, 0, 21, 13, 2, 5}, {11, 7, 10, 11, 19, 11, 11, 14, 15, 12, 8, 9, 16, 11, 3, 4, 0, 15, 12, 8}, {20, 7, 8, 7, 16, 23, 15, 12, 12, 9, 20, 19, 6, 14, 8, 21, 19, 0, 10, 25}, {9, 11, 12, 12, 24, 22, 12, 4, 9, 20, 15, 7, 14, 8, 14, 19, 10, 19, 0, 8}, {10, 11, 7, 18, 14, 12, 3, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 0}};
@@ -366,6 +362,7 @@ public class ParetoTest {
 		m.AtmPrice = new double[]{3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0, 3500.0};
 		m.currCode = 810;
 		m.windowMode = 0;
+		return m;
 	/*
 	 ~~~~~~~~~~~~~~~Riders~~~~~~~~~~~~~~~~~~~
 	   Rider:
@@ -401,8 +398,8 @@ public class ParetoTest {
 	}
 	
 	// 03/04/2015
-	private void test6() {	
-		m = new Matrix(4);
+	public static Matrix test6() {	
+		Matrix m = new Matrix(4);
 		m.ENC = new int[]{0, 42283, 42280, 42282};
 		m.ATM = new String[]{"1", "202778", "202790", "202900"};
 		m.distanceCoeffs = new int[][]{{0, 6, 8, 8}, {7, 0, 27, 9}, {6, 23, 0, 26}, {20, 5000, 5000, 0}};
@@ -427,6 +424,7 @@ public class ParetoTest {
 		m.AtmPrice = new double[]{3500.0, 3500.0, 3500.0, 3500.0};
 		m.currCode = 810;
 		m.windowMode = 0;
+		return m;
 		/*
 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		~~~~~~~~~~~~~~~Riders~~~~~~~~~~~~~~~~~~~
@@ -446,12 +444,12 @@ public class ParetoTest {
 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		Rider Number: 1Route Number1 Route time: 76 Route cost: 3915.0 Route length: 8 Rider money: 38250000 Route: [42280, 42283, 42282]
 		*/
+
 	}
 	
-	// Custom
-	// violation
-	private void test7() {	
-		m = new Matrix(4);
+	// Custom constraints
+	public static Matrix test7() {	
+		Matrix m = new Matrix(4);
     	m.ENC = new int[]{0, 1, 3, 2};  //(идентификаторы инкассаций)
     	m.ATM = new String[]{"1", "132964", "155652", "155750"}; //(соотв. идентификаторы банкоматов)
     	m.distanceCoeffs = new int[][]{{0, 1, 1, 1}, {1, 0, 26, 33}, {1, 29, 0, 67}, {1, 33, 66, 0}}; 
@@ -476,6 +474,7 @@ public class ParetoTest {
     	m.AtmPrice = new double[] {100.0, 100.0, 100.0, 100.0}; // - стоимость подъезда к каждому банкомату (сейчас не используется)
     	m.currCode = 810; // - валюта всех денежных параметров
     	m.windowMode = 0; // - режим окон для банкоматов, обычный и дефолтный (при котором, каждое окно ставится на максимально возможный промежуток);
+		return m;
 		
 		/*
 		~~~~~~~~~~~~~~~Riders~~~~~~~~~~~~~~~~~~~
@@ -512,9 +511,9 @@ public class ParetoTest {
 		*/
 	}
 	
-	private void testSolomon(String problemName, int customersNumber) {	
+	public static Matrix testSolomon(String problemName, int customersNumber) {	
 		
-		m = new Matrix(customersNumber+1);
+		Matrix m = new Matrix(customersNumber+1);
 		m.ENC = new int[customersNumber+1];
 		m.ATM = new String[customersNumber+1];
     	m.amountOfMoney = new int[customersNumber+1];  //(количество денег, которое нужно загрузить в каждый банкомат, может быть 0)
@@ -573,7 +572,6 @@ public class ParetoTest {
         	m.maxCars = 0;   // - макс доступное кол-во машин
         	m.currCode = 810; // - валюта всех денежных параметров
         	m.windowMode = 0; // - режим окон для банкоматов, обычный и дефолтный (при котором, каждое окно ставится на максимально возможный промежуток);
-        	System.out.println();
     	} catch (FileNotFoundException e) {
     		e.printStackTrace();
     	} catch (IOException e) {
@@ -587,201 +585,41 @@ public class ParetoTest {
     			}
     		}
     	}
-	}
-	
-	@Before
-    public  void before() {
-//		test3();
-//		problemName = "C201";
-//		customerNumber = 10;
-//		testSolomon(problemName, customerNumber);
+		return m;
 	}
     	
 	@Test
 	public void testProblem() {
-//    	Pareto solver = new Pareto(m);
-//    	Pareto.POPULATION_SIZE = 100;
-//    	Pareto.CROSSOVER_RATE = 0.8;
-//    	Pareto.MUTATION_RATE = 0.1;
-//        
-//    	Pareto.INIT_RAND_RATE = 0.9;
-//    	Pareto.EUCLIDEAN_RADIUS = 30;
-//    	solver.computeResult();
+		Matrix m = test3();
+//		Matrix m = testSolomon("C201", 100);
 		
-
-//		for (int t = 10; t <= 40; t+=5){ // for R & RC
-//		for (int t = 60; t <= 90; t+=5){
-		for (int t = 70; t <= 100; t+=5){
-			problemName = "C201";
-			customerNumber = t;
-			testSolomon(problemName, customerNumber);
-			
-			int routesNumber = 0;
-			int totalCost = 0;
-
-			if (problemName.equals("C201")) {
-				if (customerNumber == 70) {
-					routesNumber = 3;
-					totalCost = 4993;
-				} else if (customerNumber == 75) {
-					routesNumber = 3;
-					totalCost = 5092;				
-				} else if (customerNumber == 80) {
-					routesNumber = 3;
-					totalCost = 5223;
-				} else if (customerNumber == 85) {
-					routesNumber = 3;
-					totalCost = 5250;
-				} else if (customerNumber == 90) {
-					routesNumber = 3;
-					totalCost = 5452;
-				} else if (customerNumber == 95) {
-					routesNumber = 3;
-					totalCost = 5742;
-				} else {
-					routesNumber = 3;
-					totalCost = 5891;
-				}
-			} else if (problemName.equals("R201")) {
-				if (customerNumber == 10) {
-					routesNumber = 1;
-					totalCost = 2536;
-				} else if (customerNumber == 15) {
-					routesNumber = 1;
-					totalCost = 3529;				
-				} else if (customerNumber == 20) {
-					routesNumber = 2;
-					totalCost = 4093;
-				} else if (customerNumber == 25) {
-					routesNumber = 2;
-					totalCost = 5227;
-				} else if (customerNumber == 30) {
-					routesNumber = 2;
-					totalCost = 5737;
-				} else if (customerNumber == 35) {
-					routesNumber = 2;
-					totalCost = 6632;
-				} else {
-					routesNumber = 2;
-					totalCost = 7926;
-				}
-			} else {
-				if (customerNumber == 10) {
-					routesNumber = 1;
-					totalCost = 1941;
-				} else if (customerNumber == 15) {
-					routesNumber = 1;
-					totalCost = 3349;				
-				} else if (customerNumber == 20) {
-					routesNumber = 2;
-					totalCost = 3982;
-				} else if (customerNumber == 25) {
-					routesNumber = 2;
-					totalCost = 4313;
-				} else if (customerNumber == 30) {
-					routesNumber = 2;
-					totalCost = 6796;
-				} else if (customerNumber == 35) {
-					routesNumber = 2;
-					totalCost = 7587;
-				} else {
-					routesNumber = 2;
-					totalCost = 9337;
-				}
-			}
-			
-			System.out.println("pop-size, "+ problemName + " - " + customerNumber);
-	    	for (int i = 1; i <= 40; i++) {	
-	    		int optimalFound = 0;
-	    		int totalTime = 0;
-	    		for (int j = 0; j < 10; j++) {
-	        		Pareto p = new Pareto(m);
-	        		//TODO пересчитать евклидов радиус!!
-	        		Pareto.POPULATION_SIZE = i*10;
-	        		Pareto.EUCLIDEAN_RADIUS = 30;
-	        		long time = System.currentTimeMillis();
-	        		Individual result = p.computeResult();
-//	        		System.out.println(result);
-	    			totalTime += System.currentTimeMillis() - time;
-								
-	    			if (result.getRoutesNumber()==routesNumber && result.getTotalCost()<totalCost*1.02) {
-	        			optimalFound++;
-	        		}      		
-	    		}
-	    		System.out.println((i*10) + "," + optimalFound*10);
-	    		
-	    	}
-		}
-//		System.out.println("pop-size, "+ problemName + " - " + customerNumber);
-//    	for (int i = 1; i <= 40; i++) {	
-//    		int optimalFound = 0;
-//    		int totalTime = 0;
-//    		for (int j = 0; j < 10; j++) {
-//        		Pareto p = new Pareto(m);
-//        		//TODO пересчитать евклидов радиус!!
-//        		Pareto.POPULATION_SIZE = i*10;
-//        		Pareto.EUCLIDEAN_RADIUS = 30;
-//        		long time = System.currentTimeMillis();
-//        		Individual result = p.computeResult();
-////        		System.out.println(result);
-//    			totalTime += System.currentTimeMillis() - time;
-//					
-//    			//C201
-////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<1942*1.02) { //10
-////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<2295*1.02) { //15
-////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<2650*1.02) { //20
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<2147*1.02) { //25
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<2324*1.02) { //30
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<2545*1.02) { //35
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<3251*1.02) { //40
-//    			
-//    			//R201
-////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<2536*1.02) { //10
-////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<3529*1.02) { //15
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<4093*1.02) { //20
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<5227*1.02) { //25
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<5737*1.02) { //30
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<6632*1.02) { //35
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<7926*1.02) { //40
-//					
-//    			//RC201
-////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<1941*1.02) { //10
-////        		if (result.getRoutesNumber()==1 && result.getTotalCost()<3349*1.02) { //15
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<3982*1.02) { //20
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<4313*1.02) { //25
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<6796*1.02) { //30
-////        		if (result.getRoutesNumber()==2 && result.getTotalCost()<7587*1.02) { //35
-////            	if (result.getRoutesNumber()==2 && result.getTotalCost()<9337*1.02) { //40
-//    			
-//    			if (result.getRoutesNumber()==routesNumber && result.getTotalCost()<totalCost*1.02) {
-//        			optimalFound++;
-//        		}      		
-//    		}
-////    		System.out.println((i*10) + "," + optimalFound*10 + "," + totalTime/20);
-//    		System.out.println((i*10) + "," + optimalFound*10);
-//    		
-//    	}
+    	Pareto solver = new Pareto(m);
+    	Pareto.POPULATION_SIZE = 100;
+    	Pareto.SHOW_DEBUG = true;
+        
+    	Pareto.EUCLIDEAN_RADIUS = 30;
+    	SolutionRoutes result = solver.computeResult();
     	
-//    	for (ArrayList<Integer> route : result.getRoutes()) {
-//    		System.out.print("[");
-//    		for (Integer pid : route) {
-//    			System.out.print(pid + " ");
-//    		}
-//    		System.out.println("]");
-//    	}
-//    	
-//    	for (ArrayList<Integer> route : result.getRoutes()) {
-//    		int order = 1;
-//    		int pointTime = m.getTimeWindows().get(0).StartWork; // start time of depot
-//    		pointTime -= m.serviceTime[0]; // if not serving depot in the beginning
-//    		int prevCust = 0;
-//    		for (Integer pid : route) {
-//    			pointTime = Math.max(pointTime + m.timeCoeffs[prevCust][pid] + m.serviceTime[prevCust], m.getTimeWindows().get(pid).StartWork);
-//    			System.out.println(pid + " " + order + " "  +pointTime);
-//    			prevCust = pid;
-//    			order++;
-//    		}
-//    	}
+    	for (ArrayList<Integer> route : result.getRoutes()) {
+    		System.out.print("[");
+    		for (Integer pid : route) {
+    			System.out.print(pid + " ");
+    		}
+    		System.out.println("]");
+    	}
+    	
+    	for (ArrayList<Integer> route : result.getRoutes()) {
+    		int order = 1;
+    		int pointTime = m.getTimeWindows().get(0).StartWork; // start time of depot
+    		pointTime -= m.serviceTime[0]; // if not serving depot in the beginning
+    		int prevCust = 0;
+    		for (Integer pid : route) {
+    			pointTime = Math.max(pointTime + m.timeCoeffs[prevCust][pid] + m.serviceTime[prevCust], m.getTimeWindows().get(pid).StartWork);
+    			System.out.println(pid + " " + order + " "  +pointTime);
+    			prevCust = pid;
+    			order++;
+    		}
+    	}
 
 	}
     	 	
