@@ -13,11 +13,6 @@ public class Population extends ArrayList<Individual> {
 
 	private static final long serialVersionUID = 7697698702244322610L;
 
-	// public long testTime1 = 0;
-	// public long testTime2 = 0;
-	// public long testTime3 = 0;
-	// private long time;
-
 	public Population() {
 		super(Pareto.POPULATION_SIZE);
 	}
@@ -96,8 +91,6 @@ public class Population extends ArrayList<Individual> {
 		}
 		if (i % 2 == 1) {
 			this.add(parents.get(0));
-			// System.out.println("))))))) Taking " + parents.get(0) + " to next
-			// ganeration again :)");
 			i++;
 		}
 		for (; i < Pareto.POPULATION_SIZE; i += 2) {
@@ -144,7 +137,6 @@ public class Population extends ArrayList<Individual> {
 		Collections.shuffle(rRoute1);
 		Collections.shuffle(rRoute2);
 
-		// time = System.currentTimeMillis();
 		for (int customer : rRoute1) {
 			child2.getRouteNetwork().removeCustomer(customer);
 		}
@@ -152,17 +144,12 @@ public class Population extends ArrayList<Individual> {
 			child1.getRouteNetwork().removeCustomer(customer);
 		}
 
-		// testTime1 += System.currentTimeMillis() - time;
-		// time = System.currentTimeMillis();
-
 		for (int customer : rRoute1) {
 			child2.getRouteNetwork().insertCustomer(customer);
 		}
 		for (int customer : rRoute2) {
 			child1.getRouteNetwork().insertCustomer(customer);
 		}
-
-		// testTime2 += System.currentTimeMillis() - time;
 
 		add(child1);
 		add(child2);
@@ -187,25 +174,16 @@ public class Population extends ArrayList<Individual> {
 		}
 	}
 
-//	public void showOptimal() {
-//		for (int i = Pareto.POPULATION_SIZE - 1; i >= 0; i--) {
-//			if (get(i).getParetoRank() == 1) {
-//				System.out.println(i + ": " + get(i));
-//			}
-//		}
-//	}
-	
-	
 	public void showOptimal() {
 		int i = 0;
 		while (i < Pareto.POPULATION_SIZE && get(i).getParetoRank() == 1) {
-			System.out.println(i+": "+get(i));
+			System.out.println(i + ": " + get(i));
 			i++;
 		}
-    }
-	
+	}
+
 	/**
-	 * @return ORDERED by routes number DISTINCT list of optimal individuals  
+	 * @return ORDERED by routes number DISTINCT list of optimal individuals
 	 */
 	public List<Individual> getOptimalList() {
 		List<Individual> optimalIndividualsList = new ArrayList<Individual>();
@@ -224,18 +202,18 @@ public class Population extends ArrayList<Individual> {
 			}
 			i++;
 		}
-		
-		optimalIndividualsList.sort(new Comparator<Individual> (){
+
+		optimalIndividualsList.sort(new Comparator<Individual>() {
 			public int compare(Individual o1, Individual o2) {
 				return o1.getRoutesNumber() - o2.getRoutesNumber();
-			}	
+			}
 		});
 		return optimalIndividualsList;
 	}
 
 	public Individual getResult() {
 		Individual bestIndividual = getOptimalList().get(0);
-		if (bestIndividual.getRoutesNumber() > Problem.getInstance().maxCars){
+		if (bestIndividual.getRoutesNumber() > Problem.getInstance().maxCars) {
 			System.out.println("Impossible (maxCars constraint violated)");
 			return null;
 		} else {

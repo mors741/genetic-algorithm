@@ -46,13 +46,8 @@ class Route extends ArrayList<Integer> {
 	}
 
 	int getTime() {
-		int pointTime = Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().getServiceTime(); // start
-																									// time
-																									// of
-																									// depot
-		pointTime -= Problem.getInstance().getDepot().getServiceTime(); // if not serving
-															// depot in the
-															// beginning
+		int pointTime = Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().getServiceTime(); // start time of depot
+		pointTime -= Problem.getInstance().getDepot().getServiceTime(); // if not serving depot in the beginning
 		int prevCust = 0;
 		for (Integer pid : this) {
 			pointTime = Math.max(pointTime + Problem.getInstance().getCustomer(prevCust).timeTo(Problem.getInstance().getCustomer(pid))

@@ -12,7 +12,7 @@ import ru.bpc.cm.items.routing.heneticmethod.RiderTimeWindow;
  */
 public class Problem {
 	private static Problem INSTANCE;
-	
+
 	/**
 	 * Amount of customers in problem.
 	 */
@@ -82,7 +82,7 @@ public class Problem {
 	 * @Unsupported
 	 */
 	public final double[] atmPrice;
-	
+
 	private Problem(Matrix m) {
 		vehicleCapacity = m.MaxMoney == 0 ? Integer.MAX_VALUE : m.MaxMoney;
 		distanceCoeffs = m.distanceCoeffs;
@@ -111,7 +111,7 @@ public class Problem {
 		currCode = m.currCode;
 		windowMode = m.windowMode;
 	}
-	
+
 	public static Problem getInstance() {
 		if (INSTANCE == null) {
 			throw new NullPointerException("Use Problem.initialize(Matrix m); first.");

@@ -6,13 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.junit.Before;
 import org.junit.Test;
 
+import ru.bpc.cm.items.routing.SolutionRoutes;
 import ru.bpc.cm.items.routing.heneticmethod.Matrix;
 import ru.bpc.cm.items.routing.pareto.Pareto;
-import ru.bpc.cm.items.routing.pareto.population.Individual;
-import ru.bpc.cm.items.routing.SolutionRoutes;
   
   
 public class MatrixTest {
@@ -511,7 +509,7 @@ public class MatrixTest {
 		*/
 	}
 	
-	public static Matrix testSolomon(String problemName, int customersNumber) {	
+	public static Matrix testSolomon(SolomonProblem problem, int customersNumber) {	
 		
 		Matrix m = new Matrix(customersNumber+1);
 		m.ENC = new int[customersNumber+1];
@@ -536,7 +534,7 @@ public class MatrixTest {
     	int[][] coordinates = new int[customersNumber+1][2];
     	try {
     		 
-    		br = new BufferedReader(new FileReader("resources/"+problemName+".csv"));
+    		br = new BufferedReader(new FileReader("resources/"+problem.getName()+".csv"));
     		line = br.readLine();
     		m.MaxMoney = Integer.parseInt(line.substring(0, line.indexOf(cvsSplitBy)));
 
@@ -590,14 +588,12 @@ public class MatrixTest {
     	
 	@Test
 	public void testProblem() {
-		Matrix m = test3();
-//		Matrix m = testSolomon("C201", 100);
+//		Matrix m = test3();
+		Matrix m = testSolomon(SolomonProblem.C201, 100);
 		
     	Pareto solver = new Pareto(m);
-    	Pareto.POPULATION_SIZE = 100;
     	Pareto.SHOW_DEBUG = true;
         
-    	Pareto.EUCLIDEAN_RADIUS = 30;
     	SolutionRoutes result = solver.computeResult();
     	
     	for (ArrayList<Integer> route : result.getRoutes()) {
