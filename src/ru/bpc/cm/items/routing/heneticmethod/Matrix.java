@@ -2,6 +2,10 @@ package ru.bpc.cm.items.routing.heneticmethod;
 
 import java.util.ArrayList;
 
+/**Contains problem conditions and constraints
+ * @author mors741
+ * 
+ */
 public class Matrix {
 	public static final int NORMAL_ATM_WINDOW_MODE = 0;
 	public static final int DEFAULT_ATM_WINDOW_MODE = 1;

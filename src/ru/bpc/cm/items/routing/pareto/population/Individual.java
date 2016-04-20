@@ -48,7 +48,8 @@ public class Individual implements SolutionRoutes {
 		// For first customer
 		int gene = chromosome.get(0);
 		Point customer = Problem.getInstance().getCustomer(gene);
-		int currentTime = Math.max(Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().timeTo(customer),
+		int currentTime = Math.max(
+				Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().timeTo(customer),
 				customer.getReadyTime());
 		routes.add(new Route(Problem.getInstance().customersNumber));
 		currentCapacity -= customer.getDemand();
@@ -57,7 +58,8 @@ public class Individual implements SolutionRoutes {
 				|| currentTime > customer.getDueDate()) { // To late -> create new route
 
 			currentCapacity = Problem.getInstance().vehicleCapacity - customer.getDemand();
-			currentTime = Math.max(Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().timeTo(customer),
+			currentTime = Math.max(
+					Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().timeTo(customer),
 					customer.getReadyTime());
 
 			routes.add(new Route(Problem.getInstance().customersNumber));
@@ -79,7 +81,7 @@ public class Individual implements SolutionRoutes {
 			currentTime += Problem.getInstance().getCustomer(prevGene).timeTo(customer);
 
 			currentCapacity -= customer.getDemand();
-			
+
 			if (currentCapacity < 0 // Not enough money
 					|| currentTime > customer.getDueDate() // To late
 					|| currentTime >= Problem.getInstance().maxRouteTime
@@ -87,8 +89,8 @@ public class Individual implements SolutionRoutes {
 					|| routes.get(routesNumber - 1).getDistance() >= Problem.getInstance().maxRouteLength) { // create new route
 
 				currentCapacity = Problem.getInstance().vehicleCapacity - customer.getDemand();
-				currentTime = Math.max(Problem.getInstance().getDepot().getReadyTime() + Problem.getInstance().getDepot().timeTo(customer),
-						customer.getReadyTime());
+				currentTime = Math.max(Problem.getInstance().getDepot().getReadyTime()
+						+ Problem.getInstance().getDepot().timeTo(customer), customer.getReadyTime());
 
 				routes.add(new Route(Problem.getInstance().customersNumber));
 				routesNumber++;
@@ -105,7 +107,7 @@ public class Individual implements SolutionRoutes {
 
 		// Phase 2
 		for (int i = 1; i < routesNumber; i++) {
-			int prevRouteLastIndex = routes.get(i - 1).size() - 1; // TODO: ?
+			int prevRouteLastIndex = routes.get(i - 1).size() - 1;
 			int sumCost1 = routes.get(i - 1).getDistance() + routes.get(i).getDistance();
 			routes.get(i).add(0, routes.get(i - 1).get(prevRouteLastIndex));
 			routes.get(i - 1).remove(prevRouteLastIndex);
@@ -118,8 +120,6 @@ public class Individual implements SolutionRoutes {
 		}
 
 		totalCost = routes.evaluateTotalDistance();
-		// isFeasible = isFeasible() ? 1 : 0;
-		checkConstraints();
 	}
 
 	private boolean theSameRoutesAs(Individual indiv) {
@@ -144,7 +144,7 @@ public class Individual implements SolutionRoutes {
 
 	public Individual clone() {
 		Individual clone = new Individual();
-		clone.chromosome = new ArrayList<Integer>(this.chromosome); // No need to
+		clone.chromosome = new ArrayList<Integer>(this.chromosome);
 		for (Route route : this.routes) {
 			clone.routes.add(new Route(route));
 		}
@@ -163,40 +163,6 @@ public class Individual implements SolutionRoutes {
 		}
 	}
 
-	// public boolean dominates(Individual other) {
-	// if (this.totalCost <= other.totalCost
-	// && this.routesNumber <= other.routesNumber
-	// && this.isFeasible >= other.isFeasible
-	// && (this.totalCost < other.totalCost
-	// || this.routesNumber < other.routesNumber
-	// || this.isFeasible > other.isFeasible)) {
-	// return true;
-	// } else {
-	// return false;
-	// }
-	// }
-
-	void checkConstraints() {
-		// evaluate maxRouteLen, maxCust, maxTime
-		int maxRouteLen = 0;
-		int maxCust = 0;
-		int maxTime = 0;
-		for (Route route : routes) {
-			int tempDist = route.getDistance();
-			if (tempDist > maxRouteLen) {
-				maxRouteLen = tempDist;
-			}
-			int tempSize = route.size();
-			if (tempSize > maxCust) {
-				maxCust = tempSize;
-			}
-			int tempTime = route.getTime();
-			if (tempTime > maxTime) {
-				maxTime = tempTime;
-			}
-		}
-	}
-
 	void backToChromosome() {
 		chromosome.clear();
 		for (Route r : routes) {
@@ -212,10 +178,6 @@ public class Individual implements SolutionRoutes {
 
 	public String toString() {
 		StringBuilder str = new StringBuilder(chromosome.size() * 2);
-		/*
-		 * for (int i : chromosome) { str.append(i); str.append(" "); }
-		 * str.append("-- ");
-		 */
 		str.append("<" + paretoRank + "> (" + routesNumber + "; " + totalCost + ") ");
 		for (List<Integer> route : routes) {
 			str.append("[");
@@ -244,7 +206,7 @@ public class Individual implements SolutionRoutes {
 		return routes.get(i);
 	}
 
-	int getRoutesNumber() {
+	public int getRoutesNumber() {
 		return routesNumber;
 	}
 
@@ -252,7 +214,7 @@ public class Individual implements SolutionRoutes {
 		return isFeasible;
 	}
 
-	int getTotalCost() {
+	public int getTotalCost() {
 		return totalCost;
 	}
 

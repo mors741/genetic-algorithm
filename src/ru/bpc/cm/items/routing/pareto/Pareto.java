@@ -1,5 +1,8 @@
 package ru.bpc.cm.items.routing.pareto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.bpc.cm.items.routing.heneticmethod.Matrix;
 import ru.bpc.cm.items.routing.pareto.population.Individual;
 import ru.bpc.cm.items.routing.pareto.population.Population;
@@ -7,68 +10,106 @@ import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 public class Pareto {
 
-	public static int POPULATION_SIZE = 300;
-	public static int GENERATION_SPAN = 350;
+	public static int POPULATION_SIZE;
 	public static double CROSSOVER_RATE = 0.8;
 	public static double MUTATION_RATE = 0.1;
 
 	public static double INIT_RAND_RATE = 0.9;
-	public static double EUCLIDEAN_RADIUS = 3;
-	
+	public static double EUCLIDEAN_RADIUS;
+
+	public static double MAX_SAME_RESULT = 5;
+
+	public static boolean SHOW_DEBUG = false;
+	public static boolean SHOW_OPTIMAL = false;
+	public static boolean SHOW_GEN = false;
+	public static boolean SHOW_RESULT = false;
+
 	private Population population;
 
 	public Pareto(Matrix problem) {
 		Problem.initialize(problem);
+		int[][] distanceCoeffs = Problem.getInstance().distanceCoeffs;
+		POPULATION_SIZE = 10 + 10 * (int) (0.004 * Math.pow((distanceCoeffs.length - 1), 2));
+		int total = 0;
+		for (int i = 0; i < distanceCoeffs.length; i++) {
+			for (int j = 0; j < i; j++) {
+				total += distanceCoeffs[i][j];
+			}
+		}
+		EUCLIDEAN_RADIUS = (2 * total / (distanceCoeffs.length * (distanceCoeffs.length - 1)));
 		population = new Population();
 	}
 
 	public Individual computeResult() {
 		population.initialize();
+		List<Individual> prevOptimalIndividualList = new ArrayList<Individual>();
 
-		// long time = System.currentTimeMillis();
-		// long routesTime = 0;
-		// long paretoTime = 0;
-		// long mateTime = 0;
-		// long mutationTime = 0;
-		// long backTime = 0;
-
-		for (int i = 0; i < GENERATION_SPAN - 1; i++) {
-			population.evaluateRoutes();
-			// routesTime += System.currentTimeMillis() - time;
-			// time = System.currentTimeMillis();
-
-			population.determineParetoRanks();
-			// paretoTime += System.currentTimeMillis() - time;
-			// time = System.currentTimeMillis();
-
-			System.out.println(" -------------------------------------" + i + " -------------------------------------");
-			population.showInverse();
-
-			population.mate();
-			// mateTime += System.currentTimeMillis() - time;
-			// time = System.currentTimeMillis();
-
-			population.mutation();
-			// mutationTime += System.currentTimeMillis() - time;
-			// time = System.currentTimeMillis();
-
-			population.backToChromosome();
-			// backTime += System.currentTimeMillis() - time;
-			// time = System.currentTimeMillis();
-
-		}
 		population.evaluateRoutes();
 		population.determineParetoRanks();
 
-		return population.getResult();
+		if (SHOW_DEBUG) {
+			System.out.println(" ------------------------------------- 0 -------------------------------------");
+			population.showInverse();
+		}
 
-		// System.out.println("routesTime: " + routesTime);
-		// System.out.println("paretoTime: " + paretoTime);
-		// System.out.println("mateTime: " + mateTime);
-		// System.out.println("mutationTime: " + mutationTime);
-		// System.out.println("backTime: " + backTime);
-		// System.out.println("total: " +
-		// (routesTime+paretoTime+mateTime+mutationTime+backTime));
-		// System.out.println();
+		int generationCounter = 1;
+		List<Individual> optimalIndividualList = null;
+		boolean areListsIdentical;
+		int sameResultCounter = 0;
+		while (sameResultCounter < MAX_SAME_RESULT) {
+			population.mate();
+			population.mutation();
+			population.backToChromosome();
+			population.evaluateRoutes();
+			population.determineParetoRanks();
+
+			optimalIndividualList = population.getOptimalList();
+
+			if (SHOW_DEBUG || SHOW_OPTIMAL) {
+				System.out.println(" ------------------------------------- " + (generationCounter)
+						+ " -------------------------------------");
+			}
+			if (SHOW_DEBUG) {
+				population.showInverse();
+			}
+			if (SHOW_DEBUG || SHOW_OPTIMAL) {
+				System.out.println("OPTIMAL: " + optimalIndividualList.size());
+				for (Individual i : optimalIndividualList) {
+					System.out.println(i);
+				}
+			}
+			generationCounter++;
+
+			areListsIdentical = true;
+			if (optimalIndividualList.size() == prevOptimalIndividualList.size()) {
+				for (int i = 0; i < optimalIndividualList.size(); i++) {
+					if (optimalIndividualList.get(i).getRoutesNumber() != prevOptimalIndividualList.get(i)
+							.getRoutesNumber()
+							|| optimalIndividualList.get(i).getTotalCost() != prevOptimalIndividualList.get(i)
+									.getTotalCost()) {
+						areListsIdentical = false;
+					}
+				}
+				if (areListsIdentical) {
+					sameResultCounter++;
+				} else {
+					sameResultCounter = 0;
+				}
+			}
+			prevOptimalIndividualList = optimalIndividualList;
+			if (SHOW_DEBUG) {
+				System.out.println("SAME: " + sameResultCounter);
+			}
+		}
+		if (SHOW_DEBUG || SHOW_GEN) {
+			System.out.println("TOTAL GENERATIONS = " + (generationCounter - 1));
+		}
+		if (SHOW_DEBUG || SHOW_OPTIMAL || SHOW_RESULT) {
+			System.out.println("RESULT: " + optimalIndividualList.size());
+			for (Individual i : optimalIndividualList) {
+				System.out.println(i);
+			}
+		}
+		return optimalIndividualList.get(0);
 	}
 }
