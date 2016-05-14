@@ -1,4 +1,4 @@
-package ru.bpc.cm.items.routing.heneticmethod;
+package ru.bpc.cm.items.routing;
 
 public class TimeWindow {
 	public int NumATM;

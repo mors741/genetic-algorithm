@@ -3,7 +3,8 @@ package ru.bpc.cm.items.routing.pareto;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.bpc.cm.items.routing.heneticmethod.Matrix;
+import ru.bpc.cm.items.routing.Matrix;
+import ru.bpc.cm.items.routing.SolutionStatus;
 import ru.bpc.cm.items.routing.pareto.population.Individual;
 import ru.bpc.cm.items.routing.pareto.population.Population;
 import ru.bpc.cm.items.routing.pareto.problem.Problem;
@@ -18,6 +19,8 @@ public class Pareto {
 	public static double EUCLIDEAN_RADIUS;
 
 	public static double MAX_SAME_RESULT = 5;
+	
+	public static boolean CARS_OVER_COST = false;
 
 	public static boolean SHOW_DEBUG = false;
 	public static boolean SHOW_OPTIMAL = false;
@@ -110,6 +113,38 @@ public class Pareto {
 				System.out.println(i);
 			}
 		}
-		return optimalIndividualList.get(0);
+		
+		Individual bestIndividual = null;
+		
+		if (!Problem.getInstance().isCorrect()) {
+			bestIndividual = optimalIndividualList.get(optimalIndividualList.size()-1);
+			System.out.println("STATUS = 1");
+			bestIndividual.setStatus(SolutionStatus.TIME_CONSTRAINT_VIOLATION);
+			return bestIndividual;
+		}
+
+		if (CARS_OVER_COST) {
+			bestIndividual = optimalIndividualList.get(0);
+			if (bestIndividual.getRoutesNumber() > Problem.getInstance().maxCars) {
+				bestIndividual.setStatus(SolutionStatus.CARS_OR_ATMS_CONSTRAINT_VIOLATION);
+			}
+		} else {
+			int tempLast = optimalIndividualList.size()-1;
+			
+			while (tempLast >= 0) {
+				bestIndividual = optimalIndividualList.get(tempLast);
+				if (bestIndividual.getRoutesNumber() <= Problem.getInstance().maxCars) {
+					return bestIndividual;
+				} else {	
+					tempLast--;
+				}
+			}
+			bestIndividual.setStatus(SolutionStatus.CARS_OR_ATMS_CONSTRAINT_VIOLATION);
+			
+		}
+		
+
+		return bestIndividual;
+		
 	}
 }

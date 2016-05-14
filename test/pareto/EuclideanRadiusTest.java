@@ -2,7 +2,7 @@ package pareto;
 
 import org.junit.Test;
 
-import ru.bpc.cm.items.routing.heneticmethod.Matrix;
+import ru.bpc.cm.items.routing.Matrix;
 import ru.bpc.cm.items.routing.pareto.Pareto;
 
 public class EuclideanRadiusTest {

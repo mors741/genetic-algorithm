@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import ru.bpc.cm.items.routing.Matrix;
 import ru.bpc.cm.items.routing.SolutionRoutes;
-import ru.bpc.cm.items.routing.heneticmethod.Matrix;
 import ru.bpc.cm.items.routing.pareto.Pareto;
   
   
@@ -595,6 +595,8 @@ public class MatrixTest {
     	Pareto.SHOW_DEBUG = true;
         
     	SolutionRoutes result = solver.computeResult();
+    	
+    	System.out.println(result.getStatus());
     	
     	for (ArrayList<Integer> route : result.getRoutes()) {
     		System.out.print("[");

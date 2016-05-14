@@ -211,14 +211,4 @@ public class Population extends ArrayList<Individual> {
 		return optimalIndividualsList;
 	}
 
-	public Individual getResult() {
-		Individual bestIndividual = getOptimalList().get(0);
-		if (bestIndividual.getRoutesNumber() > Problem.getInstance().maxCars) {
-			System.out.println("Impossible (maxCars constraint violated)");
-			return null;
-		} else {
-			return bestIndividual;
-		}
-	}
-
 }

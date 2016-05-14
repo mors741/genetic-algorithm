@@ -1,4 +1,4 @@
-package ru.bpc.cm.items.routing.heneticmethod;
+package ru.bpc.cm.items.routing;
 
 import java.util.ArrayList;
 

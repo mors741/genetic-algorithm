@@ -3,8 +3,8 @@ package ru.bpc.cm.items.routing.pareto.problem;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.bpc.cm.items.routing.heneticmethod.Matrix;
-import ru.bpc.cm.items.routing.heneticmethod.RiderTimeWindow;
+import ru.bpc.cm.items.routing.Matrix;
+import ru.bpc.cm.items.routing.RiderTimeWindow;
 
 /**
  * @author mors741
@@ -82,6 +82,8 @@ public class Problem {
 	 * @Unsupported
 	 */
 	public final double[] atmPrice;
+	
+	private boolean isCorrect = true;
 
 	private Problem(Matrix m) {
 		vehicleCapacity = m.MaxMoney == 0 ? Integer.MAX_VALUE : m.MaxMoney;
@@ -97,9 +99,23 @@ public class Problem {
 		depot = new Point(-1, m.ENC[0], m.depot, m.amountOfMoney[0], m.getTimeWindow(0).StartWork,
 				m.getTimeWindow(0).EndWork, m.serviceTime[0]);
 		customers = new ArrayList<Point>(customersNumber);
+		
+
 		for (int i = 1; i <= customersNumber; i++) {
-			customers.add(new Point(i - 1, m.ENC[i], m.ATM[i], m.amountOfMoney[i], m.getTimeWindow(i).StartWork,
-					m.getTimeWindow(i).EndWork, m.serviceTime[i]));
+			int startWork = m.getTimeWindow(i).StartWork;
+			int endWork = m.getTimeWindow(i).EndWork;
+			// if customer cann't be reached within time windows
+			if (timeCoeffs[0][i] > m.getTimeWindow(i).EndWork){
+				// move time window forward
+				int delta = timeCoeffs[0][i] - startWork;
+				startWork += delta;
+				endWork += delta;
+				// and mark as INCORRECT
+				isCorrect = false;
+				
+			}
+			customers.add(new Point(i - 1, m.ENC[i], m.ATM[i], m.amountOfMoney[i],
+					startWork, endWork, m.serviceTime[i]));
 		}
 
 		riderTimeWindows = m.getRiderTimeWindows();
@@ -138,5 +154,9 @@ public class Problem {
 
 	public Point getCustomer(int i) {
 		return customers.get(i);
+	}
+
+	public boolean isCorrect() {
+		return isCorrect;
 	}
 }

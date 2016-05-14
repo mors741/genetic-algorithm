@@ -4,4 +4,5 @@ import java.util.ArrayList;
 
 public interface SolutionRoutes {
 	public ArrayList<? extends ArrayList<Integer>> getRoutes();
+	public SolutionStatus getStatus();
 }

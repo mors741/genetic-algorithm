@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import ru.bpc.cm.items.routing.SolutionRoutes;
+import ru.bpc.cm.items.routing.SolutionStatus;
 import ru.bpc.cm.items.routing.pareto.problem.Point;
 import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
@@ -20,6 +21,7 @@ public class Individual implements SolutionRoutes {
 	private int totalCost = 0;
 	private int isFeasible = 0;
 	private int paretoRank;
+	private SolutionStatus status = SolutionStatus.CONSTRAINTS_OK;
 
 	Individual() {
 		chromosome = new ArrayList<Integer>(Problem.getInstance().customersNumber);
@@ -240,5 +242,13 @@ public class Individual implements SolutionRoutes {
 			aRoutes.add(aRoute);
 		}
 		return aRoutes;
+	}
+
+	public SolutionStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(SolutionStatus status) {
+		this.status = status;
 	}
 }

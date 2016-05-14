@@ -34,9 +34,6 @@ class Route extends ArrayList<Integer> {
 	}
 
 	int getDistance() {
-		if (this.isEmpty()) {
-			System.out.println("Customer can not be reached from depot without time window constraint violation");
-		}
 		int res = Problem.getInstance().getDepot().distanceTo(Problem.getInstance().getCustomer(this.get(0)));
 		int i;
 		for (i = 0; i < this.size() - 1; i++) {
