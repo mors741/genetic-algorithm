@@ -203,11 +203,7 @@ public class Population extends ArrayList<Individual> {
 			i++;
 		}
 
-		optimalIndividualsList.sort(new Comparator<Individual>() {
-			public int compare(Individual o1, Individual o2) {
-				return o1.getRoutesNumber() - o2.getRoutesNumber();
-			}
-		});
+		Collections.sort(optimalIndividualsList);
 		return optimalIndividualsList;
 	}
 

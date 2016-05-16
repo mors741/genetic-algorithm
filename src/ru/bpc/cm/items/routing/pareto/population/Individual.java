@@ -13,7 +13,7 @@ import ru.bpc.cm.items.routing.pareto.problem.Problem;
  * @author EAH
  *
  */
-public class Individual implements SolutionRoutes {
+public class Individual implements SolutionRoutes, Comparable<Individual> {
 
 	private List<Integer> chromosome;
 	private RouteNetwork routes;
@@ -242,6 +242,11 @@ public class Individual implements SolutionRoutes {
 			aRoutes.add(aRoute);
 		}
 		return aRoutes;
+	}
+	
+	@Override
+	public int compareTo(Individual o) {
+		return this.getRoutesNumber() - o.getRoutesNumber();
 	}
 
 	public SolutionStatus getStatus() {
