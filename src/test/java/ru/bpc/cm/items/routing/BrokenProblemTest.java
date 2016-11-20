@@ -1,4 +1,4 @@
-package pareto;
+package ru.bpc.cm.items.routing;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

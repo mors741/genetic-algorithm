@@ -1,8 +1,7 @@
-package pareto;
+package ru.bpc.cm.items.routing;
 
 import org.junit.Test;
 
-import ru.bpc.cm.items.routing.Matrix;
 import ru.bpc.cm.items.routing.pareto.Pareto;
 import ru.bpc.cm.items.routing.pareto.problem.Problem;
 

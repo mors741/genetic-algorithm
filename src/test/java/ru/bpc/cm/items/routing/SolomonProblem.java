@@ -1,4 +1,4 @@
-package pareto;
+package ru.bpc.cm.items.routing;
 
 public enum SolomonProblem {
 	C101("C101"), C102("C102"), C103("C103"), C104("C104"), C105("C105"), C106("C106"), C107("C107"), C108("C108"),

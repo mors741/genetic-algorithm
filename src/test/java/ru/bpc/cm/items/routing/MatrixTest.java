@@ -1,4 +1,4 @@
-package pareto;
+package ru.bpc.cm.items.routing;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -8,8 +8,6 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import ru.bpc.cm.items.routing.Matrix;
-import ru.bpc.cm.items.routing.SolutionRoutes;
 import ru.bpc.cm.items.routing.pareto.Pareto;
   
   
