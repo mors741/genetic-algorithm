@@ -1,9 +1,6 @@
 package ru.bpc.cm.items.routing;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -531,8 +528,8 @@ public class MatrixTest {
     	String cvsSplitBy = ";";
     	int[][] coordinates = new int[customersNumber+1][2];
     	try {
-    		 
-    		br = new BufferedReader(new FileReader("resources/"+problem.getName()+".csv"));
+            InputStream inputStream = MatrixTest.class.getClassLoader().getResourceAsStream(problem.getName()+".csv");
+            br = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
     		line = br.readLine();
     		m.MaxMoney = Integer.parseInt(line.substring(0, line.indexOf(cvsSplitBy)));
 

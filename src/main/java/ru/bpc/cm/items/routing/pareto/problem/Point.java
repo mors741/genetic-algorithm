@@ -6,12 +6,12 @@ public class Point {
 	private final int id;
 	private final int ENC;
 	private final String ATM;
-	private final int demand;
+	private int demand;
 	private final int rtime;
 	private final int ddate;
 	private final int stime;
 
-	Point(int id, int ENC, String ATM, int demand, int rtime, int ddate, int stime) {
+	public Point(int id, int ENC, String ATM, int demand, int rtime, int ddate, int stime) {
 		this.id = id;
 		this.ENC = ENC;
 		this.ATM = ATM;
@@ -35,6 +35,10 @@ public class Point {
 
 	public int getDemand() {
 		return demand;
+	}
+
+	public void addDemand(int demand) {
+		this.demand += demand;
 	}
 
 	public int getReadyTime() {
