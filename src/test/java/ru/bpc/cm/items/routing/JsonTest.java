@@ -4,6 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.Test;
 import ru.bpc.cm.items.routing.pareto.Pareto;
 import ru.bpc.cm.items.routing.pareto.problem.Point;
+import ru.bpc.cm.items.routing.pareto.problem.Problem;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class JsonTest {
 		Matrix m = testErma();
 		
     	Pareto solver = new Pareto(m);
-    	Pareto.SHOW_DEBUG = true;
+    	Pareto.SHOW_OPTIMAL = true;
         
     	SolutionRoutes result = solver.computeResult();
     	
@@ -113,6 +114,14 @@ public class JsonTest {
     		}
     		System.out.println("]");
     	}
+
+		for (ArrayList<Integer> route : result.getRoutes()) {
+			System.out.print("[");
+			for (Integer pid : route) {
+				System.out.print(Problem.getInstance().getCustomer(pid-1).getATM() + " ");
+			}
+			System.out.println("]");
+		}
     	
     	for (ArrayList<Integer> route : result.getRoutes()) {
     		int order = 1;

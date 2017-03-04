@@ -20,7 +20,7 @@ public class Pareto {
 
 	public static double MAX_SAME_RESULT = 5;
 	
-	public static boolean CARS_OVER_COST = false;
+	public static boolean CARS_OVER_COST = true;
 
 	public static boolean SHOW_DEBUG = false;
 	public static boolean SHOW_OPTIMAL = false;
@@ -33,6 +33,9 @@ public class Pareto {
 		Problem.initialize(problem);
 		int[][] distanceCoeffs = Problem.getInstance().distanceCoeffs;
 		POPULATION_SIZE = 10 + 10 * (int) (0.004 * Math.pow((distanceCoeffs.length - 1), 2));
+		if (POPULATION_SIZE > 1000) {
+			POPULATION_SIZE = 1000;
+		}
 		int total = 0;
 		for (int i = 0; i < distanceCoeffs.length; i++) {
 			for (int j = 0; j < i; j++) {
